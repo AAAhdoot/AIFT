@@ -28,3 +28,5 @@ public class Square{
 		return;
 	}
 }
+
+// x-coordinate and y-coordinate correspond to the indices in the matrix/gridworld?!?!
