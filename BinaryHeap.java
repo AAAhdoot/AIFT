@@ -1,8 +1,3 @@
-/**
- * CSE 373, Winter 2011, Jessica Miller
- * The BinaryHeap is an -generic- implementation of the PriorityQueue interface.  
- * This is a binary min-heap implementation of the priority queue ADT.
- */
 import java.util.Arrays;
 import Square.java;
 
@@ -39,7 +34,22 @@ public class BinaryHeap<Square> implements PriorityQueue<Square> {
         bubbleUp();
     }
     
-    
+// //NOTE THAT THE START STATE SHOULD INITIALLY BE IN THE HEAP
+
+// public void addFour(Square current){
+
+// //assume there is a main heap called heap
+
+//     heap.add()
+
+
+// }
+
+
+// public Square find 
+
+
+
     /**
      * Returns true if the heap has no elements; false otherwise.
      */
@@ -102,11 +112,11 @@ public class BinaryHeap<Square> implements PriorityQueue<Square> {
             
             // bubble with the smaller child, if I have a smaller child
             if (hasRightChild(index)
-                && array[leftIndex(index)].compareTo(array[rightIndex(index)]) > 0) {
+                && array[leftIndex(index)].f_value > array[rightIndex(index)].f_value) {
                 smallerChild = rightIndex(index);
             } 
             
-            if (array[index].compareTo(array[smallerChild]) > 0) {
+            if (array[index].f_value > array[smallerChild].f_value) {
                 swap(index, smallerChild);
             } else {
                 // otherwise, get outta here!
@@ -128,7 +138,7 @@ public class BinaryHeap<Square> implements PriorityQueue<Square> {
         int index = this.size;
         
         while (hasParent(index)
-                && (parent(index).compareTo(array[index]) > 0)) {
+                && (parent(index).f_value > array[index].f_value)) {
             // parent/child are out of order; swap them
             swap(index, parentIndex(index));
             index = parentIndex(index);
