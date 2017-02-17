@@ -18,7 +18,7 @@ public class Square{
 		this.h_value = 0;
 		this.f_value = 0;
 		this.tree = null;
-		this.search-value = 0;
+		this.search_value = 0;
 		this.x = x_coordinate;
 		this.y = y_coordinate;
 	}
