@@ -1,6 +1,6 @@
 import java.util.Arrays;
 import Square.java;
-
+import GridWorld.java;
 public class BinaryHeap<Square> implements PriorityQueue<Square> {
     private static final int DEFAULT_CAPACITY = 50;
      Square[] array;
@@ -36,14 +36,14 @@ public class BinaryHeap<Square> implements PriorityQueue<Square> {
     
 // //NOTE THAT THE START STATE SHOULD INITIALLY BE IN THE HEAP
 
-// public void addFour(Square current){
+public void addFour(Square current){
 
-// //assume there is a main heap called heap
+//assume there is a main heap called heap
 
-//     heap.add()
+    heap.add()
 
 
-// }
+}
 
 
 // public Square find 
