@@ -36,34 +36,7 @@ public class BinaryHeap<Square> implements PriorityQueue<Square> {
     
 // //NOTE THAT THE START STATE SHOULD INITIALLY BE IN THE HEAP
 
-public void addFour(Square current, GridWorld gw, BinaryHeap heap){
-int x = current.x_coordinate;
-int y = current.y_coordinate;
 
-//assume there is a main heap called heap
-
-if(current.x_coordinate!=0){
-    if(!gw.grid[x-1][y].isVisited){
-        heap.add(gw.grid[x-1][y]);
-    }
-}
-if(current.x_coordinate!=100){
-    if(!gw.grid[x+1][y].isVisited){
-        heap.add(gw.grid[x+1][y]);
-    }
-}
-if(current.y_coordinate!=0){
-    if(!gw.grid[x][y-1].isVisited){
-        heap.add(gw.grid[x][y-1]);
-    }
-}
-if(current.x_coordinate!=100){
-    if(!gw.grid[x][y+1].isVisited){
-        heap.add(gw.grid[x][y+1]);
-    }
-}
-  return;
-}
 
 
 
