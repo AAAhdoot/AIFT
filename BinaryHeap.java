@@ -66,8 +66,9 @@ public class BinaryHeap extends PriorityQueue {
      */
     public Square remove() {
     	// what do want return?
+        System.out.println("BEGINNING REMOVE");
     	Square result = peek();
-    	
+    	System.out.println("Currently removing " + result.x + "," + result.y);
     	// get rid of the last leaf/decrement
     	array[1] = array[size];
     	array[size] = null;
@@ -129,6 +130,7 @@ public class BinaryHeap extends PriorityQueue {
     public void bubbleUp() {
         int index = this.size;
         
+        System.out.println("PRE-BUBBLEUP LOOP");
         while (hasParent(index)
                 && (parent(index).f_value > array[index].f_value)) {
              System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
@@ -138,9 +140,9 @@ public class BinaryHeap extends PriorityQueue {
             index = parentIndex(index);
             System.out.println("index is = " + index);
             //System.out.println("Final line parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
-
-
         }    
+              //  System.out.println("POST LOOP parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+
     }
     
     public void currentMembers(){
