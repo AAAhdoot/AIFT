@@ -26,14 +26,14 @@ public class GridWorld{
 				// with 30% probability mark unblocked
 				// with 70% probability mark unblocked
 				chance = (int)(Math.random() * 101);
-				// if(chance <= 30){
-				// 	this.grid[i][j].isBlocked = true;
-				// 	//System.out.println("blocking");
-				// 	//numblocked++;
-				// }
-				// else{
-				// 	//System.out.println("not");
-				// }
+				if(chance <= 30){
+					this.grid[i][j].isBlocked = true;
+					//System.out.println("blocking");
+					//numblocked++;
+				}
+				else{
+					//System.out.println("not");
+				}
 				chance = 0;
 			}
 		}

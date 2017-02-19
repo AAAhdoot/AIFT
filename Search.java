@@ -43,7 +43,7 @@ static BinaryHeap heap = new BinaryHeap();
 static int COST = 1; //currently
 static GridWorld gw = new GridWorld();
 
-public static void addFour(Square current,int counter){
+public static void addFour(Square current,int counter, char ordering){
 int x = current.x;
 int y = current.y;
 int pg = 0;
@@ -65,10 +65,10 @@ if(current.x!=0){
             gw.grid[x-1][y].g_value = pg;
             gw.grid[x-1][y].tree = current;
             if(gw.grid[x-1][y].inHeap){
-                heap.remove();
+                heap.remove(ordering);
             }
                 gw.grid[x-1][y].f_value = gw.grid[x-1][y].g_value + gw.grid[x-1][y].h_value;
-                heap.add(gw.grid[x-1][y]);
+                heap.add(gw.grid[x-1][y],ordering);
                 gw.grid[x-1][y].inHeap = true;
             }
     }
@@ -88,11 +88,11 @@ if(current.x!=100){
             gw.grid[x+1][y].g_value = pg;
             gw.grid[x+1][y].tree = current;
             if(gw.grid[x+1][y].inHeap){
-                heap.remove();
+                heap.remove(ordering);
             }
                 gw.grid[x+1][y].f_value = gw.grid[x+1][y].g_value + gw.grid[x+1][y].h_value;
                 System.out.println("adding right to heap NOWWW");
-                heap.add(gw.grid[x+1][y]);
+                heap.add(gw.grid[x+1][y],ordering);
                 gw.grid[x+1][y].inHeap = true;
                 System.out.println("Right value");
         }
@@ -120,11 +120,11 @@ if(current.y!=0){
             gw.grid[x][y-1].g_value = pg;
             gw.grid[x][y-1].tree = current;
             if(gw.grid[x][y-1].inHeap){
-                heap.remove();
+                heap.remove(ordering);
             }
                 gw.grid[x][y-1].f_value = gw.grid[x][y-1].g_value + gw.grid[x][y-1].h_value;
                 System.out.println("adding down to heap NOWWW");
-                heap.add(gw.grid[x][y-1]);
+                heap.add(gw.grid[x][y-1],ordering);
                 gw.grid[x][y-1].inHeap = true;
         }
        System.out.println("Currently considering square at indices (" + (x) + "," + (y-1) + ")");
@@ -151,11 +151,11 @@ if(current.y!=100){
             gw.grid[x][y+1].g_value = pg;
             gw.grid[x][y+1].tree = current;
             if(gw.grid[x][y+1].inHeap){
-                heap.remove();
+                heap.remove(ordering);
                }
                 gw.grid[x][y+1].f_value = gw.grid[x][y+1].g_value + gw.grid[x][y+1].h_value;
                 System.out.println("adding up to heap NOWWW");
-                heap.add(gw.grid[x][y+1]);
+                heap.add(gw.grid[x][y+1], ordering);
                 gw.grid[x][y+1].inHeap = true;
                 
                 System.out.println("Currently considering square at indices (" + x + "," + (y+1) + ")");
@@ -178,7 +178,7 @@ if(current.y!=100){
 }
 
 
-public static Square Astar(Square goal, int counter){
+public static Square Astar(Square goal, int counter, char ordering){
     Square current;
     int count = 0;
     while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
@@ -188,7 +188,7 @@ public static Square Astar(Square goal, int counter){
     	System.out.println("current g value is:" + current.g_value);
         System.out.println();
         System.out.println("ABOUT TO REMOVE");
-        heap.remove();
+        heap.remove(ordering);
         gw.grid[current.x][current.y].inHeap = false;
         gw.grid[current.x][current.y].isClosed = true;
         if(heap.isEmpty()){
@@ -214,7 +214,7 @@ public static Square Astar(Square goal, int counter){
     return gw.grid[current.x][current.y];
 }
 
-public static void repeatedAStar(Square start, Square goal){
+public static void repeatedAStar(Square start, Square goal, char ordering){
     int counter = 0;
     Square current;
     while(!sqEquals(start,goal)){
@@ -225,7 +225,7 @@ public static void repeatedAStar(Square start, Square goal){
         gw.grid[start.x][start.y].inHeap = true;
         gw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
         System.out.println("Adding 0,1 to heap now");
-        heap.add(gw.grid[start.x][start.y]);
+        heap.add(gw.grid[start.x][start.y], ordering);
         current = Astar(goal,counter);
         if(heap.isEmpty()){
             System.out.println("I cannot reach the target.");
@@ -252,7 +252,7 @@ public static void main(String[] args){
 	}
 	
     long startTime = System.currentTimeMillis();
-    repeatedAStar(gw.grid[0][0], gw.grid[98][16]);
+    repeatedAStar(gw.grid[0][0], gw.grid[98][16],'s');
     long endTime = System.currentTimeMillis();
     System.out.println("That took " + (endTime - startTime) + " milliseconds");
    	return;

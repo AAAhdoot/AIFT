@@ -20,7 +20,7 @@ public class BinaryHeap extends PriorityQueue {
     /**
      * Adds a value to the min-heap.
      */
-    public void add(Square square) {
+    public void add(Square square,char ordering) {
         // grow array if needed
         if (size >= array.length - 1) {
             System.out.println("Size is " + size + " array.length-1 is " + (array.length - 1));
@@ -32,7 +32,12 @@ public class BinaryHeap extends PriorityQueue {
         array[index] = square;
         
         //System.out.println("Adding square with indices (" + square.x + "," + square.y + ")");
-        bubbleUp();
+         if(ordering == g){
+           gbubbleUp();
+        }
+        else{
+            sbubbleUp();
+        }
     }
     
 // //NOTE THAT THE START STATE SHOULD INITIALLY BE IN THE HEAP
@@ -64,7 +69,7 @@ public class BinaryHeap extends PriorityQueue {
     /**
      * Removes and returns the minimum element in the heap.
      */
-    public Square remove() {
+    public Square remove(char ordering) {
     	// what do want return?
         System.out.println("BEGINNING REMOVE");
     	Square result = peek();
@@ -74,8 +79,12 @@ public class BinaryHeap extends PriorityQueue {
     	array[size] = null;
     	size--;
     	
-    	bubbleDown();
-    	
+        if(ordering == g){
+    	   gbubbleDown();
+        }
+    	else{
+            sbubbleDown();
+        }
     	return result;
     }
     
@@ -94,7 +103,7 @@ public class BinaryHeap extends PriorityQueue {
      * root of the heap in its correct place so that the heap maintains the 
      * min-heap order property.
      */
-    public void bubbleDown() {
+    public void gbubbleDown() {
         int index = 1;
         
         // bubble down
@@ -104,12 +113,37 @@ public class BinaryHeap extends PriorityQueue {
             int smallerChild = leftIndex(index);
             
             // bubble with the smaller child, if I have a smaller child
-            if (hasRightChild(index)
-                && array[leftIndex(index)].f_value > array[rightIndex(index)].f_value) {
+            if (hasRightChild(index) && ((array[leftIndex(index)].f_value > array[rightIndex(index)].f_value) || ((array[leftIndex(index)].f_value == array[rightIndex(index)].f_value) && (array[leftIndex(index)].g_value < array[rightIndex(index)].g_value) ))) {
                 smallerChild = rightIndex(index);
             } 
             
-            if (array[index].f_value > array[smallerChild].f_value) {
+            if ((array[index].f_value > array[smallerChild].f_value) || ((array[index].f_value == array[smallerChild].f_value)  && (array[index].g_value < array[smallerChild].g_value) )  )  {
+                swap(index, smallerChild);
+            } else {
+                // otherwise, get outta here!
+                break;
+            }
+            
+            // make sure to update loop counter/index of where last el is put
+            index = smallerChild;
+        }        
+    }
+    
+        public void sbubbleDown() {
+        int index = 1;
+        
+        // bubble down
+        while (hasLeftChild(index)) {
+            System.out.println("Bubbling Down");
+            // which of my children is smaller?
+            int smallerChild = leftIndex(index);
+            
+            // bubble with the smaller child, if I have a smaller child
+        if (hasRightChild(index) && ((array[leftIndex(index)].f_value > array[rightIndex(index)].f_value) || ((array[leftIndex(index)].f_value == array[rightIndex(index)].f_value) && (array[leftIndex(index)].g_value > array[rightIndex(index)].g_value) ))) {
+                smallerChild = rightIndex(index);
+            } 
+            
+        if ((array[index].f_value > array[smallerChild].f_value) || ((array[index].f_value == array[smallerChild].f_value)  && (array[index].g_value > array[smallerChild].g_value) )  )  {
                 swap(index, smallerChild);
             } else {
                 // otherwise, get outta here!
@@ -127,12 +161,11 @@ public class BinaryHeap extends PriorityQueue {
      * (i.e. the element that is at the size index) in its correct place so 
      * that the heap maintains the min-heap order property.
      */
-    public void bubbleUp() {
+    public void gbubbleUp() {
         int index = this.size;
         
         System.out.println("PRE-BUBBLEUP LOOP");
-        while (hasParent(index)
-                && (parent(index).f_value > array[index].f_value)) {
+        while (hasParent(index) && ((parent(index).f_value > array[index].f_value) || ((parent(index).f_value == array[index].f_value) && (parent(index).g_value < array[index].g_value) ))) {
              System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             // parent/child are out of order; swap them
             swap(index, parentIndex(index));
@@ -144,7 +177,24 @@ public class BinaryHeap extends PriorityQueue {
               //  System.out.println("POST LOOP parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
 
     }
-    
+
+    public void sbubbleUp() {
+        int index = this.size;
+        
+        System.out.println("PRE-BUBBLEUP LOOP");
+while (hasParent(index) && ((parent(index).f_value > array[index].f_value) || ((parent(index).f_value == array[index].f_value) && (parent(index).g_value > array[index].g_value) ))) {
+             System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+            // parent/child are out of order; swap them
+            swap(index, parentIndex(index));
+            System.out.println("Swapped  parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+            index = parentIndex(index);
+            System.out.println("index is = " + index);
+            //System.out.println("Final line parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+        }    
+              //  System.out.println("POST LOOP parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+
+    }
+
     public void currentMembers(){
         for(int i = 0; i<array.length; i++){
             System.out.println("The current square has indices" + array[i].x + "," + array[i].y);
