@@ -2,7 +2,7 @@ import java.util.Arrays;
 import Square.java;
 import GridWorld.java;
 public class BinaryHeap<Square> implements PriorityQueue<Square> {
-    private static final int DEFAULT_CAPACITY = 50;
+    private static final int DEFAULT_CAPACITY = 101;
      Square[] array;
      int size;
     

@@ -7,10 +7,13 @@ int COST = 1; //currently
 
 public Square[] A*(Square start, Square goal, GridWorld gw, BinaryHeap heap){
 
-start.inHeap = true;
-heap.add(start);
-start.g_value = 0;
-start.f_value = start.g_value + start.calculate_h(goal);
+Square current;
+while(goal.g_value > (current = heap.peek().g_value)){
+    heap.remove(current);
+    current.isClosed = true;
+
+}
+
 
 
 while(!heap.isEmpty){
@@ -18,8 +21,7 @@ while(!heap.isEmpty){
 	if(current.x_coordinate = goal.x_coordinate && current.y_coordinate = goal.y_coordinate){
 		////return some function that puts it all together into an array
 	}
-	heap.remove(current);
-	current.isClosed = true;
+
 
 
 }
@@ -63,9 +65,30 @@ if(current.x_coordinate!=100){
 }
 
 
+public Square[] repeatedAStar(Square start, Square goal, GridWorld gw, BinaryHeap heap){
+
+int counter = 0;
+while(!sqEquals(start,goal)){
+    counter++;
+    start.g_value = 0;
+    
+}
 
 
 
+
+start.inHeap = true;
+heap.add(start);
+start.g_value = 0;
+start.f_value = start.g_value + start.calculate_h(goal);
+
+
+
+}
+
+public boolean sqEquals(Square a, Square b){
+    return ((a.x == b.x) && (a.y == b.y));
+}
 
 
 //g(n)=g(n.parent)+cost(n.parent,n)
