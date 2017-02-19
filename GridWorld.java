@@ -13,6 +13,7 @@ public class GridWorld{
 
 	public void populate(){
 		int chance = 0;
+		//int numblocked = 0;
 		for(int i=0;i<101;i++){
 			for(int j=0;j<101;j++){
 				this.grid[i][j].isBlocked = false;
@@ -24,6 +25,7 @@ public class GridWorld{
 				if(chance <= 30){
 					this.grid[i][j].isBlocked = true;
 					//System.out.println("blocking");
+					//numblocked++;
 				}
 				else{
 					//System.out.println("not");
@@ -31,6 +33,7 @@ public class GridWorld{
 				chance = 0;
 			}
 		}
+		//System.out.println(numblocked);
 		return;
 	}
 
