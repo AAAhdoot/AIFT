@@ -32,7 +32,7 @@ public class BinaryHeap extends PriorityQueue {
         array[index] = square;
         
         //System.out.println("Adding square with indices (" + square.x + "," + square.y + ")");
-         if(ordering == g){
+         if(ordering == 'g'){
            gbubbleUp();
         }
         else{
@@ -79,7 +79,7 @@ public class BinaryHeap extends PriorityQueue {
     	array[size] = null;
     	size--;
     	
-        if(ordering == g){
+        if(ordering == 'g'){
     	   gbubbleDown();
         }
     	else{

@@ -197,7 +197,7 @@ public static Square Astar(Square goal, int counter, char ordering){
         else{
             System.out.println("IT'S NOT EMPTY BEFORE ADDFOUR?!?!?");
         }
-        addFour(gw.grid[current.x][current.y],counter);
+        addFour(gw.grid[current.x][current.y],counter,ordering);
         count++;
         // if(count == 9){
         //     System.out.println("COUNT = 9");
@@ -226,7 +226,7 @@ public static void repeatedAStar(Square start, Square goal, char ordering){
         gw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
         System.out.println("Adding 0,1 to heap now");
         heap.add(gw.grid[start.x][start.y], ordering);
-        current = Astar(goal,counter);
+        current = Astar(goal,counter,ordering);
         if(heap.isEmpty()){
             System.out.println("I cannot reach the target.");
             return;
