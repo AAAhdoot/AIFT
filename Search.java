@@ -49,6 +49,8 @@ int y = current.y;
 int pg = 0;
 Square  right, up, down;
 
+
+
 //assume there is a main heap called heap
 
 System.out.println("Starting addFour at indices " + current.x + "," + current.y);
@@ -63,7 +65,7 @@ if(current.x!=0){
         }
         if(gw.grid[x-1][y].g_value > pg){
             gw.grid[x-1][y].g_value = pg;
-            gw.grid[x-1][y].tree = current;
+            gw.grid[x-1][y].tree = gw.grid[x][y];
             if(gw.grid[x-1][y].inHeap){
                 heap.remove(ordering);
             }
@@ -86,7 +88,7 @@ if(current.x!=100){
         }
         if(gw.grid[x+1][y].g_value > pg){
             gw.grid[x+1][y].g_value = pg;
-            gw.grid[x+1][y].tree = current;
+            gw.grid[x+1][y].tree = gw.grid[x][y];
             if(gw.grid[x+1][y].inHeap){
                 heap.remove(ordering);
             }
@@ -118,7 +120,7 @@ if(current.y!=0){
         if(gw.grid[x][y-1].g_value > pg){
             System.out.println("down g value success");
             gw.grid[x][y-1].g_value = pg;
-            gw.grid[x][y-1].tree = current;
+            gw.grid[x][y-1].tree = gw.grid[x][y];
             if(gw.grid[x][y-1].inHeap){
                 heap.remove(ordering);
             }
@@ -149,7 +151,7 @@ if(current.y!=100){
         }
         if(gw.grid[x][y+1].g_value > pg){
             gw.grid[x][y+1].g_value = pg;
-            gw.grid[x][y+1].tree = current;
+            gw.grid[x][y+1].tree = gw.grid[x][y];
             if(gw.grid[x][y+1].inHeap){
                 heap.remove(ordering);
                }
