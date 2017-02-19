@@ -11,7 +11,7 @@ public class Square{
 	int x;
 	int y;
 
-	public Square(int x_coordinate, int y_coordinate){
+	public Square(){
 		this.isClosed = false;
 		this.isBlocked = false;
 		this.inHeap = false;
@@ -21,13 +21,17 @@ public class Square{
 		this.f_value = 0;
 		this.tree = null;
 		this.search= 0;
-		this.x = x_coordinate;
-		this.y = y_coordinate;
+		this.x = -1;
+		this.y = -1;
 	}
 
 	public int calculate_h(Square goal){
 		this.h_value = Math.abs(this.x - goal.x) + Math.abs(this.y - goal.y);
 		return this.h_value;
+	}
+
+	public void setIsBlocked(){
+
 	}
 }
 

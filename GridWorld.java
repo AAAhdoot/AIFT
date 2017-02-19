@@ -3,6 +3,12 @@ public class GridWorld{
 
 	public GridWorld(){
 		this.grid = new Square[101][101];
+		for(int i=0;i<101;i++){
+			for(int j=0;j<101;j++){
+				this.grid[i][j] = new Square();
+			}
+		}
+		populate();
 	}
 
 	public void populate(){
@@ -17,13 +23,16 @@ public class GridWorld{
 				chance = (int)(Math.random() * 101);
 				if(chance <= 30){
 					this.grid[i][j].isBlocked = true;
+					//System.out.println("blocking");
+				}
+				else{
+					//System.out.println("not");
 				}
 				chance = 0;
 			}
 		}
 		return;
 	}
-
 
 //a way to modulo this perhaps to determine the place?
 
