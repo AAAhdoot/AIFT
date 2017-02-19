@@ -44,6 +44,7 @@ static int COST = 1; //currently
 public static void addFour(Square current, GridWorld gw, BinaryHeap heap, int counter){
 int x = current.x;
 int y = current.y;
+System.out.println(current.x + "," + current.y);
 int pg = 0;
 Square left, right, up, down;
 
@@ -52,6 +53,7 @@ Square left, right, up, down;
 pg = current.g_value + COST;
 
 if(current.x!=0){
+	System.out.println("Checking left");
     left = gw.grid[x-1][y];
     if(!left.isBlocked){
         if(left.search < counter){
@@ -62,11 +64,11 @@ if(current.x!=0){
             gw.grid[x-1][y].tree = current;
             if(left.inHeap){
                 heap.remove(left);
+            }
                 gw.grid[x-1][y].f_value = gw.grid[x-1][y].g_value + gw.grid[x-1][y].h_value;
                 heap.add(gw.grid[x-1][y]);
                 gw.grid[x-1][y].inHeap = true;
             }
-        }
     }
     else{
         gw.grid[x-1][y].isClosed = true;
@@ -74,6 +76,7 @@ if(current.x!=0){
 }
 
 if(current.x!=2){
+	System.out.println("Checking right");
     right = gw.grid[x+1][y];
     if(!right.isBlocked){
         if(right.search < counter){
@@ -84,11 +87,13 @@ if(current.x!=2){
             gw.grid[x+1][y].tree = current;
             if(right.inHeap){
                 heap.remove(right);
+            }
                 gw.grid[x+1][y].f_value = gw.grid[x+1][y].g_value + gw.grid[x+1][y].h_value;
                 heap.add(gw.grid[x+1][y]);
                 gw.grid[x+1][y].inHeap = true;
-            }
+                System.out.println("Right value");
         }
+        System.out.println("the current location is: " + current.x + "," + current.y);
     }
     else{
          gw.grid[x+1][y].isClosed = true;
@@ -96,6 +101,7 @@ if(current.x!=2){
 }
 
 if(current.y!=0){
+	System.out.println("Checking down");
     down = gw.grid[x][y-1];
     if(!down.isBlocked){
         if(down.search < counter){
@@ -106,11 +112,12 @@ if(current.y!=0){
             gw.grid[x][y-1].tree = current;
             if(down.inHeap){
                 heap.remove(gw.grid[x][y-1]);
+            }
                 gw.grid[x][y-1].f_value = gw.grid[x][y-1].g_value + gw.grid[x][y-1].h_value;
                 heap.add(gw.grid[x][y-1]);
                 gw.grid[x][y-1].inHeap = true;
-            }
         }
+        System.out.println("the current location is: " + current.x + "," + current.y);
     }
     else{
         gw.grid[x][y-1].isClosed = true;
@@ -118,7 +125,8 @@ if(current.y!=0){
 }
 
 
-if(current.x!=2){
+if(current.y!=2){
+	System.out.println("Checking up");
     up = gw.grid[x][y+1];
     if(!up.isBlocked){
         if(up.search < counter){
@@ -129,10 +137,16 @@ if(current.x!=2){
             gw.grid[x][y+1].tree = current;
             if(up.inHeap){
                 heap.remove(gw.grid[x][y+1]);
+               }
                 gw.grid[x][y+1].f_value = gw.grid[x][y+1].g_value + gw.grid[x][y+1].h_value;
                 heap.add(gw.grid[x][y+1]);
                 gw.grid[x][y+1].inHeap = true;
-            }
+                
+                System.out.println(gw.grid[x][y+1].f_value);
+                System.out.println(gw.grid[x][y+1].g_value);
+                System.out.println(gw.grid[x][y+1].search);
+                System.out.println("the current location is: " + current.x + "," + current.y);
+            
         }
     }
     else{
@@ -145,7 +159,12 @@ if(current.x!=2){
 
 public static Square Astar(Square goal, GridWorld gw, BinaryHeap heap, int counter){
     Square current;
-    while(goal.g_value > (current = heap.peek()).g_value){
+    int count = 0;
+    while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
+    	System.out.println("G value is:" + gw.grid[goal.x][goal.y].g_value);
+    	System.out.println("x value is:" + current.x);
+    	System.out.println("y value is:" + current.y);
+    	System.out.println("printing first three");
         heap.remove(gw.grid[current.x][current.y]);
         gw.grid[current.x][current.y].isClosed = true;
         addFour(gw.grid[current.x][current.y],gw,heap,counter);
@@ -189,7 +208,6 @@ public static boolean sqEquals(Square a, Square b){
 		}
 		BinaryHeap heap = new BinaryHeap();
 		repeatedAStar(gw.grid[0][0], gw.grid[2][2],gw,heap);
-
    		return;
 		//Built basic 3x3 for testing
 	}
