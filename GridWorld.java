@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 3;
+	int CAPACITY = 4;
 	Square[][] grid;
 
 	public GridWorld(){

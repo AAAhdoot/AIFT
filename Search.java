@@ -78,7 +78,7 @@ if(current.x!=0){
     }
 }
 
-if(current.x!=2){
+if(current.x!=3){
 	System.out.println("Checking right");
     if(!gw.grid[x+1][y].isBlocked && !gw.grid[x+1][y].isClosed){
         if(gw.grid[x+1][y].search < counter){
@@ -116,16 +116,23 @@ if(current.y!=0){
             gw.grid[x][y-1].search = counter;
         }
         if(gw.grid[x][y-1].g_value > pg){
+            System.out.println("down g value success");
             gw.grid[x][y-1].g_value = pg;
             gw.grid[x][y-1].tree = current;
             if(gw.grid[x][y-1].inHeap){
                 heap.remove();
             }
                 gw.grid[x][y-1].f_value = gw.grid[x][y-1].g_value + gw.grid[x][y-1].h_value;
+                System.out.println("adding down to heap NOWWW");
                 heap.add(gw.grid[x][y-1]);
                 gw.grid[x][y-1].inHeap = true;
         }
+       System.out.println("Currently considering square at indices (" + (x) + "," + (y-1) + ")");
+        System.out.println("right f_value is " + gw.grid[x][y-1].f_value);
+        System.out.println("right g_value is " + gw.grid[x][y-1].g_value);
+        System.out.println("right search value is " + gw.grid[x][y-1].search);
         System.out.println("the current location is: " + current.x + "," + current.y);
+        System.out.println("top of the heap currently has the indices (" + heap.peek().x + "," + heap.peek().y + ")");
     }
     else{
         System.out.println("IS BLOCKED/CLOSED");
@@ -134,7 +141,7 @@ if(current.y!=0){
 }
 
 
-if(current.y!=2){
+if(current.y!=3){
 	System.out.println("Checking up");
     if(!gw.grid[x][y+1].isBlocked && !gw.grid[x][y+1].isClosed){
         if(gw.grid[x][y+1].search < counter){
@@ -217,7 +224,7 @@ public static void repeatedAStar(Square start, Square goal){
         gw.grid[start.x][start.y].search = counter;
         gw.grid[start.x][start.y].inHeap = true;
         gw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
-        System.out.println("Adding 0,0 to heap NOWWW");
+        System.out.println("Adding 0,1 to heap now");
         heap.add(gw.grid[start.x][start.y]);
         current = Astar(goal,counter);
         if(heap.isEmpty()){
@@ -236,15 +243,15 @@ public static boolean sqEquals(Square a, Square b){
 
 	public static void main(String[] args){
 		
-		for(int i = 0; i<3; i++){
-			for(int j = 0; j<3; j++){
+		for(int i = 0; i<4; i++){
+			for(int j = 0; j<4; j++){
 				gw.grid[i][j] = new Square();
 				gw.grid[i][j].x = i;
 				gw.grid[i][j].y = j;
 			}
 		}
 		
-		repeatedAStar(gw.grid[0][0], gw.grid[2][2]);
+		repeatedAStar(gw.grid[0][1], gw.grid[2][3]);
    		return;
 		//Built basic 3x3 for testing
 	}
