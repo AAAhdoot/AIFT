@@ -1,10 +1,11 @@
 public class GridWorld{
+	int CAPACITY = 3;
 	Square[][] grid;
 
 	public GridWorld(){
-		this.grid = new Square[101][101];
-		for(int i=0;i<101;i++){
-			for(int j=0;j<101;j++){
+		this.grid = new Square[CAPACITY][CAPACITY];
+		for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j] = new Square();
 			}
 		}
@@ -17,8 +18,8 @@ public class GridWorld{
 	public void populate(){
 		int chance = 0;
 		//int numblocked = 0;
-		for(int i=0;i<101;i++){
-			for(int j=0;j<101;j++){
+		for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j].isBlocked = false;
 				this.grid[i][j].x = i;
 				this.grid[i][j].y = j;
