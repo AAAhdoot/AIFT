@@ -1,4 +1,5 @@
 public class Search{
+	/*
 	public static void main(String[] args){
 		//create 50 gridworlds
 
@@ -36,5 +37,20 @@ public class Search{
 
 		//GridWorld temp = new GridWorld();
 		return;
+	}*/
+
+	public static void main(String[] args){
+		Square[][] temp = new Square[3][3];
+		for(int i = 0; i<3; i++){
+			for(int j = 0; j<3; j++){
+				temp[i][j] = new Square();
+				temp[i][j].x = i;
+				temp[i][j].y = j;
+			}
+		}
+		//Built basic 3x3 for testing
 	}
+
+
+
 }
