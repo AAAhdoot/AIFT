@@ -78,7 +78,7 @@ if(current.x!=0){
     }
 }
 
-if(current.x!=3){
+if(current.x!=100){
 	System.out.println("Checking right");
     if(!gw.grid[x+1][y].isBlocked && !gw.grid[x+1][y].isClosed){
         if(gw.grid[x+1][y].search < counter){
@@ -141,7 +141,7 @@ if(current.y!=0){
 }
 
 
-if(current.y!=3){
+if(current.y!=100){
 	System.out.println("Checking up");
     if(!gw.grid[x][y+1].isBlocked && !gw.grid[x][y+1].isClosed){
         if(gw.grid[x][y+1].search < counter){
@@ -241,18 +241,21 @@ public static boolean sqEquals(Square a, Square b){
     return ((a.x == b.x) && (a.y == b.y));
 }
 
-	public static void main(String[] args){
+public static void main(String[] args){
 		
-		for(int i = 0; i<4; i++){
-			for(int j = 0; j<4; j++){
+	for(int i = 0; i<101; i++){
+		for(int j = 0; j<101; j++){
 				gw.grid[i][j] = new Square();
 				gw.grid[i][j].x = i;
 				gw.grid[i][j].y = j;
-			}
 		}
-		
-		repeatedAStar(gw.grid[0][1], gw.grid[2][3]);
-   		return;
+	}
+	
+    long startTime = System.currentTimeMillis();
+    repeatedAStar(gw.grid[0][0], gw.grid[98][16]);
+    long endTime = System.currentTimeMillis();
+    System.out.println("That took " + (endTime - startTime) + " milliseconds");
+   	return;
 		//Built basic 3x3 for testing
 	}
 
