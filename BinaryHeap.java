@@ -1,7 +1,7 @@
 import java.util.Arrays;
-import Square.java;
-import GridWorld.java;
-public class BinaryHeap<Square> implements PriorityQueue<Square> {
+import java.util.*;
+
+public class BinaryHeap extends PriorityQueue {
     private static final int DEFAULT_CAPACITY = 101;
      Square[] array;
      int size;
