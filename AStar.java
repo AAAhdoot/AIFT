@@ -1,7 +1,3 @@
-import Square.java;
-import GridWorld.java;
-import BinaryHeap.java;
-
 public class AStar{
 int COST = 1; //currently
 
@@ -15,7 +11,7 @@ Square left, right, up, down;
 
 pg = current.g_value + COST;
 
-if(current.x_coordinate!=0){
+if(current.x!=0){
     left = gw.grid[x-1][y];
     if(!left.isBlocked){
         if(left.search < counter){
@@ -36,7 +32,7 @@ if(current.x_coordinate!=0){
     }
 }
 
-if(current.x_coordinate!=100){
+if(current.x!=100){
     right = gw.grid[x+1][y];
     if(!right.isBlocked){
         if(right.search < counter){
@@ -57,7 +53,7 @@ if(current.x_coordinate!=100){
     }
 }
 
-if(current.y_coordinate!=0){
+if(current.y!=0){
     down = gw.grid[x][y-1];
     if(!down.isBlocked){
         if(down.search < counter){
@@ -79,7 +75,7 @@ if(current.y_coordinate!=0){
 }
 
 
-if(current.x_coordinate!=100){
+if(current.x!=100){
     up = gw.grid[x][y+1];
     if(!up.isBlocked){
         if(up.search < counter){
@@ -105,7 +101,7 @@ if(current.x_coordinate!=100){
 
 public Square Astar(Square start, Square goal, GridWorld gw, BinaryHeap heap, int counter){
     Square current;
-    while(goal.g_value > (current = heap.peek().g_value)){
+    while(goal.g_value > (current = heap.peek()).g_value){
         heap.remove(current);
         current.isClosed = true;
         addFour(start,gw,heap,counter);
@@ -124,9 +120,9 @@ public void repeatedAStar(Square start, Square goal, GridWorld gw, BinaryHeap he
         start.f_value = start.g_value + start.calculate_h(goal);
         heap.add(start);
         current = Astar(start, goal, gw, heap, counter);
-        if(heap.isEmpty){
+        if(heap.isEmpty()){
             System.out.println("I cannot reach the target.");
-            return null; //needs fixing
+            return;
         }
         start = current;
     }
