@@ -55,41 +55,43 @@ if(current.x!=0){
     left = gw.grid[x-1][y];
     if(!left.isBlocked){
         if(left.search < counter){
-            left.search = counter;
+            gw.grid[x-1][y].search = counter;
         }
         if(left.g_value > pg){
-            left.g_value = pg;
-            left.tree = current;
+            gw.grid[x-1][y].g_value = pg;
+            gw.grid[x-1][y].tree = current;
             if(left.inHeap){
                 heap.remove(left);
-                left.f_value = left.g_value + left.h_value;
-                heap.add(left);
+                gw.grid[x-1][y].f_value = gw.grid[x-1][y].g_value + gw.grid[x-1][y].h_value;
+                heap.add(gw.grid[x-1][y]);
+                gw.grid[x-1][y].inHeap = true;
             }
         }
     }
     else{
-        left.isClosed = true;
+        gw.grid[x-1][y].isClosed = true;
     }
 }
 
-if(current.x!=100){
+if(current.x!=2){
     right = gw.grid[x+1][y];
     if(!right.isBlocked){
         if(right.search < counter){
-            right.search = counter;
+            gw.grid[x+1][y].search = counter;
         }
         if(right.g_value > pg){
-            right.g_value = pg;
-            right.tree = current;
+            gw.grid[x+1][y].g_value = pg;
+            gw.grid[x+1][y].tree = current;
             if(right.inHeap){
                 heap.remove(right);
-                right.f_value = right.g_value + right.h_value;
-                heap.add(right);
+                gw.grid[x+1][y].f_value = gw.grid[x+1][y].g_value + gw.grid[x+1][y].h_value;
+                heap.add(gw.grid[x+1][y]);
+                gw.grid[x+1][y].inHeap = true;
             }
         }
     }
     else{
-        right.isClosed = true;
+         gw.grid[x+1][y].isClosed = true;
     }
 }
 
@@ -97,56 +99,58 @@ if(current.y!=0){
     down = gw.grid[x][y-1];
     if(!down.isBlocked){
         if(down.search < counter){
-            down.search = counter;
+            gw.grid[x][y-1].search = counter;
         }
         if(down.g_value > pg){
-            down.g_value = pg;
-            down.tree = current;
+            gw.grid[x][y-1].g_value = pg;
+            gw.grid[x][y-1].tree = current;
             if(down.inHeap){
-                heap.remove(down);
-                down.f_value = down.g_value + down.h_value;
-                heap.add(down);
+                heap.remove(gw.grid[x][y-1]);
+                gw.grid[x][y-1].f_value = gw.grid[x][y-1].g_value + gw.grid[x][y-1].h_value;
+                heap.add(gw.grid[x][y-1]);
+                gw.grid[x][y-1].inHeap = true;
             }
         }
     }
     else{
-        down.isClosed = true;
+        gw.grid[x][y-1].isClosed = true;
     }
 }
 
 
-if(current.x!=100){
+if(current.x!=2){
     up = gw.grid[x][y+1];
     if(!up.isBlocked){
         if(up.search < counter){
-            up.search = counter;
+            gw.grid[x][y+1].search = counter;
         }
         if(up.g_value > pg){
-            up.g_value = pg;
-            up.tree = current;
+            gw.grid[x][y+1].g_value = pg;
+            gw.grid[x][y+1].tree = current;
             if(up.inHeap){
-                heap.remove(up);
-                up.f_value = up.g_value + up.h_value;
-                heap.add(up);
+                heap.remove(gw.grid[x][y+1]);
+                gw.grid[x][y+1].f_value = gw.grid[x][y+1].g_value + gw.grid[x][y+1].h_value;
+                heap.add(gw.grid[x][y+1]);
+                gw.grid[x][y+1].inHeap = true;
             }
         }
     }
     else{
-        up.isClosed = true;
+         gw.grid[x][y+1].isClosed = true;
     }
 }
   return;
 }
 
 
-public static Square Astar(Square start, Square goal, GridWorld gw, BinaryHeap heap, int counter){
+public static Square Astar(Square goal, GridWorld gw, BinaryHeap heap, int counter){
     Square current;
     while(goal.g_value > (current = heap.peek()).g_value){
-        heap.remove(current);
-        current.isClosed = true;
-        addFour(start,gw,heap,counter);
+        heap.remove(gw.grid[current.x][current.y]);
+        gw.grid[current.x][current.y].isClosed = true;
+        addFour(gw.grid[current.x][current.y],gw,heap,counter);
     }
-    return current;
+    return gw.grid[current.x][current.y];
 }
 
 public static void repeatedAStar(Square start, Square goal, GridWorld gw, BinaryHeap heap){
@@ -154,12 +158,12 @@ public static void repeatedAStar(Square start, Square goal, GridWorld gw, Binary
     Square current;
     while(!sqEquals(start,goal)){
         counter++;
-        start.g_value = 0;
-        start.search = counter;
-        start.inHeap = true;
-        start.f_value = start.g_value + start.calculate_h(goal);
-        heap.add(start);
-        current = Astar(start, goal, gw, heap, counter);
+        gw.grid[start.x][start.y].g_value = 0;
+        gw.grid[start.x][start.y].search = counter;
+        gw.grid[start.x][start.y].inHeap = true;
+        gw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
+        heap.add(gw.grid[start.x][start.y]);
+        current = Astar(goal, gw, heap, counter);
         if(heap.isEmpty()){
             System.out.println("I cannot reach the target.");
             return;
