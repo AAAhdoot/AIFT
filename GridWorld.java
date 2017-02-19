@@ -8,7 +8,10 @@ public class GridWorld{
 				this.grid[i][j] = new Square();
 			}
 		}
+		long startTime = System.currentTimeMillis();
 		populate();
+		long endTime = System.currentTimeMillis();
+		System.out.println("That took " + (endTime - startTime) + " milliseconds");
 	}
 
 	public void populate(){
@@ -34,6 +37,7 @@ public class GridWorld{
 			}
 		}
 		//System.out.println(numblocked);
+
 		return;
 	}
 
