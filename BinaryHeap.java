@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.*;
 
 public class BinaryHeap extends PriorityQueue {
-    private static final int DEFAULT_CAPACITY = 3;
+    private static final int DEFAULT_CAPACITY = 9;
      Square[] array;
      int size;
     
@@ -23,14 +23,15 @@ public class BinaryHeap extends PriorityQueue {
     public void add(Square square) {
         // grow array if needed
         if (size >= array.length - 1) {
+            System.out.println("Size is " + size + " array.length-1 is " + (array.length - 1));
             array = this.resize();
         }        
-        
         // place element into heap at bottom
         size++;
         int index = size;
         array[index] = square;
         
+        //System.out.println("Adding square with indices (" + square.x + "," + square.y + ")");
         bubbleUp();
     }
     
@@ -97,6 +98,7 @@ public class BinaryHeap extends PriorityQueue {
         
         // bubble down
         while (hasLeftChild(index)) {
+            System.out.println("Bubbling Down");
             // which of my children is smaller?
             int smallerChild = leftIndex(index);
             
@@ -129,13 +131,27 @@ public class BinaryHeap extends PriorityQueue {
         
         while (hasParent(index)
                 && (parent(index).f_value > array[index].f_value)) {
+             System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             // parent/child are out of order; swap them
             swap(index, parentIndex(index));
+            System.out.println("Swapped  parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             index = parentIndex(index);
-        }        
+            System.out.println("index is = " + index);
+            //System.out.println("Final line parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+
+
+        }    
     }
     
-    
+    public void currentMembers(){
+        for(int i = 0; i<array.length; i++){
+            System.out.println("The current square has indices" + array[i].x + "," + array[i].y);
+            System.out.println("The current square has f value: " + array[i].f_value);
+            System.out.println("The current square has g value: " + array[i].g_value);
+            System.out.println();
+        }
+    }
+
     public boolean hasParent(int i) {
         return i > 1;
     }
