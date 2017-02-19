@@ -16,7 +16,7 @@ public class Square{
 		this.isBlocked = false;
 		this.inHeap = false;
 		this.place = 0;
-		this.g_value = Integer.min_value;
+		this.g_value = Integer.MIN_VALUE;
 		this.h_value = 0;
 		this.f_value = 0;
 		this.tree = null;

@@ -1,5 +1,3 @@
-import Square.java;
-
 public class GridWorld{
 	Square[][] grid;
 
@@ -12,8 +10,8 @@ public class GridWorld{
 		for(int i=0;i<101;i++){
 			for(int j=0;j<101;j++){
 				this.grid[i][j].isBlocked = false;
-				this.grid[i][j].x_coordinate = i;
-				this.grid[i][j].y_coordinate = j;
+				this.grid[i][j].x = i;
+				this.grid[i][j].y = j;
 				// with 30% probability mark unblocked
 				// with 70% probability mark unblocked
 				chance = (int)(Math.random() * 101);
