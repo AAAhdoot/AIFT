@@ -153,6 +153,9 @@ if(current.y!=2){
          gw.grid[x][y+1].isClosed = true;
     }
 }
+	System.out.println("checking heap values");
+	System.out.println(heap.peek().x);
+	System.out.println(heap.peek().y);
   return;
 }
 
@@ -160,7 +163,7 @@ if(current.y!=2){
 public static Square Astar(Square goal, GridWorld gw, BinaryHeap heap, int counter){
     Square current;
     int count = 0;
-    while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
+    while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value && (!heap.peek().isClosed)){
     	System.out.println("G value is:" + gw.grid[goal.x][goal.y].g_value);
     	System.out.println("x value is:" + current.x);
     	System.out.println("y value is:" + current.y);
