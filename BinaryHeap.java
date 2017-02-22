@@ -2,15 +2,15 @@ import java.util.Arrays;
 import java.util.*;
 
 public class BinaryHeap extends PriorityQueue {
-    private static final int DEFAULT_CAPACITY = 101*101;
-     Square[] array;
-     int size;
+    private static final int DEFAULT_CAPACITY = 9;
+    Square[] array;
+    int size;
     
     /**
      * Constructs a new BinaryHeap.
      */
     //@SuppressWarnings("unchecked")
-	public BinaryHeap () {
+    public BinaryHeap () {
         // Java doesn't allow construction of arrays of placeholder data types 
         array = new Square[DEFAULT_CAPACITY];  
         size = 0;
@@ -32,14 +32,14 @@ public class BinaryHeap extends PriorityQueue {
         array[index] = square;
         
         //System.out.println("Adding square with indices (" + square.x + "," + square.y + ")");
-         if(ordering == 'g'){
-           gbubbleUp();
-        }
-        else{
-            sbubbleUp();
-        }
+        if(ordering == 'g'){
+         gbubbleUp();
+     }
+     else{
+        sbubbleUp();
     }
-    
+}
+
 // //NOTE THAT THE START STATE SHOULD INITIALLY BE IN THE HEAP
 
 
@@ -80,12 +80,12 @@ public class BinaryHeap extends PriorityQueue {
     	size--;
     	
         if(ordering == 'g'){
-    	   gbubbleDown();
+            gbubbleDown();
         }
-    	else{
+        else{
             sbubbleDown();
         }
-    	return result;
+        return result;
     }
     
     
@@ -129,7 +129,7 @@ public class BinaryHeap extends PriorityQueue {
         }        
     }
     
-        public void sbubbleDown() {
+    public void sbubbleDown() {
         int index = 1;
         
         // bubble down
@@ -139,11 +139,11 @@ public class BinaryHeap extends PriorityQueue {
             int smallerChild = leftIndex(index);
             
             // bubble with the smaller child, if I have a smaller child
-        if (hasRightChild(index) && ((array[leftIndex(index)].f_value > array[rightIndex(index)].f_value) || ((array[leftIndex(index)].f_value == array[rightIndex(index)].f_value) && (array[leftIndex(index)].g_value > array[rightIndex(index)].g_value) ))) {
+            if (hasRightChild(index) && ((array[leftIndex(index)].f_value > array[rightIndex(index)].f_value) || ((array[leftIndex(index)].f_value == array[rightIndex(index)].f_value) && (array[leftIndex(index)].g_value > array[rightIndex(index)].g_value) ))) {
                 smallerChild = rightIndex(index);
             } 
             
-        if ((array[index].f_value > array[smallerChild].f_value) || ((array[index].f_value == array[smallerChild].f_value)  && (array[index].g_value > array[smallerChild].g_value) )  )  {
+            if ((array[index].f_value > array[smallerChild].f_value) || ((array[index].f_value == array[smallerChild].f_value)  && (array[index].g_value > array[smallerChild].g_value) )  )  {
                 swap(index, smallerChild);
             } else {
                 // otherwise, get outta here!
@@ -182,7 +182,7 @@ public class BinaryHeap extends PriorityQueue {
         int index = this.size;
         
        // System.out.println("PRE-BUBBLEUP LOOP");
-while (hasParent(index) && ((parent(index).f_value > array[index].f_value) || ((parent(index).f_value == array[index].f_value) && (parent(index).g_value > array[index].g_value) ))) {
+        while (hasParent(index) && ((parent(index).f_value > array[index].f_value) || ((parent(index).f_value == array[index].f_value) && (parent(index).g_value > array[index].g_value) ))) {
           //   System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             // parent/child are out of order; swap them
             swap(index, parentIndex(index));
