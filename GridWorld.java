@@ -21,7 +21,6 @@ public class GridWorld{
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j].isBlocked = false;
-				System.out.println("Square at indices (" + i +"," + j + ") " + "is not blocked");
 				this.grid[i][j].x = i;
 				this.grid[i][j].y = j;
 				// with 30% probability mark unblocked
@@ -29,7 +28,6 @@ public class GridWorld{
 				chance = (int)(Math.random() * 101);
 				if(chance <= 30){
 					this.grid[i][j].isBlocked = true;
-					System.out.println("Square at indices (" + i +"," + j + ") " + "is  blocked");
 					//System.out.println("blocking");
 					//numblocked++;
 				}
@@ -37,7 +35,9 @@ public class GridWorld{
 					//System.out.println("not");
 				}
 				chance = 0;
+				System.out.println("Square at indices (" + i +"," + j + ") " + "is " +  this.grid[i][j].isBlocked);
 			}
+
 		}
 		//System.out.println(numblocked);
 
