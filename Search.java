@@ -186,7 +186,7 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
     Square current;
     while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
       //	System.out.println("Goal G value is:" + gw.grid[goal.x][goal.y].g_value);
-     //System.out.println("currently at the indices (" +  current.x +"," + current.y + ")");
+     System.out.println("currently at the indices (" +  current.x +"," + current.y + ")");
       //	System.out.println("current g value is:" + current.g_value);
        //   System.out.println();
        //   System.out.println("ABOUT TO REMOVE");
@@ -211,7 +211,7 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
     Square current;
     while(!sqEquals(start,goal)){
       counter++;
-        //  System.out.println("Counter = " + counter + " Currently at indices ( " + start.x + "," + start.y + ")" );
+        System.out.println("Counter = " + counter + " Currently at indices ( " + start.x + "," + start.y + ")" );
       gw.grid[start.x][start.y].g_value = 0;
       gw.grid[start.x][start.y].search = counter;
       gw.grid[start.x][start.y].inHeap = true;
@@ -242,28 +242,26 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
   	// 			gw.grid[i][j].y = j;
   	// 	}
   	// }
-    long timesum = 0;
+    /*long timesum = 0;
     long currtime = 0;
     for(int i = 0; i<50; i++){
-      //gw = new GridWorld();
-      gw.generate();
+      gw = new GridWorld();
+      gw.populate();
       System.out.println(gw.CAPACITY);
       long startTime = System.currentTimeMillis();
       repeatedAStar(gw.grid[gw.agentx][gw.agenty], gw.grid[gw.targetx][gw.targety],'s');
       long endTime = System.currentTimeMillis();
       currtime = endTime - startTime;
       timesum = timesum + currtime;
-    }
+    }*/
 
-    System.out.println("On average, that took " + timesum/50.0 + "milliseconds");
-    return;
-    /*gw.generate();
+    gw.generate();
     System.out.println(gw.CAPACITY);
     long startTime = System.currentTimeMillis();
     repeatedAStar(gw.grid[gw.agentx][gw.agenty], gw.grid[gw.targetx][gw.targety],'s');
     long endTime = System.currentTimeMillis();
     System.out.println("That took " + (endTime - startTime) + " milliseconds");
-    return;*/
+    return;
   	//Built basic 3x3 for testing
   }
 

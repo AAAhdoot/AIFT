@@ -21,7 +21,6 @@ public class GridWorld{
 
 	public void populate(){
 		int chance = 0;
-		boolean agentPlaced = false;
 		int numUnblocked = 0; //stores number of unblocked cells, need at least two
 		
 		for(int i=0;i<CAPACITY;i++){
