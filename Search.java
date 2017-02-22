@@ -191,6 +191,7 @@ public class Search{
       //	System.out.println("current g value is:" + current.g_value);
        //   System.out.println();
        //   System.out.println("ABOUT TO REMOVE");
+     heap.currentMembers();
      heap.remove(ordering);
      gw.grid[current.x][current.y].inHeap = false;
      gw.grid[current.x][current.y].isClosed = true;
@@ -256,7 +257,7 @@ public class Search{
     gw.generate();
     System.out.println(gw.CAPACITY);
     long startTime = System.currentTimeMillis();
-    repeatedAStar(gw.grid[0][0], gw.grid[1][1],'s');
+    repeatedAStar(gw.grid[gw.agentx][gw.agenty], gw.grid[gw.targetx][gw.targety],'s');
     long endTime = System.currentTimeMillis();
     System.out.println("That took " + (endTime - startTime) + " milliseconds");
     return;

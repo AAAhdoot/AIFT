@@ -196,6 +196,10 @@ public class BinaryHeap extends PriorityQueue {
     }
 
     public void currentMembers(){
+        if(this.size() == 0){
+            System.out.println("Heap is empty");
+            return;
+        }
         for(int i = 0; i<array.length; i++){
             System.out.println("The current square has indices" + array[i].x + "," + array[i].y);
             System.out.println("The current square has f value: " + array[i].f_value);

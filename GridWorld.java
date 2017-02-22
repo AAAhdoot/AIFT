@@ -1,6 +1,10 @@
 public class GridWorld{
 	int CAPACITY = 3;
 	Square[][] grid;
+	int agentx;
+	int agenty;
+	int targetx;
+	int targety;
 
 	public GridWorld(){
 		this.grid = new Square[CAPACITY][CAPACITY];
@@ -17,6 +21,7 @@ public class GridWorld{
 
 	public void populate(){
 		int chance = 0;
+		boolean agentPlaced = false;
 		//int numblocked = 0;
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
@@ -32,13 +37,25 @@ public class GridWorld{
 					//numblocked++;
 				}
 				else{
-					//System.out.println("not");
+					//
 				}
 				chance = 0;
 				System.out.println("Square at indices (" + i +"," + j + ") " + "is " +  this.grid[i][j].isBlocked);
 			}
 
 		}
+
+		do{
+			agentx = (int) (Math.random()*3);
+			agenty = (int) (Math.random()*3);
+		} while (this.grid[agentx][agenty].isBlocked == true);
+
+		
+		do{
+			targetx = (int) (Math.random()*3);
+			targety = (int) (Math.random()*3);
+		} while ((agentx == targetx && agenty == targety) || this.grid[targetx][targety].isBlocked == true);
+		
 		//System.out.println(numblocked);
 
 		return;
@@ -55,7 +72,15 @@ public class GridWorld{
 					System.out.print("B");
 				}
 				else{
-					System.out.print("U");
+					if (i == agentx && j == agenty){
+						System.out.print("A");
+					}
+					else if(i == targetx && j == targety){
+						System.out.print("T");
+					}
+					else{
+						System.out.print("U");
+					}
 				}
 			}
 		}
