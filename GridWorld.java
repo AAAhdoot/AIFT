@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 3;
+	int CAPACITY = 5;
 	Square[][] grid;
 	int agentx;
 	int agenty;
@@ -54,14 +54,14 @@ public class GridWorld{
 		}
 
 		do{
-			agentx = (int) (Math.random()*3);
-			agenty = (int) (Math.random()*3);
+			agentx = (int) (Math.random()*5);
+			agenty = (int) (Math.random()*5);
 		} while (this.grid[agentx][agenty].isBlocked == true);
 
 		
 		do{
-			targetx = (int) (Math.random()*3);
-			targety = (int) (Math.random()*3);
+			targetx = (int) (Math.random()*5);
+			targety = (int) (Math.random()*5);
 		} while ((agentx == targetx && agenty == targety) || this.grid[targetx][targety].isBlocked == true);
 		
 		//System.out.println(numblocked);
