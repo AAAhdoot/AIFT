@@ -22,7 +22,8 @@ public class GridWorld{
 	public void populate(){
 		int chance = 0;
 		boolean agentPlaced = false;
-		//int numblocked = 0;
+		int numUnblocked = 0; //stores number of unblocked cells, need at least two
+		
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j].isBlocked = false;
@@ -37,10 +38,17 @@ public class GridWorld{
 					//numblocked++;
 				}
 				else{
-					//
+					numUnblocked++;
+				}
+
+				if(i == (CAPACITY - 1) && j == (CAPACITY - 1) && numUnblocked < 2){
+					i = 0;
+					j = 0;
+					System.out.println("Reprinting...");
+					continue;
 				}
 				chance = 0;
-				System.out.println("Square at indices (" + i +"," + j + ") " + "is " +  this.grid[i][j].isBlocked);
+				//System.out.println("Square at indices (" + i +"," + j + ") " + "is " +  this.grid[i][j].isBlocked);
 			}
 
 		}
