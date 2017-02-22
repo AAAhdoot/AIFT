@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 101;
+	int CAPACITY = 3;
 	Square[][] grid;
 
 	public GridWorld(){
@@ -21,6 +21,7 @@ public class GridWorld{
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j].isBlocked = false;
+				System.out.println("Square at indices (" + i +"," + j + ") " + "is not blocked");
 				this.grid[i][j].x = i;
 				this.grid[i][j].y = j;
 				// with 30% probability mark unblocked
@@ -28,6 +29,7 @@ public class GridWorld{
 				chance = (int)(Math.random() * 101);
 				if(chance <= 30){
 					this.grid[i][j].isBlocked = true;
+					System.out.println("Square at indices (" + i +"," + j + ") " + "is  blocked");
 					//System.out.println("blocking");
 					//numblocked++;
 				}
@@ -42,6 +44,24 @@ public class GridWorld{
 		return;
 	}
 
+	public void generate(){
+		System.out.println();
+		for(int i=0;i<CAPACITY;i++){
+			if(i>0){
+				System.out.println();
+			}
+			for(int j=0;j<CAPACITY;j++){
+				if(this.grid[i][j].isBlocked){
+					System.out.print("B");
+				}
+				else{
+					System.out.print("U");
+				}
+			}
+		}
+		System.out.println();
+	}
+	
 //a way to modulo this perhaps to determine the place?
 
 }

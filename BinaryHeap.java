@@ -23,7 +23,7 @@ public class BinaryHeap extends PriorityQueue {
     public void add(Square square,char ordering) {
         // grow array if needed
         if (size >= array.length - 1) {
-            System.out.println("Size is " + size + " array.length-1 is " + (array.length - 1));
+           // System.out.println("Size is " + size + " array.length-1 is " + (array.length - 1));
             array = this.resize();
         }        
         // place element into heap at bottom
@@ -71,9 +71,9 @@ public class BinaryHeap extends PriorityQueue {
      */
     public Square remove(char ordering) {
     	// what do want return?
-        System.out.println("BEGINNING REMOVE");
+//System.out.println("BEGINNING REMOVE");
     	Square result = peek();
-    	System.out.println("Currently removing " + result.x + "," + result.y);
+    	//System.out.println("Currently removing " + result.x + "," + result.y);
     	// get rid of the last leaf/decrement
     	array[1] = array[size];
     	array[size] = null;
@@ -108,7 +108,7 @@ public class BinaryHeap extends PriorityQueue {
         
         // bubble down
         while (hasLeftChild(index)) {
-            System.out.println("Bubbling Down");
+         //   System.out.println("Bubbling Down");
             // which of my children is smaller?
             int smallerChild = leftIndex(index);
             
@@ -134,7 +134,7 @@ public class BinaryHeap extends PriorityQueue {
         
         // bubble down
         while (hasLeftChild(index)) {
-            System.out.println("Bubbling Down");
+        //    System.out.println("Bubbling Down");
             // which of my children is smaller?
             int smallerChild = leftIndex(index);
             
@@ -164,14 +164,14 @@ public class BinaryHeap extends PriorityQueue {
     public void gbubbleUp() {
         int index = this.size;
         
-        System.out.println("PRE-BUBBLEUP LOOP");
+      //  System.out.println("PRE-BUBBLEUP LOOP");
         while (hasParent(index) && ((parent(index).f_value > array[index].f_value) || ((parent(index).f_value == array[index].f_value) && (parent(index).g_value < array[index].g_value) ))) {
-             System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+        //     System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             // parent/child are out of order; swap them
             swap(index, parentIndex(index));
-            System.out.println("Swapped  parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+       //     System.out.println("Swapped  parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             index = parentIndex(index);
-            System.out.println("index is = " + index);
+        //    System.out.println("index is = " + index);
             //System.out.println("Final line parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
         }    
               //  System.out.println("POST LOOP parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
@@ -181,14 +181,14 @@ public class BinaryHeap extends PriorityQueue {
     public void sbubbleUp() {
         int index = this.size;
         
-        System.out.println("PRE-BUBBLEUP LOOP");
+       // System.out.println("PRE-BUBBLEUP LOOP");
 while (hasParent(index) && ((parent(index).f_value > array[index].f_value) || ((parent(index).f_value == array[index].f_value) && (parent(index).g_value > array[index].g_value) ))) {
-             System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+          //   System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             // parent/child are out of order; swap them
             swap(index, parentIndex(index));
-            System.out.println("Swapped  parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
+        //    System.out.println("Swapped  parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             index = parentIndex(index);
-            System.out.println("index is = " + index);
+        //    System.out.println("index is = " + index);
             //System.out.println("Final line parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
         }    
               //  System.out.println("POST LOOP parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
