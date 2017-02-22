@@ -71,11 +71,11 @@ public class GridWorld{
 
 	public void generate(){
 		System.out.println();
-		for(int i=0;i<CAPACITY;i++){
-			if(i>0){
+		for(int j=0;j<CAPACITY;j++){
+			if(j>0){
 				System.out.println();
 			}
-			for(int j=0;j<CAPACITY;j++){
+			for(int i=0;i<CAPACITY;i++){
 				if(this.grid[i][j].isBlocked){
 					System.out.print("B");
 				}
