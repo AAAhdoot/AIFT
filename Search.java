@@ -184,7 +184,6 @@ public class Search{
 
   public static Square Astar(Square goal, int counter, char ordering){
     Square current;
-    int count = 0;
     while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
       //	System.out.println("Goal G value is:" + gw.grid[goal.x][goal.y].g_value);
      System.out.println("currently at the indices (" +  current.x +"," + current.y + ")");
@@ -195,20 +194,9 @@ public class Search{
      heap.remove(ordering);
      gw.grid[current.x][current.y].inHeap = false;
      gw.grid[current.x][current.y].isClosed = true;
-     if(heap.isEmpty()){
-       //       System.out.println("IT'S EMPTY BEFORE ADDFOUR");
-     }
-     else{
-        //      System.out.println("IT'S NOT EMPTY BEFORE ADDFOUR?!?!?");
-     }
      addFour(gw.grid[current.x][current.y],counter,ordering);
-     count++;
-          // if(count == 9){
-          //     System.out.println("COUNT = 9");
-          //     break;
-          // }
-     if(heap.peek().isClosed){
-       //       System.out.println("CLOSED");
+      if(heap.isEmpty()){
+        return null;
      }
        //   System.out.println("End of loop Goal G value is:" + gw.grid[goal.x][goal.y].g_value);
        //   System.out.println("End of loop current x value is:" + heap.peek().x);
