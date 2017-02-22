@@ -18,6 +18,25 @@ public class GridWorld{
 		long endTime = System.currentTimeMillis();
 		System.out.println("That took " + (endTime - startTime) + " milliseconds");
 	}
+	public GridWorld(int agentx, int agenty, int targetx, int targety){
+		this.grid = new Square[CAPACITY][CAPACITY];
+		for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
+				this.grid[i][j] = new Square();
+			}
+		}
+		this.agentx = agentx;
+		this.agenty = agenty;
+		this.targetx = targetx;
+		this.targety = targety;
+		for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
+				this.grid[i][j].isBlocked = false;
+				this.grid[i][j].x = i;
+				this.grid[i][j].y = j;
+			}
+		}
+	}
 
 	public void populate(){
 		int chance = 0;

@@ -51,7 +51,7 @@ public class Search{
     int pg = 0;
     Square  right, up, down;
 
-
+//full grid and current grid
 
 //assume there is a main heap called heap
 
