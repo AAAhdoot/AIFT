@@ -186,11 +186,11 @@ public class Search{
     Square current;
     while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
       //	System.out.println("Goal G value is:" + gw.grid[goal.x][goal.y].g_value);
-     System.out.println("currently at the indices (" +  current.x +"," + current.y + ")");
+     //System.out.println("currently at the indices (" +  current.x +"," + current.y + ")");
       //	System.out.println("current g value is:" + current.g_value);
        //   System.out.println();
        //   System.out.println("ABOUT TO REMOVE");
-     heap.currentMembers();
+     //heap.currentMembers();
      heap.remove(ordering);
      gw.grid[current.x][current.y].inHeap = false;
      gw.grid[current.x][current.y].isClosed = true;
@@ -225,7 +225,7 @@ public class Search{
      }
      start = current;
    }
-   System.out.println("Arrived at " + start.x + "," + start.y);
+   //System.out.println("Arrived at " + start.x + "," + start.y);
    System.out.println("I reached the target.");
    return;
   }
@@ -242,13 +242,31 @@ public class Search{
   	// 			gw.grid[i][j].y = j;
   	// 	}
   	// }
-    gw.generate();
+    long timesum = 0;
+    long currtime = 0;
+    int count = 0;
+    for(int i = 0; i<50; i++){
+      count++;
+      gw = new GridWorld();
+      gw.generate();
+      System.out.println(gw.CAPACITY);
+      long startTime = System.currentTimeMillis();
+      repeatedAStar(gw.grid[gw.agentx][gw.agenty], gw.grid[gw.targetx][gw.targety],'s');
+      long endTime = System.currentTimeMillis();
+      currtime = endTime - startTime;
+      timesum = timesum + currtime;
+      System.out.println("Number of times this run" + count);
+    }
+
+    System.out.println("On average, that took " + timesum/50.0 + "milliseconds");
+    return;
+    /*gw.generate();
     System.out.println(gw.CAPACITY);
     long startTime = System.currentTimeMillis();
     repeatedAStar(gw.grid[gw.agentx][gw.agenty], gw.grid[gw.targetx][gw.targety],'s');
     long endTime = System.currentTimeMillis();
     System.out.println("That took " + (endTime - startTime) + " milliseconds");
-    return;
+    return;*/
   	//Built basic 3x3 for testing
   }
 

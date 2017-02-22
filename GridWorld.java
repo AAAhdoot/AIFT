@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 5;
+	int CAPACITY = 101;
 	Square[][] grid;
 	int agentx;
 	int agenty;
@@ -54,14 +54,14 @@ public class GridWorld{
 		}
 
 		do{
-			agentx = (int) (Math.random()*5);
-			agenty = (int) (Math.random()*5);
+			agentx = (int) (Math.random()*CAPACITY);
+			agenty = (int) (Math.random()*CAPACITY);
 		} while (this.grid[agentx][agenty].isBlocked == true);
 
 		
 		do{
-			targetx = (int) (Math.random()*5);
-			targety = (int) (Math.random()*5);
+			targetx = (int) (Math.random()*CAPACITY);
+			targety = (int) (Math.random()*CAPACITY);
 		} while ((agentx == targetx && agenty == targety) || this.grid[targetx][targety].isBlocked == true);
 		
 		//System.out.println(numblocked);
@@ -70,12 +70,12 @@ public class GridWorld{
 	}
 
 	public void generate(){
-		System.out.println();
-		for(int j=0;j<CAPACITY;j++){
-			if(j>0){
+		/*System.out.println();
+		for(int i=0;i<CAPACITY;i++){
+			if(i>0){
 				System.out.println();
 			}
-			for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
 				if(this.grid[i][j].isBlocked){
 					System.out.print("B");
 				}
@@ -92,7 +92,7 @@ public class GridWorld{
 				}
 			}
 		}
-		System.out.println();
+		System.out.println();*/
 	}
 	
 //a way to modulo this perhaps to determine the place?
