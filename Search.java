@@ -55,7 +55,7 @@ public class Search{
 
 //assume there is a main heap called heap
 
-//System.out.println("Starting addFour at indices " + current.x + "," + current.y);
+System.out.println("Starting addFour at indices " + current.x + "," + current.y);
 
     pg = current.g_value + COST;
 
@@ -244,10 +244,8 @@ public class Search{
   	// }
     long timesum = 0;
     long currtime = 0;
-    int count = 0;
     for(int i = 0; i<50; i++){
-      count++;
-      gw = new GridWorld();
+      //gw = new GridWorld();
       gw.generate();
       System.out.println(gw.CAPACITY);
       long startTime = System.currentTimeMillis();
@@ -255,7 +253,6 @@ public class Search{
       long endTime = System.currentTimeMillis();
       currtime = endTime - startTime;
       timesum = timesum + currtime;
-      System.out.println("Number of times this run" + count);
     }
 
     System.out.println("On average, that took " + timesum/50.0 + "milliseconds");
