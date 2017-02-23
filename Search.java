@@ -39,11 +39,29 @@ public class Search{
 		return;
 	}*/
   static GridWorld gw = new GridWorld();
-
   static BinaryHeap heap = new BinaryHeap();
   static int COST = 1; //currently
   static int MAXINDEX = gw.CAPACITY-1;
 
+public static void traverseTree(Square goal, Square start){
+  Square curr;
+  curr = goal;
+  while(curr && curr!=start){
+  curr.tree.branch = curr;
+  curr = curr.tree;
+  }
+}
+
+
+public static Square traverseBranch(Grid ngw, Square start, Square goal){
+  Square curr;
+  curr = start;
+  while(curr && curr!=goal){
+    if(gw.grid[curr.branch.x][curr.branch.y].isBlocked){
+      gw.grid[curr.branch.x][curr.branch.y].isBlocked = true;
+    } 
+  }
+}
 
   public static void addFour(Square current,int counter, char ordering){
     int x = current.x;
@@ -61,7 +79,7 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
 
     if(current.x!=0){
   //	System.out.println("Checking left");
-      if(!gw.grid[x-1][y].isBlocked && !gw.grid[x-1][y].isClosed){
+      if(!gw.grid[x-1][y].isClosed){
         if(gw.grid[x-1][y].search < counter){
           gw.grid[x-1][y].search = counter;
         }
@@ -76,15 +94,11 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
           gw.grid[x-1][y].inHeap = true;
         }
       }
-      else{
-      //    System.out.println("IS BLOCKED/CLOSED");
-        gw.grid[x-1][y].isClosed = true;
-      }
     }
 
     if(current.x!=MAXINDEX){
   //	System.out.println("Checking right");
-      if(!gw.grid[x+1][y].isBlocked && !gw.grid[x+1][y].isClosed){
+      if(!gw.grid[x+1][y].isClosed){
         if(gw.grid[x+1][y].search < counter){
           gw.grid[x+1][y].search = counter;
         }
@@ -100,17 +114,7 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
           gw.grid[x+1][y].inHeap = true;
             //      System.out.println("Right value");
         }
-       //   System.out.println("Currently considering square at indices (" + (x+1) + "," + y + ")");
-      //    System.out.println("right f_value is " + gw.grid[x+1][y].f_value);
-      //    System.out.println("right g_value is " + gw.grid[x+1][y].g_value);
-       //   System.out.println("right search value is " + gw.grid[x+1][y].search);
-       //   System.out.println("the current location is: " + current.x + "," + current.y);
-       //   System.out.println("top of the heap currently has the indices (" + heap.peek().x + "," + heap.peek().y + ")");
       }
-      else{
-        //  System.out.println("IS BLOCKED/CLOSED");
-       gw.grid[x+1][y].isClosed = true;
-     }
    }
 
    if(current.y!=0){
@@ -131,16 +135,6 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
         heap.add(gw.grid[x][y-1],ordering);
         gw.grid[x][y-1].inHeap = true;
       }
-        // System.out.println("Currently considering square at indices (" + (x) + "," + (y-1) + ")");
-        //  System.out.println("right f_value is " + gw.grid[x][y-1].f_value);
-        //  System.out.println("right g_value is " + gw.grid[x][y-1].g_value);
-        //  System.out.println("right search value is " + gw.grid[x][y-1].search);
-         // System.out.println("the current location is: " + current.x + "," + current.y);
-         // System.out.println("top of the heap currently has the indices (" + heap.peek().x + "," + heap.peek().y + ")");
-    }
-    else{
-        //  System.out.println("IS BLOCKED/CLOSED");
-      gw.grid[x][y-1].isClosed = true;
     }
   }
 
@@ -161,20 +155,8 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
                 //  System.out.println("adding up to heap NOWWW");
         heap.add(gw.grid[x][y+1], ordering);
         gw.grid[x][y+1].inHeap = true;
-
-                //  System.out.println("Currently considering square at indices (" + x + "," + (y+1) + ")");
-               //   System.out.println("upper f_value is " + gw.grid[x][y+1].f_value);
-                //  System.out.println("upper g_value is " + gw.grid[x][y+1].g_value);
-                //  System.out.println("upper search value is " + gw.grid[x][y+1].search);
-               //   System.out.println("the current location is: " + current.x + "," + current.y);
-                //  System.out.println("top of the heap currently has the indices (" + heap.peek().x + "," + heap.peek().y + ")");
-
       }
     }
-    else{
-        //  System.out.println("IS BLOCKED/CLOSED");
-     gw.grid[x][y+1].isClosed = true;
-   }
   }
 
     //heap.currentMembers();
@@ -182,15 +164,10 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
   }
 
 
-  public static Square Astar(Square goal, int counter, char ordering){
+  public static Square Astar(Grid ngw, Square goal, int counter, char ordering){
     Square current;
     while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
-      //	System.out.println("Goal G value is:" + gw.grid[goal.x][goal.y].g_value);
      System.out.println("currently at the indices (" +  current.x +"," + current.y + ")");
-      //	System.out.println("current g value is:" + current.g_value);
-       //   System.out.println();
-       //   System.out.println("ABOUT TO REMOVE");
-     //heap.currentMembers();
      heap.remove(ordering);
      gw.grid[current.x][current.y].inHeap = false;
      gw.grid[current.x][current.y].isClosed = true;
@@ -198,10 +175,6 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
       if(heap.isEmpty()){
         return null;
      }
-       //   System.out.println("End of loop Goal G value is:" + gw.grid[goal.x][goal.y].g_value);
-       //   System.out.println("End of loop current x value is:" + heap.peek().x);
-       //   System.out.println("End of loop current y value is:" + heap.peek().y);
-        //  System.out.println("End of loop current g value is:" + heap.peek().g_value);
    }
    return gw.grid[current.x][current.y];
   }
@@ -216,7 +189,6 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
       gw.grid[start.x][start.y].search = counter;
       gw.grid[start.x][start.y].inHeap = true;
       gw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
-        //  System.out.println("Adding 0,1 to heap now");
       heap.add(gw.grid[start.x][start.y], ordering);
       current = Astar(goal,counter,ordering);
       if(heap.isEmpty()){

@@ -7,6 +7,7 @@ public class Square{
 	int h_value;
 	int f_value;
 	Square tree;
+	Square branch;
 	int search;
 	int x;
 	int y;
@@ -20,6 +21,7 @@ public class Square{
 		this.h_value = 0;
 		this.f_value = 0;
 		this.tree = null;
+		this.branch = null;
 		this.search= 0;
 		this.x = -1;
 		this.y = -1;
