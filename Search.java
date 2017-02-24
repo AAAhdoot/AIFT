@@ -39,31 +39,83 @@ public class Search{
 		return;
 	}*/
   static GridWorld gw = new GridWorld();
-  static BinaryHeap heap = new BinaryHeap();
+  static BinaryHeap heap;
   static int COST = 1; //currently
   static int MAXINDEX = gw.CAPACITY-1;
 
-public static void traverseTree(Square goal, Square start){
-  Square curr;
-  curr = goal;
-  while(curr && curr!=start){
-  curr.tree.branch = curr;
-  curr = curr.tree;
+
+public static void heapSetUp(GridWorld ngw){
+  heap = new BinaryHeap();
+  int count = 0;
+  for(int i=0;i<ngw.CAPACITY;i++){
+    for(int j=0;j<ngw.CAPACITY;j++){
+        ngw.grid[i][j].inHeap = false;
+        if(ngw.grid[i][j].travel == false){
+            ngw.grid[i][j].h_value = 0;
+            ngw.grid[i][j].f_value = 0;
+            ngw.grid[i][j].g_value = Integer.MAX_VALUE;
+            ngw.grid[i][j].search = 0;
+        }
+        else{
+          System.out.println(count++);
+        }
+    }
   }
 }
 
+public static void cleanUp(GridWorld ngw){
+  for(int i=0;i<ngw.CAPACITY;i++){
+    for(int j=0;j<ngw.CAPACITY;j++){
+      if(ngw.grid[i][j].travel == false){
+        ngw.grid[i][j].isClosed = false;
+      }
+    }
+  }
+  return;
+}
 
-public static Square traverseBranch(Grid ngw, Square start, Square goal){
+public static void traverseTree(Square end, Square start){
+  Square curr;
+  curr = end;
+  System.out.println("Returning from square ");
+  printSq("end", end);
+  System.out.println("To square ");
+  printSq("start",start);
+  System.out.println(curr.hastree);
+  while(curr.hastree==true && curr!=start){
+    curr.tree.branch = curr;
+    curr = curr.tree;
+    curr.hasbranch = true;
+  }
+  System.out.println("traversing tree complete, backtracked to indices ");
+  printSq("curr", curr);
+}
+
+
+public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
   Square curr;
   curr = start;
-  while(curr && curr!=goal){
+  curr.travel = true;
+  while(curr.hasbranch==true && curr!=goal){
+   // System.out.println("Traversing through square:");
+   // printSq("curr",curr);
     if(gw.grid[curr.branch.x][curr.branch.y].isBlocked){
-      gw.grid[curr.branch.x][curr.branch.y].isBlocked = true;
-    } 
+      ngw.grid[curr.branch.x][curr.branch.y].isBlocked = true;
+      ngw.grid[curr.branch.x][curr.branch.y].hastree = false;
+      ngw.grid[curr.x][curr.y].hasbranch = false;
+      System.out.println("traversing interrupted because the following branch is blocked: ");
+      printSq("branch",gw.grid[curr.branch.x][curr.branch.y]);
+      cleanUp(ngw);
+      return ngw.grid[curr.x][curr.y];
+    }
+    curr = curr.branch; 
   }
+    System.out.println("traversing branch complete, progressed forward to indices ");
+    printSq("curr", curr);
+    return curr;
 }
 
-  public static void addFour(Square current,int counter, char ordering){
+  public static void addFour(GridWorld ngw, Square current,int counter, char ordering){
     int x = current.x;
     int y = current.y;
     int pg = 0;
@@ -78,126 +130,180 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
     pg = current.g_value + COST;
 
     if(current.x!=0){
-  //	System.out.println("Checking left");
-      if(!gw.grid[x-1][y].isClosed){
-        if(gw.grid[x-1][y].search < counter){
-          gw.grid[x-1][y].search = counter;
+  	System.out.println("Checking left");
+      if(!ngw.grid[x-1][y].isClosed && !ngw.grid[x-1][y].isBlocked){
+        if(ngw.grid[x-1][y].search < counter){
+          ngw.grid[x-1][y].search = counter;
         }
-        if(gw.grid[x-1][y].g_value > pg){
-          gw.grid[x-1][y].g_value = pg;
-          gw.grid[x-1][y].tree = gw.grid[x][y];
-          if(gw.grid[x-1][y].inHeap){
+        if(ngw.grid[x-1][y].g_value > pg){
+        //  System.out.println(ngw.grid[x-1][y].g_value + "," + pg);
+          ngw.grid[x-1][y].g_value = pg;
+          ngw.grid[x-1][y].tree = ngw.grid[x][y];
+          ngw.grid[x-1][y].hastree = true;
+          if(ngw.grid[x-1][y].inHeap){
             heap.remove(ordering);
           }
-          gw.grid[x-1][y].f_value = gw.grid[x-1][y].g_value + gw.grid[x-1][y].h_value;
-          heap.add(gw.grid[x-1][y],ordering);
-          gw.grid[x-1][y].inHeap = true;
+          ngw.grid[x-1][y].f_value = ngw.grid[x-1][y].g_value + ngw.grid[x-1][y].h_value;
+          //System.out.println("adding square to heap ");
+        //  printSq("left", ngw.grid[x-1][y]);
+          heap.add(ngw.grid[x-1][y],ordering);
+          ngw.grid[x-1][y].inHeap = true;
         }
+        // else{
+        //   System.out.println("FAIL");
+        //   System.out.println(ngw.grid[x-1][y].g_value + "," + pg);
+        // }
       }
-    }
+else{
+          System.out.println("BLOCKED OR CLOSED!!");
+    }    }
 
     if(current.x!=MAXINDEX){
-  //	System.out.println("Checking right");
-      if(!gw.grid[x+1][y].isClosed){
-        if(gw.grid[x+1][y].search < counter){
-          gw.grid[x+1][y].search = counter;
+  	System.out.println("Checking right");
+      if(!ngw.grid[x+1][y].isClosed && !ngw.grid[x+1][y].isBlocked){
+        if(ngw.grid[x+1][y].search < counter){
+          ngw.grid[x+1][y].search = counter;
         }
-        if(gw.grid[x+1][y].g_value > pg){
-          gw.grid[x+1][y].g_value = pg;
-          gw.grid[x+1][y].tree = gw.grid[x][y];
-          if(gw.grid[x+1][y].inHeap){
+        if(ngw.grid[x+1][y].g_value > pg){
+         // System.out.println(ngw.grid[x+1][y].g_value + "," + pg);
+          ngw.grid[x+1][y].g_value = pg;
+          ngw.grid[x+1][y].tree = ngw.grid[x][y];
+          ngw.grid[x+1][y].hastree = true;
+          if(ngw.grid[x+1][y].inHeap){
             heap.remove(ordering);
           }
-          gw.grid[x+1][y].f_value = gw.grid[x+1][y].g_value + gw.grid[x+1][y].h_value;
+          ngw.grid[x+1][y].f_value = ngw.grid[x+1][y].g_value + ngw.grid[x+1][y].h_value;
              //     System.out.println("adding right to heap NOWWW");
-          heap.add(gw.grid[x+1][y],ordering);
-          gw.grid[x+1][y].inHeap = true;
+       //   System.out.println("adding square to heap ");
+        //  printSq("right", ngw.grid[x+1][y]);          
+          heap.add(ngw.grid[x+1][y],ordering);
+          ngw.grid[x+1][y].inHeap = true;
             //      System.out.println("Right value");
         }
+        // else{
+        //   System.out.println("FAIL");
+        //   System.out.println(ngw.grid[x+1][y].g_value + "," + pg);
+        // }
       }
-   }
+else{
+          System.out.println("BLOCKED OR CLOSED!!");
+    }   }
 
    if(current.y!=0){
-  	//System.out.println("Checking down");
-    if(!gw.grid[x][y-1].isBlocked && !gw.grid[x][y-1].isClosed){
-      if(gw.grid[x][y-1].search < counter){
-        gw.grid[x][y-1].search = counter;
+  	System.out.println("Checking down");
+    if(!ngw.grid[x][y-1].isBlocked && !ngw.grid[x][y-1].isClosed){
+      if(ngw.grid[x][y-1].search < counter){
+        ngw.grid[x][y-1].search = counter;
       }
-      if(gw.grid[x][y-1].g_value > pg){
+      if(ngw.grid[x][y-1].g_value > pg){
+       // System.out.println(ngw.grid[x][y-1].g_value + "," + pg);
            //   System.out.println("down g value success");
-        gw.grid[x][y-1].g_value = pg;
-        gw.grid[x][y-1].tree = gw.grid[x][y];
-        if(gw.grid[x][y-1].inHeap){
+        ngw.grid[x][y-1].g_value = pg;
+        ngw.grid[x][y-1].tree = ngw.grid[x][y];
+        ngw.grid[x][y-1].hastree = true;
+        if(ngw.grid[x][y-1].inHeap){
           heap.remove(ordering);
         }
-        gw.grid[x][y-1].f_value = gw.grid[x][y-1].g_value + gw.grid[x][y-1].h_value;
+        ngw.grid[x][y-1].f_value = ngw.grid[x][y-1].g_value + ngw.grid[x][y-1].h_value;
                 //  System.out.println("adding down to heap NOWWW");
-        heap.add(gw.grid[x][y-1],ordering);
-        gw.grid[x][y-1].inHeap = true;
+     //   System.out.println("adding square to heap ");
+      //  printSq("down", ngw.grid[x][y-1]);        
+        heap.add(ngw.grid[x][y-1],ordering);
+        ngw.grid[x][y-1].inHeap = true;
       }
+      // else{
+      //    System.out.println("FAIL");
+      //    System.out.println(ngw.grid[x][y-1].g_value + "," + pg);
+      // }
+    }else{
+          System.out.println("BLOCKED OR CLOSED!!");
     }
   }
 
 
   if(current.y!=MAXINDEX){
-  	//System.out.println("Checking up");
-    if(!gw.grid[x][y+1].isBlocked && !gw.grid[x][y+1].isClosed){
-      if(gw.grid[x][y+1].search < counter){
-        gw.grid[x][y+1].search = counter;
+  	System.out.println("Checking up");
+    if(!ngw.grid[x][y+1].isBlocked && !ngw.grid[x][y+1].isClosed){
+      if(ngw.grid[x][y+1].search < counter){
+        ngw.grid[x][y+1].search = counter;
       }
-      if(gw.grid[x][y+1].g_value > pg){
-        gw.grid[x][y+1].g_value = pg;
-        gw.grid[x][y+1].tree = gw.grid[x][y];
-        if(gw.grid[x][y+1].inHeap){
+      if(ngw.grid[x][y+1].g_value > pg){
+       // System.out.println(ngw.grid[x][y+1].g_value + "," + pg);
+        ngw.grid[x][y+1].g_value = pg;
+        ngw.grid[x][y+1].tree = ngw.grid[x][y];
+        ngw.grid[x][y+1].hastree = true;
+        if(ngw.grid[x][y+1].inHeap){
           heap.remove(ordering);
         }
-        gw.grid[x][y+1].f_value = gw.grid[x][y+1].g_value + gw.grid[x][y+1].h_value;
-                //  System.out.println("adding up to heap NOWWW");
-        heap.add(gw.grid[x][y+1], ordering);
-        gw.grid[x][y+1].inHeap = true;
+        ngw.grid[x][y+1].f_value = ngw.grid[x][y+1].g_value + ngw.grid[x][y+1].h_value;
+         // System.out.println("adding square to heap ");
+       //   printSq("up", ngw.grid[x][y+1]);        
+          heap.add(ngw.grid[x][y+1], ordering);
+        ngw.grid[x][y+1].inHeap = true;
       }
+      // else{
+      //   System.out.println("FAIL");
+      //   System.out.println(ngw.grid[x][y+1].g_value + "," + pg);
+      // }
     }
-  }
-
-    //heap.currentMembers();
+else{
+          System.out.println("BLOCKED OR CLOSED!!");
+    }  }
+  System.out.println();
   return;
   }
 
 
-  public static Square Astar(Grid ngw, Square goal, int counter, char ordering){
+  public static void Astar(GridWorld ngw, Square goal, int counter, char ordering){
     Square current;
-    while(gw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
-     System.out.println("currently at the indices (" +  current.x +"," + current.y + ")");
+    while(ngw.grid[goal.x][goal.y].g_value > (current = heap.peek()).g_value){
+   //  System.out.println("currently at the indices (" +  current.x +"," + current.y + ")");
      heap.remove(ordering);
-     gw.grid[current.x][current.y].inHeap = false;
-     gw.grid[current.x][current.y].isClosed = true;
-     addFour(gw.grid[current.x][current.y],counter,ordering);
+     ngw.grid[current.x][current.y].inHeap = false;
+     ngw.grid[current.x][current.y].isClosed = true;
+     addFour(ngw,ngw.grid[current.x][current.y],counter,ordering);
       if(heap.isEmpty()){
-        return null;
+        return;
      }
    }
-   return gw.grid[current.x][current.y];
+
+   return;
   }
 
-  public static void repeatedAStar(Square start, Square goal, char ordering){
+  public static void repeatedAStar(GridWorld ngw,Square start, Square goal, char ordering){
     int counter = 0;
     Square current;
+      System.out.println("Starting repeatedAStar at " + start.x + "," + start.y);
     while(!sqEquals(start,goal)){
       counter++;
-        System.out.println("Counter = " + counter + " Currently at indices ( " + start.x + "," + start.y + ")" );
-      gw.grid[start.x][start.y].g_value = 0;
-      gw.grid[start.x][start.y].search = counter;
-      gw.grid[start.x][start.y].inHeap = true;
-      gw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
-      heap.add(gw.grid[start.x][start.y], ordering);
-      current = Astar(goal,counter,ordering);
+      heapSetUp(ngw);
+    //    System.out.println("Counter = " + counter + " Currently at indices ( " + start.x + "," + start.y + ")" );
+      ngw.grid[start.x][start.y].g_value = 0;
+      ngw.grid[start.x][start.y].search = counter;
+      ngw.grid[start.x][start.y].inHeap = true;
+      ngw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
+      heap.add(ngw.grid[start.x][start.y], ordering);
+      ngw.generate();
+      Astar(ngw,goal,counter,ordering);
       if(heap.isEmpty()){
+        System.out.println("A*'s grid");
+        ngw.generate();
+        System.out.println("Our grid");
+        gw.generate();
        System.out.println("I cannot reach the target.");
        return;
      }
+      traverseTree(goal, start);
+      current = traverseBranch(ngw,start,goal);
+      printSq("current",current);
+      if(counter>gw.CAPACITY*gw.CAPACITY){
+        System.out.println("INFINITE LOOPING");
+        return;
+      }
      start = current;
    }
-   //System.out.println("Arrived at " + start.x + "," + start.y);
+   ngw.generate();
+   System.out.println("Arrived at " + start.x + "," + start.y);
    System.out.println("I reached the target.");
    return;
   }
@@ -205,6 +311,10 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
   public static boolean sqEquals(Square a, Square b){
     return ((a.x == b.x) && (a.y == b.y));
   }
+
+  public static void printSq(String name, Square square){
+    System.out.println(name + "=(" + square.x + "," + square.y + ")");
+}
 
   public static void main(String[] args){	
     // for(int i = 0; i<DIM; i++){
@@ -228,9 +338,10 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
     }*/
 
     gw.generate();
-    System.out.println(gw.CAPACITY);
+    GridWorld ngw = new GridWorld(gw.agentx,gw.agenty,gw.targetx,gw.targety);
+    System.out.println("agent= " + ngw.agentx + "," + ngw.agenty + " and target= " + ngw.targetx + "," + ngw.targety);
     long startTime = System.currentTimeMillis();
-    repeatedAStar(gw.grid[gw.agentx][gw.agenty], gw.grid[gw.targetx][gw.targety],'s');
+    repeatedAStar(ngw,ngw.grid[ngw.agentx][ngw.agenty], ngw.grid[ngw.targetx][ngw.targety],'s');
     long endTime = System.currentTimeMillis();
     System.out.println("That took " + (endTime - startTime) + " milliseconds");
     return;
