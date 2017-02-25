@@ -115,6 +115,7 @@ public void generate() {
                     	System.out.print("|B");
                 	}
                 	else if(this.grid[i][j].travel==true){
+                		this.grid[i][j].travel = false;
                 		System.out.print("|*");
                 	}
                 	else{

@@ -59,7 +59,6 @@ public class Search{
     System.out.println();
     System.out.println();
 
-
     timesum = 0;
     currtime = 0;
 
@@ -168,8 +167,8 @@ public class Search{
         printPath(ngw);
  		    //System.out.println("A*'s grid");
         //ngw.generate(); 
-        //System.out.println("Our grid");
-        //gw.generate();
+        System.out.println("Our grid");
+        gw.generate();
    		System.out.println("Arrived at " + start.x + "," + start.y);
       //printPath(ngw);
    		System.out.println("I reached the target.");
@@ -438,11 +437,11 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
     while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
       //System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
       curr.travel = true;
-      //gw.grid[curr.x][curr.y].travel = true;
+      gw.grid[curr.x][curr.y].travel = true;
       curr = curr.branch;
       count++;
     }
-    ngw.generate();
+    //ngw.generate();
     System.out.print("(" + curr.x + "," + curr.y + "): ");
     System.out.println(count + " moves to get from agent to target");
   }
