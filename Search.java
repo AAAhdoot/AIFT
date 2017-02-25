@@ -4,6 +4,14 @@ public class Search{
   	static int COST = 1; //currently
   	static int MAXINDEX = gw.CAPACITY-1;
 
+  public static void printSq(String name, Square square){
+      System.out.println(name + "=(" + square.x + "," + square.y + ")");
+  }
+
+  public static boolean sqEquals(Square a, Square b){
+      return ((a.x == b.x) && (a.y == b.y));
+    }
+
 	public static void main(String[] args){	
     // for(int i = 0; i<DIM; i++){
   	// 	for(int j = 0; j<DIM; j++){
@@ -72,18 +80,6 @@ public class Search{
   		return;
   		//Built basic 3x3 for testing
 	}
-
-  public static void printPath(GridWorld ngw){
-    Square curr = ngw.grid[ngw.agentx][ngw.agenty];
-    int count =0;
-    while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
-      System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
-      curr = curr.branch;
-      count++;
-    }
-    System.out.print("(" + curr.x + "," + curr.y + "): ");
-    System.out.println(count + " moves to get from agent to target");
-  }
 
 	public static void repeatedAStar(GridWorld ngw,Square start, Square goal, char ordering){
 		int counter = 0;
@@ -290,6 +286,22 @@ public class Search{
 
     }
 
+    public static void traverseTree(Square end, Square start){
+      Square curr;
+      curr = end;
+      System.out.println("Returning from square ");
+      printSq("end", end);
+      System.out.println("To square ");
+      printSq("start",start);
+      System.out.println(curr.hastree);
+      while(curr.hastree==true && curr!=start){
+        curr.tree.branch = curr;
+        curr = curr.tree;
+        curr.hasbranch = true;
+      }
+      System.out.println("traversing tree complete, backtracked to indices ");
+      printSq("curr", curr);
+    }
 
 	public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
      // System.out.println(gw.grid[3][2].isBlocked);
@@ -322,28 +334,16 @@ public class Search{
     	return ngw.grid[curr.x][curr.y];
 	}
 
-	public static void printSq(String name, Square square){
-    	System.out.println(name + "=(" + square.x + "," + square.y + ")");
-	}
+  public static void printPath(GridWorld ngw){
+    Square curr = ngw.grid[ngw.agentx][ngw.agenty];
+    int count =0;
+    while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
+      System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
+      curr = curr.branch;
+      count++;
+    }
+    System.out.print("(" + curr.x + "," + curr.y + "): ");
+    System.out.println(count + " moves to get from agent to target");
+  }
 
-	public static boolean sqEquals(Square a, Square b){
-    	return ((a.x == b.x) && (a.y == b.y));
-  	}
-
-  	public static void traverseTree(Square end, Square start){
-  		Square curr;
-  		curr = end;
-  		System.out.println("Returning from square ");
-  		printSq("end", end);
-  		System.out.println("To square ");
-  		printSq("start",start);
-  		System.out.println(curr.hastree);
-  		while(curr.hastree==true && curr!=start){
-  			curr.tree.branch = curr;
-  			curr = curr.tree;
-  			curr.hasbranch = true;
-  		}
-  		System.out.println("traversing tree complete, backtracked to indices ");
-  		printSq("curr", curr);
-  	}
 }
