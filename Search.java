@@ -70,6 +70,11 @@ public class Search{
 	public static void Astar(GridWorld ngw, Square goal, int counter, char ordering){
 		Square curr;
 		while(ngw.grid[goal.x][goal.y].g_value > (curr = heap.peek()).f_value){
+			System.out.print("Goal G is: ");
+			System.out.println(ngw.grid[goal.x][goal.y].g_value);
+			System.out.print("Curr F is: ");
+			System.out.println(ngw.grid[curr.x][curr.y].f_value);
+
 			heap.remove(ordering); //remove from top of heap
     		ngw.grid[curr.x][curr.y].inHeap = false; //for us
      		ngw.grid[curr.x][curr.y].isClosed = true; //set closed
