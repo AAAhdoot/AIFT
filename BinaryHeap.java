@@ -22,7 +22,7 @@ public class BinaryHeap extends PriorityQueue {
      */
     public void add(Square square,char ordering) {
         // grow array if needed
-        //System.out.println("ADDING SQUARE " + square.x +"," + square.y + " TO THE HEAP, size of heap about to be " + (this.size+1));
+        System.out.println("ADDING SQUARE " + square.x +"," + square.y + " TO THE HEAP, size of heap about to be " + (this.size+1));
         System.out.println();
         if (size >= array.length - 1) {
            // System.out.println("Size is " + size + " array.length-1 is " + (array.length - 1));
@@ -75,7 +75,7 @@ public class BinaryHeap extends PriorityQueue {
     	// what do want return?
 //System.out.println("BEGINNING REMOVE");
     	Square result = peek();
-    	//System.out.println("Currently removing " + result.x + "," + result.y);
+    	System.out.println("Currently removing " + result.x + "," + result.y + " size of heap about to be " + (this.size-1));
     	// get rid of the last leaf/decrement
     	array[1] = array[size];
     	array[size] = null;
