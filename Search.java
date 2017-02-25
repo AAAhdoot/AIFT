@@ -32,9 +32,10 @@ public class Search{
       currtime = endTime - startTime;
       timesum = timesum + currtime;
   	}*/
-  		//gw.generate();
+  		gw.generate();
 
       //temporary, for setting up error case for us
+    /*
       for(int i=0;i<5;i++){
         for(int j=0;j<5;j++){
           //initially set all unblocked
@@ -60,6 +61,7 @@ public class Search{
       gw.grid[3][2].isBlocked = true;
       gw.grid[4][4].isBlocked = true;
       //gw.grid[4][0].isBlocked = true;
+      */
 
   		GridWorld ngw = new GridWorld(gw.agentx,gw.agenty,gw.targetx,gw.targety);
 
@@ -70,7 +72,7 @@ public class Search{
 
   		System.out.println("agent= " + ngw.agentx + "," + ngw.agenty + " and target= " + ngw.targetx + "," + ngw.targety);
   		long startTime = System.currentTimeMillis();
-  		repeatedAStar(ngw,ngw.grid[ngw.agentx][ngw.agenty], ngw.grid[ngw.targetx][ngw.targety],'s');
+  		repeatedAStar(ngw,ngw.grid[ngw.agentx][ngw.agenty], ngw.grid[ngw.targetx][ngw.targety],'g');
   		long endTime = System.currentTimeMillis();
   		System.out.println("That took " + (endTime - startTime) + " milliseconds");
   		return;
@@ -161,7 +163,7 @@ public class Search{
     	//System.out.println("Starting addFour at indices " + curr.x + "," + curr.y);
     	//ngw.generate();
     	if(curr.x != 0){
-    		System.out.println("Checking up");
+    		//System.out.println("Checking up");
     		if(!ngw.grid[x-1][y].isClosed && !ngw.grid[x-1][y].isBlocked){
     			if(ngw.grid[x-1][y].search < counter){
     				ngw.grid[x-1][y].g_value = Integer.MAX_VALUE;
@@ -317,11 +319,12 @@ public class Search{
 				ngw.grid[curr.branch.x][curr.branch.y].isBlocked = true;
 				ngw.grid[curr.branch.x][curr.branch.y].hastree = false;
 				ngw.grid[curr.x][curr.y].hasbranch = false;
-				//System.out.println("traversing interrupted because the following branch is blocked: ");
+				System.out.println("traversing interrupted because the following branch is blocked: ");
 				printSq("branch",gw.grid[curr.branch.x][curr.branch.y]);
         printPath(ngw);
 				ngw.generate();
-        return ngw.grid[curr.x][curr.y];
+        // return ngw.grid[curr.x][curr.y];
+        return ngw.grid[ngw.agentx][ngw.agenty];
 			}
 			curr = curr.branch;
 		}

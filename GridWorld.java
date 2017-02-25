@@ -14,7 +14,7 @@ public class GridWorld{
 			}
 		}
 		long startTime = System.currentTimeMillis();
-		//populate();
+		populate();
 		long endTime = System.currentTimeMillis();
 		System.out.println("That took " + (endTime - startTime) + " milliseconds");
 	}
