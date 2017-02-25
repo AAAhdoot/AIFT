@@ -57,7 +57,7 @@ public class Search{
 				return;
 			}
  			//temporary calls for later
- 			traverseTree();
+ 			traverseTree(goal, start);
  			traverseBranch();
  			start = curr;
  		}
@@ -190,13 +190,42 @@ public class Search{
 
 	}
 
+	public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
+		Square curr;
+		curr = start;
+		while(curr.hasbranch == true && curr != goal){
+			if(gw.grid[curr.branch.x][curr.branch.y].isBlocked){
+				ngw.grid[curr.branch.x][curr.branch.y].isBlocked = true;
+				ngw.grid[curr.branch.x][curr.branch.y].hastree = false;
+				ngw.grid[curr.x][curr.y].hasbranch = false;
+				System.out.println("traversing interrupted because the following branch is blocked: ");
+				printSq("branch",gw.grid[curr.branch.x][curr.branch.y]);
+			}
+		}
+	}
+
+	public static void printSq(String name, Square square){
+    	System.out.println(name + "=(" + square.x + "," + square.y + ")");
+	}
+
 	public static boolean sqEquals(Square a, Square b){
     	return ((a.x == b.x) && (a.y == b.y));
   	}
 
-
-
-
-
-
+  	public static void traverseTree(Square end, Square start){
+  		Square curr;
+  		curr = end;
+  		System.out.println("Returning from square ");
+  		printSq("end", end);
+  		System.out.println("To square ");
+  		printSq("start",start);
+  		System.out.println(curr.hastree);
+  		while(curr.hastree==true && curr!=start){
+  			curr.tree.branch = curr;
+  			curr = curr.tree;
+  			curr.hasbranch = true;
+  		}
+  		System.out.println("traversing tree complete, backtracked to indices ");
+  		printSq("curr", curr);
+  	}
 }
