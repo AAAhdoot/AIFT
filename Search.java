@@ -24,18 +24,25 @@ public class Search{
     long currtime = 0;
     long timesum = 0;
 
-    GridWorld[] ourgw = new GridWorld[50];
-    GridWorld[] ourngw = new GridWorld[50];
+    GridWorld[] ourgw = new GridWorld[3];
+    GridWorld[] ourngw = new GridWorld[3];
     for(int i = 0; i<ourgw.length; i++){
       ourgw[i] = new GridWorld();
       ourgw[i].populate();
       ourngw[i] = new GridWorld(ourgw[i].agentx,ourgw[i].agenty,ourgw[i].targetx,ourgw[i].targety);
     }
 
+
     //Calculate for larger g
     for(int i = 0; i<ourgw.length; i++){
       long startTime = System.currentTimeMillis();
       gw = ourgw[i];
+      System.out.println("LOOKING AT GRID NUMBER " + i);
+      System.out.println("Starting at " + ourngw[i].agentx + "," + ourngw[i].agenty);
+      System.out.println("Aiming for " + ourngw[i].targetx + "," + ourngw[i].targety);
+      //gw.generate();
+      System.out.println();
+      System.out.println();
       repeatedForwardAStar(ourngw[i],ourngw[i].grid[ourngw[i].agentx][ourngw[i].agenty], ourngw[i].grid[ourngw[i].targetx][ourngw[i].targety],'g');
       long endTime = System.currentTimeMillis();
       currtime = endTime - startTime;
@@ -43,7 +50,7 @@ public class Search{
       timesum = timesum + currtime;
     }
     //System.out.println(timesum/50.0);
-    System.out.println("That took " + (timesum/50.0) + " milliseconds on average for bigger g");
+    System.out.println("That took " + (timesum/3.0) + " milliseconds on average for bigger g");
     //System.out.println("That took " + (timesum2/50.0) + "milliseconds on average for smaller g");
     System.out.println();
     System.out.println();
@@ -63,6 +70,11 @@ public class Search{
 
     for(int i = 0; i<ourgw.length; i++){
       long startTime = System.currentTimeMillis();
+      gw = ourgw[i];
+      System.out.println("LOOKING AT GRID NUMBER " + i);
+      System.out.println("Starting at " + ourngw[i].agentx + "," + ourngw[i].agenty);
+      System.out.println("Aiming for " + ourngw[i].targetx + "," + ourngw[i].targety);
+      //gw.generate();
       repeatedForwardAStar(ourngw[i],ourngw[i].grid[ourngw[i].agentx][ourngw[i].agenty], ourngw[i].grid[ourngw[i].targetx][ourngw[i].targety],'s');
       long endTime = System.currentTimeMillis();
       currtime = endTime - startTime;
@@ -426,10 +438,11 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
     while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
       //System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
       curr.travel = true;
-      gw.grid[curr.x][curr.y].travel = true;
+      //gw.grid[curr.x][curr.y].travel = true;
       curr = curr.branch;
       count++;
     }
+    ngw.generate();
     System.out.print("(" + curr.x + "," + curr.y + "): ");
     System.out.println(count + " moves to get from agent to target");
   }
