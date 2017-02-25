@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 10;
+	int CAPACITY = 25;
 	Square[][] grid;
 	int agentx;
 	int agenty;
@@ -88,7 +88,53 @@ public class GridWorld{
 		return;
 	}
 
-	public void generate(){
+public void generate() {
+        for (int i = 0; i < CAPACITY; i++) {
+            // draw the north edge
+            for (int j = 0; j < CAPACITY; j++) {
+                //System.out.print((maze[j][i] & 1) == 0 ? "+---" : "+   ");
+                System.out.print("+-");
+            }
+            System.out.println("+");
+            // draw the west edge
+            for (int j = 0; j < CAPACITY; j++) {
+                //System.out.print((maze[j][i] & 8) == 0 ? "|   " : "    ");
+                
+                if(j == agenty && i ==agentx ){
+                    System.out.print("|A");
+                }
+                else if(j==targety && i == targetx){
+                    System.out.print("|T");
+                }
+                // else if(j==i){
+                //     System.out.print("|*");
+                // }
+                else{
+
+                	if(this.grid[i][j].isBlocked==true){
+                    	System.out.print("|B");
+                	}
+                	else if(this.grid[i][j].travel==true){
+                		System.out.print("|*");
+                	}
+                	else{
+                		System.out.print("| ");
+                	}
+                }
+            }
+            System.out.println("|");
+        }
+        // draw the bottom line
+        for (int j = 0; j < CAPACITY; j++) {
+            System.out.print("+-");
+        }
+        System.out.println("+");
+    }
+
+
+
+
+	public void display(){
 		System.out.println();
 		System.out.print("  ");
 		for(int k = 0;k<CAPACITY;k++){

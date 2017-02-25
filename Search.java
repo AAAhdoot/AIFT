@@ -112,13 +112,14 @@ public class Search{
  			curr = traverseBranch(ngw,start,goal);
  			start = curr;
  		}
- 		       System.out.println("A*'s grid");
+        printPath(ngw);
+ 		    System.out.println("A*'s grid");
         ngw.generate(); 
         System.out.println("Our grid");
         gw.generate();
    		System.out.println("Arrived at " + start.x + "," + start.y);
-   		System.out.println("I reached the target.");
       printPath(ngw);
+   		System.out.println("I reached the target.");
    		return;
 	}
 
@@ -311,7 +312,7 @@ public class Search{
      //  System.out.println(ngw.grid[4][3].isBlocked);
 		Square curr;
 		curr = start;
-    printPath(ngw);
+    //printPath(ngw);
 		while(curr.hasbranch == true && curr != goal){
 			if(gw.grid[curr.branch.x][curr.branch.y].isBlocked){
         //System.out.println(gw.grid[curr.branch.x][curr.branch.y].isBlocked);
@@ -321,7 +322,7 @@ public class Search{
 				ngw.grid[curr.x][curr.y].hasbranch = false;
 				System.out.println("traversing interrupted because the following branch is blocked: ");
 				printSq("branch",gw.grid[curr.branch.x][curr.branch.y]);
-        printPath(ngw);
+        //printPath(ngw);
 				ngw.generate();
         // return ngw.grid[curr.x][curr.y];
         return ngw.grid[ngw.agentx][ngw.agenty];
@@ -338,6 +339,8 @@ public class Search{
     int count =0;
     while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
       System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
+      curr.travel = true;
+      gw.grid[curr.x][curr.y].travel = true;
       curr = curr.branch;
       count++;
     }

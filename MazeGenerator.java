@@ -1,11 +1,3 @@
-import java.util.Collections;
-import java.util.Arrays;
- 
-/*
- * recursive backtracking algorithm
- * shamelessly borrowed from the ruby at
- * http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
- */
 public class MazeGenerator {
     private final int x;
     private final int y;
