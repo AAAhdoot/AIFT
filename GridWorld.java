@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 25;
+	int CAPACITY = 101;
 	Square[][] grid;
 	int agentx;
 	int agenty;
@@ -13,10 +13,10 @@ public class GridWorld{
 				this.grid[i][j] = new Square();
 			}
 		}
-		long startTime = System.currentTimeMillis();
+		//long startTime = System.currentTimeMillis();
 		populate();
-		long endTime = System.currentTimeMillis();
-		System.out.println("That took " + (endTime - startTime) + " milliseconds");
+		//long endTime = System.currentTimeMillis();
+		//System.out.println("That took " + (endTime - startTime) + " milliseconds");
 	}
 	public GridWorld(int agentx, int agenty, int targetx, int targety){
 		this.grid = new Square[CAPACITY][CAPACITY];
