@@ -147,7 +147,7 @@ public class Search{
         		if(ngw.grid[x][y-1].g_value > pg){
         			ngw.grid[x][y-1].g_value = pg;
           			ngw.grid[x][y-1].tree = ngw.grid[x][y];
-          			ngw.grid[[x][y-1].hastree = true;
+          			ngw.grid[x][y-1].hastree = true;
           			if(ngw.grid[x][y-1].inHeap){
             			heap.remove(ordering);
           			}
@@ -173,7 +173,7 @@ public class Search{
         		if(ngw.grid[x][y+1].g_value > pg){
         			ngw.grid[x][y+1].g_value = pg;
           			ngw.grid[x][y+1].tree = ngw.grid[x][y];
-          			ngw.grid[[x][y+1].hastree = true;
+          			ngw.grid[x][y+1].hastree = true;
           			if(ngw.grid[x][y+1].inHeap){
             			heap.remove(ordering);
           			}
