@@ -255,4 +255,15 @@ public class BinaryHeap extends PriorityQueue {
         array[index1] = array[index2];
         array[index2] = tmp;        
     }
+
+    public void findRemove(Square value, char ordering){
+        for(int i=0;i<array.length;i++){
+            if(array[i]!=null && array[i].x == value.x && array[i].y == value.y){
+                swap(1,i);
+                remove(ordering);
+            }
+        }
+    }
+
+
 }
