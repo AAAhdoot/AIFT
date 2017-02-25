@@ -35,6 +35,15 @@ public class Search{
   		//Built basic 3x3 for testing
 	}
 
+  public static void printPath(GridWorld ngw){
+    Square curr = ngw.grid[ngw.agentx][ngw.agenty];
+    while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
+      System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
+      curr = curr.branch;
+    }
+    System.out.print("(" + curr.x + "," + curr.y + ")");
+  }
+
 	public static void repeatedAStar(GridWorld ngw,Square start, Square goal, char ordering){
 		int counter = 0;
 		Square curr;
@@ -68,25 +77,29 @@ public class Search{
  			curr = traverseBranch(ngw,start,goal);
  			start = curr;
  		}
- 		ngw.generate();
+ 		       System.out.println("A*'s grid");
+        ngw.generate(); 
+        System.out.println("Our grid");
+        gw.generate();
    		System.out.println("Arrived at " + start.x + "," + start.y);
    		System.out.println("I reached the target.");
+      printPath(ngw);
    		return;
 	}
 
 	public static void Astar(GridWorld ngw, Square goal, int counter, char ordering){
 		Square curr;
-		while(ngw.grid[goal.x][goal.y].g_value > (curr = heap.peek()).f_value){
-			System.out.print("Goal G is: ");
-			System.out.println(ngw.grid[goal.x][goal.y].g_value);
-			System.out.print("Curr F is: ");
-			System.out.println(ngw.grid[curr.x][curr.y].f_value);
+		while(!heap.isEmpty() && ngw.grid[goal.x][goal.y].g_value > (curr = heap.peek()).f_value){
+			// System.out.print("Goal G is: ");
+			// System.out.println(ngw.grid[goal.x][goal.y].g_value);
+			// System.out.print("Curr F is: ");
+			// System.out.println(ngw.grid[curr.x][curr.y].f_value);
 
 			heap.remove(ordering); //remove from top of heap
-    		ngw.grid[curr.x][curr.y].inHeap = false; //for us
-     		ngw.grid[curr.x][curr.y].isClosed = true; //set closed
+    	ngw.grid[curr.x][curr.y].inHeap = false; //for us
+     	ngw.grid[curr.x][curr.y].isClosed = true; //set closed
      		//now, we enter addFour
-     		addFour(ngw,ngw.grid[curr.x][curr.y],counter,ordering);
+    	addFour(ngw,ngw.grid[curr.x][curr.y],counter,ordering);
 		}
 		return;
 	}
@@ -97,9 +110,9 @@ public class Search{
     	int pg = 0;
     	pg = curr.g_value + COST;
     	System.out.println("Starting addFour at indices " + curr.x + "," + curr.y);
-    	ngw.generate();
+    	//ngw.generate();
     	if(curr.x != 0){
-    		System.out.println("Checking up");
+    		//System.out.println("Checking up");
     		if(!ngw.grid[x-1][y].isClosed && !ngw.grid[x-1][y].isBlocked){
     			if(ngw.grid[x-1][y].search < counter){
     				ngw.grid[x-1][y].g_value = Integer.MAX_VALUE;
@@ -118,14 +131,14 @@ public class Search{
         		}
     		}
     		else{
-    			System.out.println("BLOCKED =" + ngw.grid[x-1][y].isBlocked);
-          		System.out.println("CLOSED =" + ngw.grid[x-1][y].isClosed);
+    			//System.out.println("BLOCKED =" + ngw.grid[x-1][y].isBlocked);
+          //		System.out.println("CLOSED =" + ngw.grid[x-1][y].isClosed);
     		}
 
     	}
 
     	if(curr.x != MAXINDEX){
-    		System.out.println("Checking down");
+    		//System.out.println("Checking down");
     		if(!ngw.grid[x+1][y].isClosed && !ngw.grid[x+1][y].isBlocked){
     			if(ngw.grid[x+1][y].search < counter){
     				ngw.grid[x+1][y].g_value = Integer.MAX_VALUE;
@@ -144,14 +157,14 @@ public class Search{
         		}
     		}
     		else{
-    			System.out.println("BLOCKED =" + ngw.grid[x+1][y].isBlocked);
-          		System.out.println("CLOSED =" + ngw.grid[x+1][y].isClosed);
+    			//System.out.println("BLOCKED =" + ngw.grid[x+1][y].isBlocked);
+          //		System.out.println("CLOSED =" + ngw.grid[x+1][y].isClosed);
     		}
 
     	}
 
     	if(curr.y != 0){
-    		System.out.println("Checking left");
+    		//System.out.println("Checking left");
     		if(!ngw.grid[x][y-1].isClosed && !ngw.grid[x][y-1].isBlocked){
     			if(ngw.grid[x][y-1].search < counter){
     				ngw.grid[x][y-1].g_value = Integer.MAX_VALUE;
@@ -170,14 +183,14 @@ public class Search{
         		}
     		}
     		else{
-    			System.out.println("BLOCKED =" + ngw.grid[x][y-1].isBlocked);
-          		System.out.println("CLOSED =" + ngw.grid[x][y-1].isClosed);
+    		//	System.out.println("BLOCKED =" + ngw.grid[x][y-1].isBlocked);
+          //		System.out.println("CLOSED =" + ngw.grid[x][y-1].isClosed);
     		}
 
     	}
 
     	if(curr.y != MAXINDEX){
-    		System.out.println("Checking right");
+    	//	System.out.println("Checking right");
     		if(!ngw.grid[x][y+1].isClosed && !ngw.grid[x][y+1].isBlocked){
     			if(ngw.grid[x][y+1].search < counter){
     				ngw.grid[x][y+1].g_value = Integer.MAX_VALUE;
@@ -196,8 +209,8 @@ public class Search{
         		}
     		}
     		else{
-    			System.out.println("BLOCKED =" + ngw.grid[x][y+1].isBlocked);
-          		System.out.println("CLOSED =" + ngw.grid[x][y+1].isClosed);
+    			//System.out.println("BLOCKED =" + ngw.grid[x][y+1].isBlocked);
+          	//	System.out.println("CLOSED =" + ngw.grid[x][y+1].isClosed);
     		}
     	}
 
@@ -224,7 +237,8 @@ public class Search{
 				ngw.grid[curr.x][curr.y].hasbranch = false;
 				System.out.println("traversing interrupted because the following branch is blocked: ");
 				printSq("branch",gw.grid[curr.branch.x][curr.branch.y]);
-				return ngw.grid[curr.x][curr.y];
+				ngw.generate();
+        return ngw.grid[curr.x][curr.y];
 			}
 			curr = curr.branch;
 		}

@@ -22,6 +22,8 @@ public class BinaryHeap extends PriorityQueue {
      */
     public void add(Square square,char ordering) {
         // grow array if needed
+        //System.out.println("ADDING SQUARE " + square.x +"," + square.y + " TO THE HEAP, size of heap about to be " + (this.size+1));
+        System.out.println();
         if (size >= array.length - 1) {
            // System.out.println("Size is " + size + " array.length-1 is " + (array.length - 1));
             array = this.resize();
