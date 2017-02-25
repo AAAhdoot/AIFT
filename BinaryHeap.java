@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.*;
 
 public class BinaryHeap extends PriorityQueue {
-    private static final int DEFAULT_CAPACITY = 10*10;
+    private static final int DEFAULT_CAPACITY = 50*50;
     Square[] array;
     int size;
     

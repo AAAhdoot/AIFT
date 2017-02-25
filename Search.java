@@ -1,6 +1,7 @@
 public class Search{
 	static GridWorld gw = new GridWorld();
 	static BinaryHeap heap;
+  static SquareNode head;
   	static int COST = 1; //currently
   	static int MAXINDEX = gw.CAPACITY-1;
 
@@ -10,6 +11,13 @@ public class Search{
 
   public static boolean sqEquals(Square a, Square b){
       return ((a.x == b.x) && (a.y == b.y));
+    }
+
+    public static SquareNode addNode(Square square, SquareNode head){
+      SquareNode newHead = new SquareNode(square);
+      newHead.next = head;
+      return newHead;
+      //return the head of the new linked list.
     }
 
 	public static void main(String[] args){	
@@ -33,7 +41,39 @@ public class Search{
     }
 
 
-    //Calculate for larger g
+   
+
+    for(int i = 0; i<ourgw.length; i++){
+      long startTime = System.currentTimeMillis();
+      gw = ourgw[i];
+      System.out.println("LOOKING AT GRID NUMBER " + i);
+      System.out.println("Starting at " + ourngw[i].agentx + "," + ourngw[i].agenty);
+      System.out.println("Aiming for " + ourngw[i].targetx + "," + ourngw[i].targety);
+      //gw.generate();
+      repeatedForwardAStar(ourngw[i],ourngw[i].grid[ourngw[i].agentx][ourngw[i].agenty], ourngw[i].grid[ourngw[i].targetx][ourngw[i].targety],'s');
+      long endTime = System.currentTimeMillis();
+      currtime = endTime - startTime;
+      System.out.println(currtime);
+      timesum = timesum + currtime;
+    }
+    //System.out.println(timesum/50.0);
+    System.out.println("That took " + (timesum/50.0) + " milliseconds on average for smaller g");
+
+    for(int i = 0; i<ourngw.length; i++){
+      ourngw[i] = new GridWorld(ourgw[i].agentx,ourgw[i].agenty,ourgw[i].targetx,ourgw[i].targety);
+    }
+
+     timesum = 0;
+    currtime = 0;
+
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
+
+        //Calculate for larger g
     for(int i = 0; i<ourgw.length; i++){
       long startTime = System.currentTimeMillis();
       gw = ourgw[i];
@@ -52,36 +92,9 @@ public class Search{
     //System.out.println(timesum/50.0);
     System.out.println("That took " + (timesum/3.0) + " milliseconds on average for bigger g");
     //System.out.println("That took " + (timesum2/50.0) + "milliseconds on average for smaller g");
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println();
-    System.out.println();
+ 
 
-    timesum = 0;
-    currtime = 0;
-
-    for(int i = 0; i<ourngw.length; i++){
-      ourngw[i] = new GridWorld(ourgw[i].agentx,ourgw[i].agenty,ourgw[i].targetx,ourgw[i].targety);
-    }
-
-
-    for(int i = 0; i<ourgw.length; i++){
-      long startTime = System.currentTimeMillis();
-      gw = ourgw[i];
-      System.out.println("LOOKING AT GRID NUMBER " + i);
-      System.out.println("Starting at " + ourngw[i].agentx + "," + ourngw[i].agenty);
-      System.out.println("Aiming for " + ourngw[i].targetx + "," + ourngw[i].targety);
-      //gw.generate();
-      repeatedForwardAStar(ourngw[i],ourngw[i].grid[ourngw[i].agentx][ourngw[i].agenty], ourngw[i].grid[ourngw[i].targetx][ourngw[i].targety],'s');
-      long endTime = System.currentTimeMillis();
-      currtime = endTime - startTime;
-      System.out.println(currtime);
-      timesum = timesum + currtime;
-    }
-    //System.out.println(timesum/50.0);
-    System.out.println("That took " + (timesum/50.0) + " milliseconds on average for smaller g");
+    
 
       return;
   		//gw.generate();
@@ -145,6 +158,7 @@ public class Search{
   					ngw.grid[i][j].isClosed = false;
   				}
   			}
+        head = null;
 			ngw.grid[start.x][start.y].inHeap = true;
 			ngw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
 			heap.add(ngw.grid[start.x][start.y], ordering);		
@@ -167,8 +181,8 @@ public class Search{
         printPath(ngw);
  		    //System.out.println("A*'s grid");
         //ngw.generate(); 
-        System.out.println("Our grid");
-        gw.generate();
+        //System.out.println("Our grid");
+        //gw.generate();
    		System.out.println("Arrived at " + start.x + "," + start.y);
       //printPath(ngw);
    		System.out.println("I reached the target.");
@@ -238,6 +252,7 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
 			heap.remove(ordering); //remove from top of heap
       //System.out.println("JUST REMOVED INDICES " + curr.x + "," + curr.y);
     	ngw.grid[curr.x][curr.y].inHeap = false; //for us
+      head = addNode(ngw.grid[curr.x][curr.y], head);
      	ngw.grid[curr.x][curr.y].isClosed = true; //set closed
      		//now, we enter addFour
       //System.out.println("ENTERING ADDFOUR FOR INDICES " + curr.x + "," + curr.y);
@@ -254,7 +269,7 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
     //   System.out.println(ngw.grid[3][2].isBlocked);
     //   System.out.println(ngw.grid[4][2].isBlocked);
     //   System.out.println(ngw.grid[4][3].isBlocked);
-		int x = curr.x;
+		  int x = curr.x;
     	int y = curr.y;
     	int pg = 0;
     	pg = curr.g_value + COST;
@@ -437,11 +452,11 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
     while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
       //System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
       curr.travel = true;
-      gw.grid[curr.x][curr.y].travel = true;
+      //gw.grid[curr.x][curr.y].travel = true;
       curr = curr.branch;
       count++;
     }
-    //ngw.generate();
+    ngw.generate();
     System.out.print("(" + curr.x + "," + curr.y + "): ");
     System.out.println(count + " moves to get from agent to target");
   }
