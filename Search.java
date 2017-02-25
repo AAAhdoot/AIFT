@@ -1,6 +1,6 @@
 public class Search{
 	static GridWorld gw = new GridWorld();
-	static BinaryHeap heap = new BinaryHeap();
+	static BinaryHeap heap;
   	static int COST = 1; //currently
   	static int MAXINDEX = gw.CAPACITY-1;
 
@@ -43,6 +43,13 @@ public class Search{
 			ngw.grid[start.x][start.y].g_value = 0;
 			ngw.grid[start.x][start.y].search = counter;
 			goal.g_value = Integer.MAX_VALUE;
+			heap = new BinaryHeap();
+			for(int i=0;i<ngw.CAPACITY;i++){
+  				for(int j=0;j<ngw.CAPACITY;j++){
+  					ngw.grid[i][j].inHeap = false;
+  					ngw.grid[i][j].isClosed = false;
+  				}
+  			}
 			ngw.grid[start.x][start.y].inHeap = true;
 			ngw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
 			heap.add(ngw.grid[start.x][start.y], ordering);		
@@ -50,7 +57,7 @@ public class Search{
 			Astar(ngw,goal,counter,ordering);
 			if(heap.isEmpty()){
 				System.out.println("A*'s grid");
-				ngw.generate();
+				ngw.generate(); 
 				System.out.println("Our grid");
 				gw.generate();
 				System.out.println("I cannot reach the target.");
