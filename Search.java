@@ -37,11 +37,14 @@ public class Search{
 
   public static void printPath(GridWorld ngw){
     Square curr = ngw.grid[ngw.agentx][ngw.agenty];
+    int count =0;
     while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
       System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
       curr = curr.branch;
+      count++;
     }
     System.out.print("(" + curr.x + "," + curr.y + ")");
+    System.out.println(count + " squares to get from agent to target, including agent and target");
   }
 
 	public static void repeatedAStar(GridWorld ngw,Square start, Square goal, char ordering){
