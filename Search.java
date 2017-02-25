@@ -47,7 +47,7 @@ public class Search{
 			ngw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
 			heap.add(ngw.grid[start.x][start.y], ordering);		
  		//temporary call for later
-			curr = Astar();
+			Astar(ngw,goal,counter,ordering);
 			if(heap.isEmpty()){
 				System.out.println("A*'s grid");
 				ngw.generate();
@@ -58,7 +58,7 @@ public class Search{
 			}
  			//temporary calls for later
  			traverseTree(goal, start);
- 			traverseBranch();
+ 			curr = traverseBranch(ngw,start,goal);
  			start = curr;
  		}
  		ngw.generate();
@@ -76,8 +76,7 @@ public class Search{
      		//now, we enter addFour
      		addFour(ngw,ngw.grid[curr.x][curr.y],counter,ordering);
 		}
-		return curr;
-
+		return;
 	}
 
 	public static void addFour(GridWorld ngw, Square curr,int counter, char ordering){
@@ -85,6 +84,8 @@ public class Search{
     	int y = curr.y;
     	int pg = 0;
     	pg = curr.g_value + COST;
+    	System.out.println("Starting addFour at indices " + curr.x + "," + curr.y);
+    	ngw.generate();
     	if(curr.x != 0){
     		System.out.println("Checking up");
     		if(!ngw.grid[x-1][y].isClosed && !ngw.grid[x-1][y].isBlocked){
@@ -112,7 +113,7 @@ public class Search{
     	}
 
     	if(curr.x != MAXINDEX){
-    		System.out.println("Checking up");
+    		System.out.println("Checking down");
     		if(!ngw.grid[x+1][y].isClosed && !ngw.grid[x+1][y].isBlocked){
     			if(ngw.grid[x+1][y].search < counter){
     				ngw.grid[x+1][y].g_value = Integer.MAX_VALUE;
@@ -138,7 +139,7 @@ public class Search{
     	}
 
     	if(curr.y != 0){
-    		System.out.println("Checking up");
+    		System.out.println("Checking left");
     		if(!ngw.grid[x][y-1].isClosed && !ngw.grid[x][y-1].isBlocked){
     			if(ngw.grid[x][y-1].search < counter){
     				ngw.grid[x][y-1].g_value = Integer.MAX_VALUE;
@@ -164,7 +165,7 @@ public class Search{
     	}
 
     	if(curr.y != MAXINDEX){
-    		System.out.println("Checking up");
+    		System.out.println("Checking right");
     		if(!ngw.grid[x][y+1].isClosed && !ngw.grid[x][y+1].isBlocked){
     			if(ngw.grid[x][y+1].search < counter){
     				ngw.grid[x][y+1].g_value = Integer.MAX_VALUE;
@@ -188,7 +189,18 @@ public class Search{
     		}
     	}
 
-	}
+    }
+
+    public static void cleanUp(GridWorld ngw){
+    	for(int i=0;i<ngw.CAPACITY;i++){
+    		for(int j=0;j<ngw.CAPACITY;j++){
+    			if(ngw.grid[i][j].travel == false){
+    				ngw.grid[i][j].isClosed = false;
+    			}
+    		}
+    	}
+    	return;
+    }
 
 	public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
 		Square curr;
@@ -200,8 +212,13 @@ public class Search{
 				ngw.grid[curr.x][curr.y].hasbranch = false;
 				System.out.println("traversing interrupted because the following branch is blocked: ");
 				printSq("branch",gw.grid[curr.branch.x][curr.branch.y]);
+				return ngw.grid[curr.x][curr.y];
 			}
+			curr = curr.branch;
 		}
+		System.out.println("traversing branch complete, progressed forward to indices ");
+    	printSq("curr", ngw.grid[curr.x][curr.y]);
+    	return ngw.grid[curr.x][curr.y];
 	}
 
 	public static void printSq(String name, Square square){
