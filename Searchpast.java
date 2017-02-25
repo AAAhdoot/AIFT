@@ -1,4 +1,4 @@
-public class Search{
+public class Searchpast{
 	/*
 	public static void main(String[] args){
 		//create 50 gridworlds
