@@ -39,28 +39,28 @@ public class Search{
 		return;
 	}*/
   static GridWorld gw = new GridWorld();
-  static BinaryHeap heap;
+  static BinaryHeap heap = new BinaryHeap();
   static int COST = 1; //currently
   static int MAXINDEX = gw.CAPACITY-1;
 
 
 public static void heapSetUp(GridWorld ngw){
-  heap = new BinaryHeap();
-  int count = 0;
-  for(int i=0;i<ngw.CAPACITY;i++){
-    for(int j=0;j<ngw.CAPACITY;j++){
-        ngw.grid[i][j].inHeap = false;
-        if(ngw.grid[i][j].travel == false){
-            ngw.grid[i][j].h_value = 0;
-            ngw.grid[i][j].f_value = 0;
-            ngw.grid[i][j].g_value = Integer.MAX_VALUE;
-            ngw.grid[i][j].search = 0;
-        }
-        else{
-          System.out.println(count++);
-        }
-    }
-  }
+  // heap = new BinaryHeap();
+  // int count = 0;
+  // for(int i=0;i<ngw.CAPACITY;i++){
+  //   for(int j=0;j<ngw.CAPACITY;j++){
+  //       ngw.grid[i][j].inHeap = false;
+  //       if(ngw.grid[i][j].travel == false){
+  //           ngw.grid[i][j].h_value = 0;
+  //           ngw.grid[i][j].f_value = 0;
+  //           ngw.grid[i][j].g_value = Integer.MAX_VALUE;
+  //           ngw.grid[i][j].search = 0;
+  //       }
+  //       else{
+  //         System.out.println(count++);
+  //       }
+  //   }
+  // }
 }
 
 public static void cleanUp(GridWorld ngw){
@@ -95,7 +95,6 @@ public static void traverseTree(Square end, Square start){
 public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
   Square curr;
   curr = start;
-  curr.travel = true;
   while(curr.hasbranch==true && curr!=goal){
    // System.out.println("Traversing through square:");
    // printSq("curr",curr);
@@ -106,7 +105,16 @@ public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
       System.out.println("traversing interrupted because the following branch is blocked: ");
       printSq("branch",gw.grid[curr.branch.x][curr.branch.y]);
       cleanUp(ngw);
-      return ngw.grid[curr.x][curr.y];
+      ngw.grid[curr.x][curr.y].isClosed = true;
+      ngw.grid[curr.x][curr.y].travel = false;
+      if(curr.x!=ngw.agentx && curr.y != ngw.agenty){
+        ngw.grid[curr.x][curr.y].tree.isClosed = false;
+        ngw.grid[curr.x][curr.y].tree.travel = true;
+        return ngw.grid[curr.x][curr.y].tree;
+      }
+      else{
+        return ngw.grid[curr.x][curr.y];
+      }
     }
     curr = curr.branch; 
   }
@@ -130,7 +138,7 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
     pg = current.g_value + COST;
 
     if(current.x!=0){
-  	System.out.println("Checking left");
+  	System.out.println("Checking up");
       if(!ngw.grid[x-1][y].isClosed && !ngw.grid[x-1][y].isBlocked){
         if(ngw.grid[x-1][y].search < counter){
           ngw.grid[x-1][y].search = counter;
@@ -155,11 +163,12 @@ System.out.println("Starting addFour at indices " + current.x + "," + current.y)
         // }
       }
 else{
-          System.out.println("BLOCKED OR CLOSED!!");
+          System.out.println("BLOCKED =" + ngw.grid[x-1][y].isBlocked);
+          System.out.println("CLOSED =" + ngw.grid[x-1][y].isClosed);
     }    }
 
     if(current.x!=MAXINDEX){
-  	System.out.println("Checking right");
+  	System.out.println("Checking down");
       if(!ngw.grid[x+1][y].isClosed && !ngw.grid[x+1][y].isBlocked){
         if(ngw.grid[x+1][y].search < counter){
           ngw.grid[x+1][y].search = counter;
@@ -186,11 +195,12 @@ else{
         // }
       }
 else{
-          System.out.println("BLOCKED OR CLOSED!!");
+          System.out.println("BLOCKED =" + ngw.grid[x+1][y].isBlocked);
+          System.out.println("CLOSED =" + ngw.grid[x+1][y].isClosed);
     }   }
 
    if(current.y!=0){
-  	System.out.println("Checking down");
+  	System.out.println("Checking left");
     if(!ngw.grid[x][y-1].isBlocked && !ngw.grid[x][y-1].isClosed){
       if(ngw.grid[x][y-1].search < counter){
         ngw.grid[x][y-1].search = counter;
@@ -216,13 +226,14 @@ else{
       //    System.out.println(ngw.grid[x][y-1].g_value + "," + pg);
       // }
     }else{
-          System.out.println("BLOCKED OR CLOSED!!");
+          System.out.println("BLOCKED =" + ngw.grid[x][y-1].isBlocked);
+          System.out.println("CLOSED =" + ngw.grid[x][y-1].isClosed);
     }
   }
 
 
   if(current.y!=MAXINDEX){
-  	System.out.println("Checking up");
+  	System.out.println("Checking right");
     if(!ngw.grid[x][y+1].isBlocked && !ngw.grid[x][y+1].isClosed){
       if(ngw.grid[x][y+1].search < counter){
         ngw.grid[x][y+1].search = counter;
@@ -247,9 +258,12 @@ else{
       // }
     }
 else{
-          System.out.println("BLOCKED OR CLOSED!!");
-    }  }
+          System.out.println("BLOCKED =" + ngw.grid[x][y+1].isBlocked);
+          System.out.println("CLOSED =" + ngw.grid[x][y+1].isClosed);
+    }  
+  }
   System.out.println();
+  ngw.generate();
   return;
   }
 
@@ -263,6 +277,14 @@ else{
      ngw.grid[current.x][current.y].isClosed = true;
      addFour(ngw,ngw.grid[current.x][current.y],counter,ordering);
       if(heap.isEmpty()){
+        // if(ngw.grid[current.x][current.y].hastree && !ngw.grid[current.x][current.y].tree.isBlocked && 
+        //   !sqEquals(ngw.grid[current.x][current.y],ngw.grid[ngw.agentx][ngw.agenty])){
+        //   ngw.grid[current.x][current.y].isClosed = true;
+        //   ngw.grid[current.x][current.y].tree.isClosed = false;
+        //   heap.add(ngw.grid[current.x][current.y].tree, ordering);
+        //   continue;
+        // }
+        System.out.println("HEAP IS EMPTY IN ASTAR");
         return;
      }
    }
@@ -276,7 +298,7 @@ else{
       System.out.println("Starting repeatedAStar at " + start.x + "," + start.y);
     while(!sqEquals(start,goal)){
       counter++;
-      heapSetUp(ngw);
+      //heapSetUp(ngw);
     //    System.out.println("Counter = " + counter + " Currently at indices ( " + start.x + "," + start.y + ")" );
       ngw.grid[start.x][start.y].g_value = 0;
       ngw.grid[start.x][start.y].search = counter;
@@ -297,6 +319,7 @@ else{
       current = traverseBranch(ngw,start,goal);
       printSq("current",current);
       if(counter>gw.CAPACITY*gw.CAPACITY){
+        gw.generate();
         System.out.println("INFINITE LOOPING");
         return;
       }

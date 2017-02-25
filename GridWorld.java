@@ -83,7 +83,6 @@ public class GridWorld{
 		} while ((agentx == targetx && agenty == targety) || this.grid[targetx][targety].isBlocked == true);
 		
 		//System.out.println(numblocked);
-		this.grid[agentx][agenty].travel = true;
 		this.grid[targetx][targety].travel = true;
 
 		return;
