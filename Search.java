@@ -45,25 +45,21 @@ public class Search{
         }
       }
 
-      gw.agentx = 2;
-      gw.agenty = 2;
+      gw.agentx = 1;
+      gw.agenty = 0;
       gw.targetx = 4;
-      gw.targety = 4;
+      gw.targety = 0;
 
-      gw.grid[4][4].travel = true;
+      gw.grid[4][0].travel = true;
 
-      gw.grid[0][2].isBlocked = true;
       gw.grid[0][4].isBlocked = true;
-      gw.grid[1][0].isBlocked = true;
-      gw.grid[1][4].isBlocked = true;
-      gw.grid[2][4].isBlocked = true;
+      gw.grid[1][2].isBlocked = true;
+      gw.grid[2][2].isBlocked = true;
+      gw.grid[3][0].isBlocked = true;
       gw.grid[3][1].isBlocked = true;
-      gw.grid[3][3].isBlocked = true;
-      gw.grid[4][0].isBlocked = true;
-
-       System.out.println(gw.grid[3][2].isBlocked);
-      System.out.println(gw.grid[4][2].isBlocked);
-      System.out.println(gw.grid[4][3].isBlocked);
+      gw.grid[3][2].isBlocked = true;
+      gw.grid[4][4].isBlocked = true;
+      //gw.grid[4][0].isBlocked = true;
 
   		GridWorld ngw = new GridWorld(gw.agentx,gw.agenty,gw.targetx,gw.targety);
 
@@ -165,7 +161,7 @@ public class Search{
     	//System.out.println("Starting addFour at indices " + curr.x + "," + curr.y);
     	//ngw.generate();
     	if(curr.x != 0){
-    		//System.out.println("Checking up");
+    		System.out.println("Checking up");
     		if(!ngw.grid[x-1][y].isClosed && !ngw.grid[x-1][y].isBlocked){
     			if(ngw.grid[x-1][y].search < counter){
     				ngw.grid[x-1][y].g_value = Integer.MAX_VALUE;
