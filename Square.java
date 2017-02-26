@@ -31,14 +31,6 @@ public class Square{
 		this.travel = false;
 	}
 
-	public int calculate_h(Square goal){
-		this.h_value = Math.abs(this.x - goal.x) + Math.abs(this.y - goal.y);
-		return this.h_value;
-	}
-
-	public void setIsBlocked(){
-
-	}
 }
 
 // x-coordinate and y-coordinate correspond to the indices in the matrix/gridworld?!?!

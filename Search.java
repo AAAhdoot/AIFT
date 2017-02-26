@@ -7,7 +7,7 @@ public class Search{
   static int ssucc = 0;
   static int gsucc = 0;
   static int smallexpand = 0;
-  static int bigexpand = 0;
+  static int bigexpand = 1;
   static int COST = 1; //currently
   static int MAXINDEX = gw.CAPACITY-1;
   static int rfexpand = 0;
@@ -15,6 +15,7 @@ public class Search{
   static boolean backwards = false;
   static int expanded = 0;
   static boolean adaptive = false;
+  static Square path;
 
   public static void printSq(String name, Square square){
     System.out.println(name + "=(" + square.x + "," + square.y + ")");
@@ -31,28 +32,40 @@ public class Search{
       //return the head of the new linked list.
   }
 
-  public static void main (String[] args){
-    expanded = 0;
-    adaptive = true;
-    SquareNode curr;
-    GridWorld temp = new GridWorld(gw.agentx, gw.agenty, gw.targetx, gw.targety);
-    for(int i=0;i<5;i++){
-        repeatedForwardAStar(temp, temp.grid[temp.agentx][temp.agenty], temp.grid[temp.targetx][temp.targety], 'g');
-        curr = head;
-        while(curr != null){
-          curr.square.h_value = temp.grid[gw.targetx][gw.targety].g_value - curr.square.g_value;
-          temp.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
-          curr = curr.next;
-        }
-        System.out.println("Number expanded is: " + expanded);
-        System.out.println("GENERATING ORIGINAL FIRST");
-        //temp.generate();
-        temp = new GridWorld(temp);
-        System.out.println("GENERATING TEMP");
-        //temp.generate();
-        expanded = 0;
-        head = null;
-    }
+public static void main(String []args){
+  GridWorld temp = new GridWorld(gw);
+  repeatedForwardAStar(temp, temp.grid[temp.agentx][temp.agenty], temp.grid[temp.targetx][temp.targety], 'g');
+  //temp.generate();
+  //gw.generate();
+  System.out.println(bigexpand);
+
+}
+
+
+  // public static void main (String[] args){
+  //   expanded = 0;
+  //   adaptive = true;
+  //   SquareNode curr;
+  //   GridWorld temp = new GridWorld(gw.agentx, gw.agenty, gw.targetx, gw.targety);
+  //   for(int i=0;i<5;i++){
+  //       repeatedForwardAStar(temp, temp.grid[temp.agentx][temp.agenty], temp.grid[temp.targetx][temp.targety], 'g');
+  //       curr = head;
+  //       while(curr != null){
+  //         curr.square.h_value = temp.grid[gw.targetx][gw.targety].g_value - curr.square.g_value;
+  //         temp.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
+  //         curr = curr.next;
+  //       }
+  //       System.out.println("Number expanded is: " + expanded);
+  //       System.out.println("GENERATING ORIGINAL FIRST");
+  //       //temp.generate();
+  //       temp = new GridWorld(temp);
+  //       System.out.println("GENERATING TEMP");
+  //       //temp.generate();
+  //       expanded = 0;
+  //       head = null;
+  //   }
+
+
 
 
 
@@ -82,7 +95,7 @@ public class Search{
    //    temp3.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
    //    curr = curr.next;
    //  }
-}
+//}
 
 
     /*
@@ -318,6 +331,9 @@ public class Search{
   public static void repeatedForwardAStar(GridWorld ngw,Square start, Square goal, char ordering){
     int counter = 0;
     Square curr;
+    ngw.grid[start.x][start.y].travel = true;
+    ngw.grid[goal.x][goal.y].travel = true;
+
     while(!sqEquals(start,goal)){
      counter++;
      if(counter > 25){
@@ -335,7 +351,7 @@ public class Search{
    }
    head = null;
    ngw.grid[start.x][start.y].inHeap = true;
-   ngw.grid[start.x][start.y].f_value = start.g_value + start.calculate_h(goal);
+   ngw.grid[start.x][start.y].f_value = ngw.grid[start.x][start.y].g_value + ngw.grid[start.x][start.y].h_value;
    heap.add(ngw.grid[start.x][start.y], ordering);		
  		//temporary call for later
    Astar(ngw,goal,counter,ordering);
@@ -343,7 +359,7 @@ public class Search{
 				//System.out.println("A*'s grid");
 				//ngw.generate(); 
 				//System.out.println("Our grid");
-				//gw.generate();
+				gw.generate();
     if(ordering == 'g'){
       gfail++;
     }
@@ -355,15 +371,15 @@ public class Search{
     return;
   }
  			//temporary calls for later
-  traverseTree(goal, start);
+  traverseTree(ngw,goal, start);
   curr = traverseBranch(ngw,start,goal);
   start = curr;
 }
 printPath(ngw);
  		    //System.out.println("A*'s grid");
         //ngw.generate(); 
-        //System.out.println("Our grid");
-        //gw.generate();
+        System.out.println("Our grid");
+        gw.generate();
 System.out.println("Arrived at " + start.x + "," + start.y);
 if(ordering == 's'){
   ssucc++;
@@ -394,7 +410,7 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
     }
     head = null;
     ngw.grid[goal.x][goal.y].inHeap = true;
-    ngw.grid[goal.x][goal.y].f_value = goal.g_value + goal.calculate_h(start);
+    ngw.grid[goal.x][goal.y].f_value = goal.g_value + goal.h_value;
     heap.add(ngw.grid[goal.x][goal.y], ordering);   
     //temporary call for later
     Astar(ngw,start,counter,ordering);
@@ -402,7 +418,7 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
         //System.out.println("A*'s grid");
         //ngw.generate(); 
         //System.out.println("Our grid");
-        //gw.generate();
+        gw.generate();
       if(ordering == 'g'){
         gfail++;
       }
@@ -414,7 +430,7 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
       return;
     }
       //temporary calls for later
-    traverseTree(start, goal);
+    traverseTree(ngw,start, goal);
     curr = traverseBranch(ngw,goal,start);
     goal = curr;
   }
@@ -422,7 +438,7 @@ public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal
         //System.out.println("A*'s grid");
         //ngw.generate(); 
         //System.out.println("Our grid");
-        //gw.generate();
+        gw.generate();
   System.out.println("Arrived at " + goal.x + "," + goal.y);
   if(ordering == 's'){
     ssucc++;
@@ -459,6 +475,9 @@ public static void Astar(GridWorld ngw, Square goal, int counter, char ordering)
      		//now, we enter addFour
       //System.out.println("ENTERING ADDFOUR FOR INDICES " + curr.x + "," + curr.y);
        addFour(ngw,ngw.grid[curr.x][curr.y],counter,ordering);
+     }
+     if(!heap.isEmpty()){
+      heap.remove(ordering);
      }
      return;
    }
@@ -618,7 +637,7 @@ else{
 
 }
 
-public static void traverseTree(Square end, Square start){
+public static void traverseTree(GridWorld ngw, Square end, Square start){
   Square curr;
   curr = end;
       //System.out.println("Returning from square ");
@@ -627,9 +646,10 @@ public static void traverseTree(Square end, Square start){
       //printSq("start",start);
       //System.out.println(curr.hastree);
   while(curr.hastree==true && curr!=start){
-    curr.tree.branch = curr;
+    ngw.grid[curr.x][curr.y].tree.branch = ngw.grid[curr.x][curr.y];
+    //System.out.println("Going through trees from square " + curr.x + "," + curr.y + " to square "+ curr.tree.x + "," + curr.tree.y);
     curr = curr.tree;
-    curr.hasbranch = true;
+    ngw.grid[curr.x][curr.y].hasbranch = true;
   }
       //System.out.println("traversing tree complete, backtracked to indices ");
       //printSq("curr", curr);
@@ -643,8 +663,8 @@ public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
      //  System.out.println(ngw.grid[3][2].isBlocked);
      //  System.out.println(ngw.grid[4][2].isBlocked);
      //  System.out.println(ngw.grid[4][3].isBlocked);
-  Square curr;
-  curr = start;
+  //sqhead = start;
+  Square curr = start;
     //printPath(ngw);
   while(curr.hasbranch == true && curr != goal){
    if(gw.grid[curr.branch.x][curr.branch.y].isBlocked){
@@ -658,8 +678,11 @@ public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
         //printPath(ngw);
 				//ngw.generate();
         // return ngw.grid[curr.x][curr.y];
-    return ngw.grid[ngw.agentx][ngw.agenty];
+    return ngw.grid[curr.x][curr.y];
   }
+  //ngw.grid[curr.x][curr.y].travel = true;
+  //sqhead.branch = ngw.grid[curr.branch.x][curr.branch.y];
+  //System.out.println("Going through branches from square " + curr.x + "," + curr.y + " to square "+ curr.branch.x + "," + curr.branch.y);
   curr = curr.branch;
 }
 		//System.out.println("traversing branch complete, progressed forward to indices ");
@@ -670,8 +693,9 @@ return ngw.grid[curr.x][curr.y];
 public static void printPath(GridWorld ngw){
   Square curr = ngw.grid[ngw.agentx][ngw.agenty];
   int count =0;
+
   while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
-      //System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
+      System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
     curr.travel = true;
       //gw.grid[curr.x][curr.y].travel = true;
     curr = curr.branch;

@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 5;
+	int CAPACITY = 3;
 	Square[][] grid;
 	int agentx;
 	int agenty;
@@ -18,25 +18,25 @@ public class GridWorld{
 		//long endTime = System.currentTimeMillis();
 		//System.out.println("That took " + (endTime - startTime) + " milliseconds");
 	}
-	public GridWorld(int agentx, int agenty, int targetx, int targety){
-		this.grid = new Square[CAPACITY][CAPACITY];
-		for(int i=0;i<CAPACITY;i++){
-			for(int j=0;j<CAPACITY;j++){
-				this.grid[i][j] = new Square();
-			}
-		}
-		this.agentx = agentx;
-		this.agenty = agenty;
-		this.targetx = targetx;
-		this.targety = targety;
-		for(int i=0;i<CAPACITY;i++){
-			for(int j=0;j<CAPACITY;j++){
-				this.grid[i][j].isBlocked = false;
-				this.grid[i][j].x = i;
-				this.grid[i][j].y = j;
-			}
-		}
-	}
+	// public GridWorld(int agentx, int agenty, int targetx, int targety){
+	// 	this.grid = new Square[CAPACITY][CAPACITY];
+	// 	for(int i=0;i<CAPACITY;i++){
+	// 		for(int j=0;j<CAPACITY;j++){
+	// 			this.grid[i][j] = new Square();
+	// 		}
+	// 	}
+	// 	this.agentx = agentx;
+	// 	this.agenty = agenty;
+	// 	this.targetx = targetx;
+	// 	this.targety = targety;
+	// 	for(int i=0;i<CAPACITY;i++){
+	// 		for(int j=0;j<CAPACITY;j++){
+	// 			this.grid[i][j].isBlocked = false;
+	// 			this.grid[i][j].x = i;
+	// 			this.grid[i][j].y = j;
+	// 		}
+	// 	}
+	// }
 
 	public GridWorld(GridWorld prev){
 		this.grid = new Square[CAPACITY][CAPACITY];
@@ -63,6 +63,7 @@ public class GridWorld{
 				this.grid[i][j].isBlocked = false;
 				this.grid[i][j].x = i;
 				this.grid[i][j].y = j;
+
 				// with 30% probability mark unblocked
 				// with 70% probability mark unblocked
 				chance = (int)(Math.random() * 101);
@@ -100,6 +101,12 @@ public class GridWorld{
 		
 		//System.out.println(numblocked);
 		this.grid[targetx][targety].travel = true;
+
+		for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
+				this.grid[i][j].h_value = Math.abs(i - targetx) + Math.abs(j - targety);
+			}
+		}
 
 		return;
 	}

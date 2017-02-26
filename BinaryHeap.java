@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.*;
 
 public class BinaryHeap extends PriorityQueue {
-    private static final int DEFAULT_CAPACITY = 25;
+    private static final int DEFAULT_CAPACITY = 9;
     Square[] array;
     int size;
     
@@ -22,7 +22,7 @@ public class BinaryHeap extends PriorityQueue {
      */
     public void add(Square square,char ordering) {
         // grow array if needed
-        //System.out.println("ADDING SQUARE " + square.x +"," + square.y + " TO THE HEAP, size of heap about to be " + (this.size+1));
+        System.out.println("ADDING SQUARE " + square.x +"," + square.y + " TO THE HEAP, size of heap about to be " + (this.size+1));
         //System.out.println();
         if (size >= array.length - 1) {
            // System.out.println("Size is " + size + " array.length-1 is " + (array.length - 1));
@@ -43,6 +43,7 @@ public class BinaryHeap extends PriorityQueue {
 }
 
 // //NOTE THAT THE START STATE SHOULD INITIALLY BE IN THE HEAP
+
 
 
 
@@ -75,7 +76,7 @@ public class BinaryHeap extends PriorityQueue {
     	// what do want return?
 //System.out.println("BEGINNING REMOVE");
     	Square result = peek();
-    	//System.out.println("Currently removing " + result.x + "," + result.y + " size of heap about to be " + (this.size-1));
+    	System.out.println("Currently removing " + result.x + "," + result.y + " size of heap about to be " + (this.size-1));
     	// get rid of the last leaf/decrement
     	array[1] = array[size];
     	array[size] = null;
@@ -124,6 +125,13 @@ public class BinaryHeap extends PriorityQueue {
             if ((array[index].f_value > array[smallerChild].f_value) || ((array[index].f_value == array[smallerChild].f_value)  && 
                     (array[index].g_value < array[smallerChild].g_value) )  )  {
                 swap(index, smallerChild);
+            System.out.println("Swapping square at indices " + array[index].x + "," + array[index].y);
+            System.out.println(" Containing f_value, g_value " + array[index].f_value + "," + array[index].g_value);
+            System.out.println(" WITH ");
+            System.out.println("square at indices " + array[smallerChild].x + "," + array[smallerChild].y);
+            System.out.println(" Containing f_value, g_value " + array[smallerChild].f_value + "," + array[smallerChild].g_value);
+
+
             } else {
                 // otherwise, get outta here!
                 break;
@@ -132,6 +140,23 @@ public class BinaryHeap extends PriorityQueue {
             // make sure to update loop counter/index of where last el is put
             index = smallerChild;
         }        
+if(!this.isEmpty()){
+               // System.out.println("Top of the heap now contains:");
+               // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
+               // System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
+                currentMembers();
+            }
+            else{
+                System.out.println("HEAP IS EMPTY");
+            }
+            System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
     }
     
     public void sbubbleDown() {
@@ -150,6 +175,11 @@ public class BinaryHeap extends PriorityQueue {
             
             if ((array[index].f_value > array[smallerChild].f_value) || ((array[index].f_value == array[smallerChild].f_value)  && (array[index].g_value > array[smallerChild].g_value) )  )  {
                 swap(index, smallerChild);
+                            System.out.println("Swapping square at indices " + array[index].x + "," + array[index].y);
+            System.out.println(" Containing f_value, g_value " + array[index].f_value + "," + array[index].g_value);
+            System.out.println(" WITH ");
+            System.out.println("square at indices " + array[smallerChild].x + "," + array[smallerChild].y);
+            System.out.println(" Containing f_value, g_value " + array[smallerChild].f_value + "," + array[smallerChild].g_value);
             } else {
                 // otherwise, get outta here!
                 break;
@@ -158,6 +188,23 @@ public class BinaryHeap extends PriorityQueue {
             // make sure to update loop counter/index of where last el is put
             index = smallerChild;
         }        
+if(!this.isEmpty()){
+                //System.out.println("Top of the heap now contains:");
+               // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
+                //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
+                currentMembers();
+            }
+            else{
+                System.out.println("HEAP IS EMPTY");
+            }
+    System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
     }
     
     
@@ -176,13 +223,33 @@ public class BinaryHeap extends PriorityQueue {
         //     System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             // parent/child are out of order; swap them
             swap(index, parentIndex(index));
+            System.out.println("Swapping square at indices " + array[index].x + "," + array[index].y);
+            System.out.println(" Containing f_value, g_value " + array[index].f_value + "," + array[index].g_value);
+            System.out.println(" WITH ");
+            System.out.println("square at indices " + array[parentIndex(index)].x + "," + array[parentIndex(index)].y);
+            System.out.println(" Containing f_value, g_value " + array[parentIndex(index)].f_value + "," + array[parentIndex(index)].g_value);
        //     System.out.println("Swapped  parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             index = parentIndex(index);
         //    System.out.println("index is = " + index);
             //System.out.println("Final line parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
         }    
-              //  System.out.println("POST LOOP parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
-
+if(!this.isEmpty()){
+                //System.out.println("Top of the heap now contains:");
+               // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
+                //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
+                currentMembers();
+            }
+            else{
+                System.out.println("HEAP IS EMPTY");
+            }
+    System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
     }
 
     public void sbubbleUp() {
@@ -195,24 +262,43 @@ public class BinaryHeap extends PriorityQueue {
           //   System.out.println("Bubbling Up parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             // parent/child are out of order; swap them
             swap(index, parentIndex(index));
+        System.out.println("Swapping square at indices " + array[index].x + "," + array[index].y);
+            System.out.println(" Containing f_value, g_value " + array[index].f_value + "," + array[index].g_value);
+            System.out.println(" WITH ");
+            System.out.println("square at indices " + array[parentIndex(index)].x + "," + array[parentIndex(index)].y);
+            System.out.println(" Containing f_value, g_value " + array[parentIndex(index)].f_value + "," + array[parentIndex(index)].g_value);
         //    System.out.println("Swapped  parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
             index = parentIndex(index);
         //    System.out.println("index is = " + index);
             //System.out.println("Final line parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child =  (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
-        }    
-              //  System.out.println("POST LOOP parent (indices,f_value, g_value) =  (" + parent(index).x + "," + parent(index).y + "," + parent(index).f_value + "," + parent(index).g_value + ") " + ", child = (" + array[index].x + "," + array[index].y + "," + array[index].f_value + "," + array[index].g_value + ")");
-
+        }    if(!this.isEmpty()){
+                //System.out.println("Top of the heap now contains:");
+                //System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
+                //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
+                currentMembers();
+            }
+            else{
+                System.out.println("HEAP IS EMPTY");
+            }
+    System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
+System.out.println();
     }
 
     public void currentMembers(){
-        if(this.size() == 0){
+        if(this.size == 0){
             System.out.println("Heap is empty");
             return;
         }
-        for(int i = 0; i<array.length; i++){
-            System.out.println("The current square has indices" + array[i].x + "," + array[i].y);
-            System.out.println("The current square has f value: " + array[i].f_value);
-            System.out.println("The current square has g value: " + array[i].g_value);
+        for(int i = 1; i<=this.size; i++){
+            System.out.println("The " + i + "th" + " square has indices " + this.array[i].x + "," + this.array[i].y);
+            System.out.println("f value: " + this.array[i].f_value);
+            System.out.println("g value: " + this.array[i].g_value);
             System.out.println();
         }
     }
