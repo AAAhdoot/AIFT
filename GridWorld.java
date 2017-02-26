@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 3;
+	int CAPACITY = 101;
 	Square[][] grid;
 	int agentx;
 	int agenty;

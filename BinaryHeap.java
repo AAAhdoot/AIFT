@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.*;
 
 public class BinaryHeap extends PriorityQueue {
-    private static final int DEFAULT_CAPACITY = 9;
+    private static final int DEFAULT_CAPACITY = 101*101;
     Square[] array;
     int size;
     
@@ -217,6 +217,9 @@ System.out.println();
         int index = this.size;
         
       //  System.out.println("PRE-BUBBLEUP LOOP");
+
+        //has parent ==> index > 1
+        // 
         while (hasParent(index) && 
             ((parent(index).f_value > array[index].f_value) || ((parent(index).f_value == array[index].f_value) && 
                 (parent(index).g_value < array[index].g_value) ))) {
