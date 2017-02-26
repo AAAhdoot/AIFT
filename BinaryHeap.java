@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.*;
 
 public class BinaryHeap extends PriorityQueue {
-    private static final int DEFAULT_CAPACITY = 101*101;
+    private static final int DEFAULT_CAPACITY = 16;
     Square[] array;
     int size;
     
@@ -170,12 +170,13 @@ System.out.println();
             
             // bubble with the smaller child, if I have a smaller child
             if (hasRightChild(index) && ((array[leftIndex(index)].f_value > array[rightIndex(index)].f_value) || ((array[leftIndex(index)].f_value == array[rightIndex(index)].f_value) && (array[leftIndex(index)].g_value > array[rightIndex(index)].g_value) ))) {
+                System.out.println("the smaller kid is index*2+1");
                 smallerChild = rightIndex(index);
             } 
             
             if ((array[index].f_value > array[smallerChild].f_value) || ((array[index].f_value == array[smallerChild].f_value)  && (array[index].g_value > array[smallerChild].g_value) )  )  {
                 swap(index, smallerChild);
-                            System.out.println("Swapping square at indices " + array[index].x + "," + array[index].y);
+            System.out.println("Swapping square at indices " + array[index].x + "," + array[index].y);
             System.out.println(" Containing f_value, g_value " + array[index].f_value + "," + array[index].g_value);
             System.out.println(" WITH ");
             System.out.println("square at indices " + array[smallerChild].x + "," + array[smallerChild].y);
