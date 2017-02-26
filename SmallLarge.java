@@ -19,7 +19,7 @@ public class SmallLarge{
   		for(int i = 0; i<ourgw.length; i++){
   			ourgw[i] = new GridWorld();
   			ourgw[i].populate();
-  			ourngw[i] = new GridWorld(ourgw[i].agentx,ourgw[i].agenty,ourgw[i].targetx,ourgw[i].targety);
+  			ourngw[i] = new GridWorld(ourgw[i]);
   		}
   		for(int i = 0; i<ourgw.length; i++){
   			gw = ourgw[i];
@@ -27,7 +27,7 @@ public class SmallLarge{
   			head = null;
   		}
   		for(int i = 0; i<ourngw.length; i++){
-  			ourngw[i] = new GridWorld(ourgw[i].agentx,ourgw[i].agenty,ourgw[i].targetx,ourgw[i].targety);
+  			ourngw[i] = new GridWorld(ourgw[i]);
   		}
   		head = null;
   		for(int i = 0; i<ourgw.length; i++){
