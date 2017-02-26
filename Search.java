@@ -13,6 +13,8 @@ public class Search{
   static int rfexpand = 0;
   static int rbexpand = 0;
   static boolean backwards = false;
+  static int expanded = 0;
+  static boolean adaptive = false;
 
   public static void printSq(String name, Square square){
     System.out.println(name + "=(" + square.x + "," + square.y + ")");
@@ -30,25 +32,120 @@ public class Search{
   }
 
   public static void main (String[] args){
+    expanded = 0;
+    adaptive = true;
+    SquareNode curr;
     GridWorld temp = new GridWorld(gw.agentx, gw.agenty, gw.targetx, gw.targety);
+    for(int i=0;i<5;i++){
+        repeatedForwardAStar(temp, temp.grid[temp.agentx][temp.agenty], temp.grid[temp.targetx][temp.targety], 'g');
+        curr = head;
+        while(curr != null){
+          curr.square.h_value = temp.grid[gw.targetx][gw.targety].g_value - curr.square.g_value;
+          temp.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
+          curr = curr.next;
+        }
+        System.out.println("Number expanded is: " + expanded);
+        System.out.println("GENERATING ORIGINAL FIRST");
+        //temp.generate();
+        temp = new GridWorld(temp);
+        System.out.println("GENERATING TEMP");
+        //temp.generate();
+        expanded = 0;
+        head = null;
+    }
+
+
+
+   //  GridWorld temp2 = new GridWorld(gw.agentx, gw.agenty, gw.targetx, gw.targety);
+   //  temp2 = temp;
+   //  temp2.generate();
+   //  GridWorld temp3 = new GridWorld(gw.agentx, gw.agenty, gw.targetx, gw.targety);
+   //  temp3 = temp;
+   //  temp.generate();
+   //  System.out.println();
+   //  gw.generate();
+   //  repeatedForwardAStar(temp, temp.grid[temp.agentx][temp.agenty], temp.grid[temp.targetx][temp.targety], 'g');
+   //  System.out.println("Number expanded is: " + expanded);
+   //  expanded = 0;
+   //  SquareNode curr = head;
+   //  while(curr != null){
+   //    curr.square.h_value = temp.grid[gw.targetx][gw.targety].g_value - curr.square.g_value;
+   //    temp2.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
+   //    curr = curr.next;
+   //  }
+   //  repeatedForwardAStar(temp2, temp2.grid[temp2.agentx][temp2.agenty], temp2.grid[temp2.targetx][temp2.targety], 'g');
+   //  System.out.println("Number expanded is: " + expanded);
+   //  expanded = 0;
+   // curr = head;
+   //  while(curr != null){
+   //    curr.square.h_value = temp2.grid[gw.targetx][gw.targety].g_value - curr.square.g_value;
+   //    temp3.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
+   //    curr = curr.next;
+   //  }
+}
+
+
+    /*
+    GridWorld temp2 = new GridWorld();
+    temp2.targetx = gw.targetx;
+    temp2.targety = gw.targety;
+    for(int i = 0; i < temp2.grid.length; i++){
+      for(int j = 0; j < temp2.grid[i].length; j++){
+        temp2.grid[i][j].travel = false;
+      }
+    }*/
+    /*
+    temp2.grid[gw.targetx][gw.targety].travel = true;
+    GridWorld temp3 = new GridWorld();
+    temp3.targetx = gw.targetx;
+    temp3.targety = gw.targety;
+    for(int i = 0; i < temp3.grid.length; i++){
+      for(int j = 0; j < temp3.grid[i].length; j++){
+        temp3.grid[i][j].travel = false;
+      }
+    }
+    temp3.grid[gw.targetx][gw.targety].travel = true;
+    */
+
+    /*
     temp.generate();
     System.out.println();
     gw.generate();
     repeatedForwardAStar(temp, temp.grid[temp.agentx][temp.agenty], temp.grid[temp.targetx][temp.targety], 'g');
+    System.out.println("Number expanded is: " + expanded);
     SquareNode curr = head;
     if(curr==null){
       System.out.println("curr is null");
     }
+    expanded = 0;
+    head = null;
     while(curr != null){
-      //System.out.println("Inf loop");
       System.out.println("H_VALUE IS INITIALLY " + curr.square.h_value);
       curr.square.h_value = temp.grid[gw.targetx][gw.targety].g_value - curr.square.g_value;
-      temp.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
+      temp2.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
+      System.out.println("H_VALUE IS NOW " + curr.square.g_value);
+      curr = curr.next;
+    }*/
+
+    /*
+    temp2.generate();
+    repeatedForwardAStar(temp2, temp2.grid[temp2.agentx][temp2.agenty], temp2.grid[temp2.targetx][temp2.targety], 'g');
+    System.out.println("Number expanded is: " + expanded);
+    expanded = 0;
+    curr = head;
+    if(curr==null){
+      System.out.println("curr is null");
+    }
+    while(curr != null){
+      System.out.println("H_VALUE IS INITIALLY " + curr.square.h_value);
+      curr.square.h_value = temp2.grid[gw.targetx][gw.targety].g_value - curr.square.g_value;
+      temp3.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
       System.out.println("H_VALUE IS NOW " + curr.square.g_value);
       curr = curr.next;
     }
-
-    //update h values
+    temp3.generate();
+    repeatedForwardAStar(temp3, temp3.grid[temp3.agentx][temp3.agenty], temp3.grid[temp3.targetx][temp3.targety], 'g');
+  
   }
 
   /*
@@ -382,6 +479,10 @@ public static void Astar(GridWorld ngw, Square goal, int counter, char ordering)
       bigexpand++;
     }
 
+    if(adaptive == true){
+      expanded++;
+    }
+
     if(backwards == false){
       rfexpand++;
     }
@@ -576,7 +677,7 @@ public static void printPath(GridWorld ngw){
     curr = curr.branch;
     count++;
   }
-  ngw.generate();
+  //ngw.generate();
   System.out.print("(" + curr.x + "," + curr.y + "): ");
   System.out.println(count + " moves to get from agent to target");
 }

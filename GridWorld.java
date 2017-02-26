@@ -38,6 +38,22 @@ public class GridWorld{
 		}
 	}
 
+	public GridWorld(GridWorld prev){
+		this.grid = new Square[CAPACITY][CAPACITY];
+		this.agentx = prev.agentx;
+		this.agenty = prev.agenty;
+		this.targetx = prev.targetx;
+		this.targety = prev.targety;
+		for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
+				this.grid[i][j] = new Square();
+				this.grid[i][j].h_value = prev.grid[i][j].h_value;
+				this.grid[i][j].x = i;
+				this.grid[i][j].y = j;
+			}
+		}
+	}
+
 	public void populate(){
 		int chance = 0;
 		int numUnblocked = 0; //stores number of unblocked cells, need at least two

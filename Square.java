@@ -2,7 +2,6 @@ public class Square{
 	boolean isClosed;
 	boolean isBlocked;
 	boolean inHeap;
-	int place;
 	int g_value;
 	int h_value;
 	int f_value;
@@ -19,7 +18,6 @@ public class Square{
 		this.isClosed = false;
 		this.isBlocked = false;
 		this.inHeap = false;
-		this.place = 0;
 		this.g_value = Integer.MAX_VALUE;
 		this.h_value = 0;
 		this.f_value = 0;
