@@ -336,9 +336,7 @@ public static void main(String []args){
 
     while(!sqEquals(start,goal)){
      counter++;
-     if(counter > 25){
-      return;
-     }
+
      ngw.grid[start.x][start.y].g_value = 0;
      ngw.grid[start.x][start.y].search = counter;
      goal.g_value = Integer.MAX_VALUE;
@@ -394,62 +392,66 @@ return;
 }
 
 public static void repeatedBackwardAStar(GridWorld ngw,Square start, Square goal, char ordering){
-  int counter = 0;
-  Square curr;
-  while(!sqEquals(goal,start)){
-    counter++;
-    ngw.grid[goal.x][goal.y].g_value = 0;
-    ngw.grid[goal.x][goal.y].search = counter;
-    start.g_value = Integer.MAX_VALUE;
-    heap = new BinaryHeap();
-    for(int i=0;i<ngw.CAPACITY;i++){
+    int counter = 0;
+    Square curr;
+    ngw.grid[start.x][start.y].travel = true;
+    ngw.grid[goal.x][goal.y].travel = true;
+
+    while(!sqEquals(goal,start)){
+     counter++;
+
+     ngw.grid[goal.x][goal.y].g_value = 0;
+     ngw.grid[goal.x][goal.y].search = counter;
+     start.g_value = Integer.MAX_VALUE;
+     heap = new BinaryHeap();
+     for(int i=0;i<ngw.CAPACITY;i++){
       for(int j=0;j<ngw.CAPACITY;j++){
-        ngw.grid[i][j].inHeap = false;
-        ngw.grid[i][j].isClosed = false;
-      }
-    }
-    head = null;
-    ngw.grid[goal.x][goal.y].inHeap = true;
-    ngw.grid[goal.x][goal.y].f_value = goal.g_value + goal.h_value;
-    heap.add(ngw.grid[goal.x][goal.y], ordering);   
+       ngw.grid[i][j].inHeap = false;
+       ngw.grid[i][j].isClosed = false;
+     }
+   }
+   head = null;
+   ngw.grid[goal.x][goal.y].inHeap = true;
+   ngw.grid[goal.x][goal.y].f_value = ngw.grid[goal.x][goal.y].g_value + ngw.grid[goal.x][goal.y].h_value;
+   heap.add(ngw.grid[start.x][start.y], ordering);    
     //temporary call for later
-    Astar(ngw,start,counter,ordering);
-    if(heap.isEmpty()){
+   Astar(ngw,start,counter,ordering);
+   if(heap.isEmpty()){
         //System.out.println("A*'s grid");
         //ngw.generate(); 
         //System.out.println("Our grid");
         gw.generate();
-      if(ordering == 'g'){
-        gfail++;
-      }
-      if(ordering == 's'){
-        sfail++;
-      }
-      System.out.println("I cannot reach the target.");
-      System.out.println();
-      return;
+    if(ordering == 'g'){
+      gfail++;
     }
-      //temporary calls for later
-    traverseTree(ngw,start, goal);
-    curr = traverseBranch(ngw,goal,start);
-    goal = curr;
+    if(ordering == 's'){
+      sfail++;
+    }
+    System.out.println("I cannot reach the target.");
+    System.out.println();
+    return;
   }
-  printPath(ngw);
+      //temporary calls for later
+  traverseTree(ngw,start, goal);
+  curr = traverseBranch(ngw,goal,start);
+  goal = curr;
+}
+printPath(ngw);
         //System.out.println("A*'s grid");
         //ngw.generate(); 
-        //System.out.println("Our grid");
+        System.out.println("Our grid");
         gw.generate();
-  System.out.println("Arrived at " + goal.x + "," + goal.y);
-  if(ordering == 's'){
-    ssucc++;
-  }
-  if(ordering == 'g'){
-    gsucc++;
-  }
+System.out.println("Arrived at " + goal.x + "," + goal.y);
+if(ordering == 's'){
+  ssucc++;
+}
+if(ordering == 'g'){
+  gsucc++;
+}
       //printPath(ngw);
-  System.out.println("I reached the target.");
-  System.out.println();
-  return;
+System.out.println("I reached the target.");
+System.out.println();
+return;
 }
 
 public static void Astar(GridWorld ngw, Square goal, int counter, char ordering){
