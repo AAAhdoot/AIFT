@@ -16,14 +16,9 @@ public class SquareNode{
 		}
 	}
 
-	public boolean sqEquals(Square a, Square b){
+	public static boolean sqEquals(Square a, Square b){
       return ((a.x == b.x) && (a.y == b.y));
     }
 
-    public SquareNode addNode(Square square, SquareNode head){
-    	SquareNode newHead = new SquareNode(square);
-    	newHead.next = head;
-    	return newHead;
-    	//return the head of the new linked list.
-    }
+
 }
