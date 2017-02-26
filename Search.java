@@ -43,6 +43,7 @@ public class Search{
       //System.out.println("Inf loop");
       System.out.println("H_VALUE IS INITIALLY " + curr.square.h_value);
       curr.square.h_value = temp.grid[gw.targetx][gw.targety].g_value - curr.square.g_value;
+      temp.grid[curr.square.x][curr.square.y].h_value = curr.square.h_value;
       System.out.println("H_VALUE IS NOW " + curr.square.g_value);
       curr = curr.next;
     }
