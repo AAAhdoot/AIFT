@@ -107,7 +107,6 @@ public class GridWorld{
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j].h_value = Math.abs(i - targetx) + Math.abs(j - targety);
-				this.grid[i][j].bh_value = Math.abs(i - agentx) + Math.abs(j - agenty);
 			}
 		}
 
