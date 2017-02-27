@@ -29,7 +29,6 @@ public class ForwardBackward{
       System.out.println();
       System.out.println();
       System.out.println();
-      System.out.println("STARTING BACKWARDS");
       //change h values of the elements
   		// for(int i = 0; i<ourngw.length; i++){
   		// 	ourngw[i] = new GridWorld(ourgw[i]);

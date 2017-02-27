@@ -33,7 +33,7 @@ public class AdaptiveA{
       adaptive = true;
   		for(int i = 0; i<ourgw.length; i++){
   			gw = ourgw[i];
-  			repeatedForwardAStar(ourngw[i],ourngw[i].grid[ourngw[i].agentx][ourngw[i].agenty], ourngw[i].grid[ourngw[i].targetx][ourngw[i].targety],'g');
+  			AdaptiveAstar(ourngw[i],ourngw[i].grid[ourngw[i].agentx][ourngw[i].agenty], ourngw[i].grid[ourngw[i].targetx][ourngw[i].targety],'g');
   			head = null;
   		}
 
@@ -251,4 +251,232 @@ public class AdaptiveA{
   		System.out.print("(" + curr.x + "," + curr.y + "): ");
   		System.out.println(count + " moves to get from agent to target");
   	}
+
+
+
+public static void renew(GridWorld ngw){
+      for(int i=0;i<ngw.CAPACITY;i++){
+      for(int j=0;j<ngw.CAPACITY;j++){
+    ngw.grid[i][j].isClosed = false;
+    //ngw.grid[i][j].isBlocked = false;
+    ngw.grid[i][j].inHeap = false;
+    ngw.grid[i][j].g_value = Integer.MAX_VALUE;
+    //this.h_value = 0;
+    ngw.grid[i][j].f_value = 0;
+    ngw.grid[i][j].tree = null;
+    ngw.grid[i][j].branch = null;
+    ngw.grid[i][j].search= 0;
+    //this.x = -1;
+    //this.y = -1;
+    ngw.grid[i][j].hastree = false;
+    ngw.grid[i][j].hasbranch = false;
+    ngw.grid[i][j].travel = false;
+      }
+   }
+}
+
+
+
+public static void AdaptiveAstar(GridWorld ngw,Square start, Square goal, char ordering){
+  adaptive = true;
+  Square curr;
+  head =null;
+
+
+     ngw.grid[start.x][start.y].g_value = 0;
+     //ngw.grid[start.x][start.y].search = counter;
+     ngw.grid[goal.x][goal.y].g_value = Integer.MAX_VALUE;
+     heap = new BinaryHeap();
+     for(int i=0;i<ngw.CAPACITY;i++){
+      for(int j=0;j<ngw.CAPACITY;j++){
+       ngw.grid[i][j].inHeap = false;
+       ngw.grid[i][j].isClosed = false;
+     }
+   }
+   expanded=0;
+   ngw.grid[start.x][start.y].inHeap = true;
+   ngw.grid[start.x][start.y].f_value = ngw.grid[start.x][start.y].g_value + ngw.grid[start.x][start.y].h_value;
+   heap.add(ngw.grid[start.x][start.y], ordering);  
+
+  while(!heap.isEmpty() && ngw.grid[goal.x][goal.y].g_value > (curr = heap.peek()).f_value){
+   // System.out.println("AStar loop");
+      // System.out.print("Goal G is: ");
+      // System.out.println(ngw.grid[goal.x][goal.y].g_value);
+      // System.out.print("Curr F is: ");
+      // System.out.println(ngw.grid[curr.x][curr.y].f_value);
+      //System.out.println("ABOUT TO REMOVE INDICES " + curr.x + "," + curr.y);
+      heap.remove(ordering); //remove from top of heap
+      //System.out.println("JUST REMOVED INDICES " + curr.x + "," + curr.y);
+      ngw.grid[curr.x][curr.y].inHeap = false; //for us
+      head = addNode(ngw.grid[curr.x][curr.y], head);
+      ngw.grid[curr.x][curr.y].isClosed = true; //set closed
+        //now, we enter addFour
+     // System.out.println("ENTERING ADDFOUR FOR INDICES " + curr.x + "," + curr.y);
+       adaptiveaddFour(ngw,ngw.grid[curr.x][curr.y],ordering);
+     }
+
+      for(SquareNode ptr = head;ptr!=null;ptr=ptr.next){
+          ngw.grid[ptr.square.x][ptr.square.y].h_value = ngw.grid[ngw.agentx][ngw.agenty].g_value - ngw.grid[ptr.square.x][ptr.square.y].g_value;
+      }
+      
+
+     if(!heap.isEmpty()){
+        traverseTree(ngw,goal, start);
+        traverseBranch(ngw,start,goal);
+        printPath(ngw);
+        System.out.println(expanded);
+     }
+     else{
+     // System.out.println("FAIL");
+      System.out.println(expanded);
+     }
+
+
+     renew(ngw);
+
+     return;
+   }
+
+
+
+public static void adaptiveaddFour(GridWorld ngw, Square curr, char ordering){
+      // System.out.println(gw.grid[3][2].isBlocked);
+      //   System.out.println(gw.grid[4][2].isBlocked);
+      //   System.out.println(gw.grid[4][3].isBlocked);
+
+      //   System.out.println(ngw.grid[3][2].isBlocked);
+      //   System.out.println(ngw.grid[4][2].isBlocked);
+      //   System.out.println(ngw.grid[4][3].isBlocked);
+
+
+
+    if(adaptive == true){
+      expanded++;
+    }
+
+
+
+    int x = curr.x;
+    int y = curr.y;
+    int pg = 0;
+    pg = curr.g_value + COST;
+        //System.out.println("Starting addFour at indices " + curr.x + "," + curr.y);
+        //ngw.generate();
+    if(curr.x != 0){
+      //    System.out.println("Checking up");
+      if(!ngw.grid[x-1][y].isClosed && !gw.grid[x-1][y].isBlocked){
+      //  if(ngw.grid[x-1][y].search < counter){
+      //   ngw.grid[x-1][y].g_value = Integer.MAX_VALUE;
+      //   ngw.grid[x-1][y].search = counter;
+      // }
+      if(ngw.grid[x-1][y].g_value > pg){
+      //  System.out.println("g_val success");
+       ngw.grid[x-1][y].g_value = pg;
+       ngw.grid[x-1][y].tree = ngw.grid[x][y];
+       ngw.grid[x-1][y].hastree = true;
+       if(ngw.grid[x-1][y].inHeap){
+                    //System.out.println("IN ADDFOUR UP, ABOUT TO REMOVE INDICES " + (x-1) + "," + y);
+        heap.findRemove(ngw.grid[x-1][y],ordering);
+                    //System.out.println("IN ADDFOUR UP, JUST REMOVED INDICES " + (x-1) + "," + y);
+      }
+      ngw.grid[x-1][y].f_value = ngw.grid[x-1][y].g_value + ngw.grid[x-1][y].h_value;
+      heap.add(ngw.grid[x-1][y],ordering);
+      ngw.grid[x-1][y].inHeap = true;
+    }
+  }
+  else{
+        //    System.out.println("BLOCKED =" + ngw.grid[x-1][y].isBlocked);
+         //       System.out.println("CLOSED =" + ngw.grid[x-1][y].isClosed);
+  }
+
+}
+
+if(curr.x != MAXINDEX){
+     //     System.out.println("Checking down");
+  if(!ngw.grid[x+1][y].isClosed && !gw.grid[x+1][y].isBlocked){
+  //  if(ngw.grid[x+1][y].search < counter){
+  //   ngw.grid[x+1][y].g_value = Integer.MAX_VALUE;
+  //   ngw.grid[x+1][y].search = counter;
+  // }
+  if(ngw.grid[x+1][y].g_value > pg){
+  //  System.out.println("g_val success");
+   ngw.grid[x+1][y].g_value = pg;
+   ngw.grid[x+1][y].tree = ngw.grid[x][y];
+   ngw.grid[x+1][y].hastree = true;
+   if(ngw.grid[x+1][y].inHeap){
+                    //System.out.println("IN ADDFOUR DOWN, ABOUT TO REMOVE INDICES " + (x+1) + "," + y);
+     heap.findRemove(ngw.grid[x+1][y],ordering);
+                    //System.out.println("IN ADDFOUR DOWN, JUST REMOVED INDICES " + (x+1) + "," + y);
+   }
+   ngw.grid[x+1][y].f_value = ngw.grid[x+1][y].g_value + ngw.grid[x+1][y].h_value;
+   heap.add(ngw.grid[x+1][y],ordering);
+   ngw.grid[x+1][y].inHeap = true;
+ }
+}
+else{
+         //   System.out.println("BLOCKED =" + ngw.grid[x+1][y].isBlocked);
+         //       System.out.println("CLOSED =" + ngw.grid[x+1][y].isClosed);
+}
+
+}
+
+if(curr.y != 0){
+     //     System.out.println("Checking left");
+  if(!ngw.grid[x][y-1].isClosed && !gw.grid[x][y-1].isBlocked){
+  //  if(ngw.grid[x][y-1].search < counter){
+  //   ngw.grid[x][y-1].g_value = Integer.MAX_VALUE;
+  //   ngw.grid[x][y-1].search = counter;
+  // }
+  if(ngw.grid[x][y-1].g_value > pg){
+ //   System.out.println("g_val success");
+   ngw.grid[x][y-1].g_value = pg;
+   ngw.grid[x][y-1].tree = ngw.grid[x][y];
+   ngw.grid[x][y-1].hastree = true;
+   if(ngw.grid[x][y-1].inHeap){
+                  //System.out.println("IN ADDFOUR LEFT, ABOUT TO REMOVE INDICES " + x + "," + (y-1));
+    heap.findRemove(ngw.grid[x][y-1],ordering);
+                  //System.out.println("IN ADDFOUR LEFT, JUST REMOVED INDICES " + x + "," + (y-1));
+  }
+  ngw.grid[x][y-1].f_value = ngw.grid[x][y-1].g_value + ngw.grid[x][y-1].h_value;
+  heap.add(ngw.grid[x][y-1],ordering);
+  ngw.grid[x][y-1].inHeap = true;
+}
+}
+else{
+         // System.out.println("BLOCKED =" + ngw.grid[x][y-1].isBlocked);
+            //  System.out.println("CLOSED =" + ngw.grid[x][y-1].isClosed);
+}
+
+}
+
+if(curr.y != MAXINDEX){
+    //    System.out.println("Checking right");
+  if(!ngw.grid[x][y+1].isClosed && !gw.grid[x][y+1].isBlocked){
+  //  if(ngw.grid[x][y+1].search < counter){
+  //   ngw.grid[x][y+1].g_value = Integer.MAX_VALUE;
+  //   ngw.grid[x][y+1].search = counter;
+  // }
+  if(ngw.grid[x][y+1].g_value > pg){
+    //System.out.println("g_val success");
+   ngw.grid[x][y+1].g_value = pg;
+   ngw.grid[x][y+1].tree = ngw.grid[x][y];
+   ngw.grid[x][y+1].hastree = true;
+   if(ngw.grid[x][y+1].inHeap){
+                  //System.out.println("IN ADDFOUR RIGHT, ABOUT TO REMOVE INDICES " + x + "," + (y+1));
+     heap.findRemove(ngw.grid[x][y+1],ordering);
+                  //System.out.println("IN ADDFOUR RIGHT, JUST REMOVED INDICES " + x + "," + (y+1));
+
+   }
+   ngw.grid[x][y+1].f_value = ngw.grid[x][y+1].g_value + ngw.grid[x][y+1].h_value;
+   heap.add(ngw.grid[x][y+1],ordering);
+   ngw.grid[x][y+1].inHeap = true;
+ }
+}
+else{
+
+  }
+}
+
+}
+
   }
