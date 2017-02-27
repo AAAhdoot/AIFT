@@ -12,8 +12,10 @@ public class ForwardBackward{
   	
   	public static void main (String[] args){
       backwards = false;
-  		GridWorld[] ourgw = new GridWorld[50];
-  		GridWorld[] ourngw = new GridWorld[50];
+      rfexpand = 0;
+      rbexpand = 0;
+  		GridWorld[] ourgw = new GridWorld[1];
+  		GridWorld[] ourngw = new GridWorld[1];
   		for(int i = 0; i<ourgw.length; i++){
   			ourgw[i] = new GridWorld();
   			ourgw[i].populate();
@@ -24,9 +26,20 @@ public class ForwardBackward{
   			repeatedForwardAStar(ourngw[i],ourngw[i].grid[ourngw[i].agentx][ourngw[i].agenty], ourngw[i].grid[ourngw[i].targetx][ourngw[i].targety],'g');
   			head = null;
   		}
+      System.out.println();
+      System.out.println();
+      System.out.println();
+      System.out.println("STARTING BACKWARDS");
+      //change h values of the elements
   		for(int i = 0; i<ourngw.length; i++){
   			ourngw[i] = new GridWorld(ourgw[i]);
+        for(int j = 0; j<101; j++){
+          for(int k = 0; k<101; k++){
+            ourgw[i].grid[j][k].h_value = Math.abs(j - ourgw[i].agentx) + Math.abs(k - ourgw[i].agenty);
+          }
+        }
   		}
+
       backwards = true;
   		head = null;
   		for(int i = 0; i<ourgw.length; i++){
@@ -34,7 +47,6 @@ public class ForwardBackward{
   			repeatedBackwardAStar(ourngw[i],ourngw[i].grid[ourngw[i].agentx][ourngw[i].agenty], ourngw[i].grid[ourngw[i].targetx][ourngw[i].targety],'g');
   			head = null;
   		}
-
   		System.out.println("Number of expansions in Repeated Forward A*: " + rfexpand);
   		System.out.println();
   		System.out.println("Number of expansions in Repeated Backwards A*:  " + rbexpand);
@@ -75,7 +87,7 @@ public class ForwardBackward{
       head = null;
       ngw.grid[goal.x][goal.y].inHeap = true;
       ngw.grid[goal.x][goal.y].f_value = ngw.grid[goal.x][goal.y].g_value + ngw.grid[goal.x][goal.y].h_value;
-      heap.add(ngw.grid[start.x][start.y], ordering);    
+      heap.add(ngw.grid[goal.x][goal.y], ordering);    
       Astar(ngw,start,counter,ordering);
       if(heap.isEmpty()){
         gw.generate();
@@ -87,11 +99,11 @@ public class ForwardBackward{
       curr = traverseBranch(ngw,goal,start);
       goal = curr;
     }
-    printPath(ngw);
     System.out.println("Our grid");
     gw.generate();
     System.out.println("Arrived at " + goal.x + "," + goal.y);
     System.out.println("I reached the target.");
+    printPath(ngw, goal, start);
     System.out.println();
     return;
   }
@@ -129,7 +141,7 @@ public class ForwardBackward{
   			curr = traverseBranch(ngw,start,goal);
   			start = curr;
   		}
-  		printPath(ngw);
+  		printPath(ngw, start, goal);
   		System.out.println("Our grid");
   		gw.generate();
   		System.out.println("Arrived at " + start.x + "," + start.y);
@@ -262,7 +274,7 @@ public class ForwardBackward{
 
   	public static Square traverseBranch(GridWorld ngw, Square start, Square goal){
   		Square curr = start;
-  		while(curr.hasbranch == true && curr != goal){
+  		while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[goal.x][goal.y])){
   			if(gw.grid[curr.branch.x][curr.branch.y].isBlocked){
   				ngw.grid[curr.branch.x][curr.branch.y].isBlocked = true;
   				ngw.grid[curr.branch.x][curr.branch.y].hastree = false;
@@ -274,13 +286,13 @@ public class ForwardBackward{
   		return ngw.grid[curr.x][curr.y];
   	}
 
-  	public static void printPath(GridWorld ngw){
-  		Square curr = ngw.grid[ngw.agentx][ngw.agenty];
+  	public static void printPath(GridWorld ngw, Square start, Square goal){
+  		Square curr = ngw.grid[start.x][start.y];
   		int count =0;
 
-  		while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
+  		while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[goal.x][goal.y])){
   			System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
-  			curr.travel = true;
+  			ngw.grid[curr.x][curr.y].travel = true;
   			curr = curr.branch;
   			count++;
   		}
