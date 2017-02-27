@@ -18,25 +18,26 @@ public class GridWorld{
 		//long endTime = System.currentTimeMillis();
 		//System.out.println("That took " + (endTime - startTime) + " milliseconds");
 	}
-	// public GridWorld(int agentx, int agenty, int targetx, int targety){
-	// 	this.grid = new Square[CAPACITY][CAPACITY];
-	// 	for(int i=0;i<CAPACITY;i++){
-	// 		for(int j=0;j<CAPACITY;j++){
-	// 			this.grid[i][j] = new Square();
-	// 		}
-	// 	}
-	// 	this.agentx = agentx;
-	// 	this.agenty = agenty;
-	// 	this.targetx = targetx;
-	// 	this.targety = targety;
-	// 	for(int i=0;i<CAPACITY;i++){
-	// 		for(int j=0;j<CAPACITY;j++){
-	// 			this.grid[i][j].isBlocked = false;
-	// 			this.grid[i][j].x = i;
-	// 			this.grid[i][j].y = j;
-	// 		}
-	// 	}
-	// }
+	public GridWorld(int agentx, int agenty, int targetx, int targety){
+		this.grid = new Square[CAPACITY][CAPACITY];
+		for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
+				this.grid[i][j] = new Square();
+			}
+		}
+		this.agentx = agentx;
+		this.agenty = agenty;
+		this.targetx = targetx;
+		this.targety = targety;
+		for(int i=0;i<CAPACITY;i++){
+			for(int j=0;j<CAPACITY;j++){
+				this.grid[i][j].isBlocked = false;
+				this.grid[i][j].h_value = Math.abs(i - targetx) + Math.abs(j - targety);
+				this.grid[i][j].x = i;
+				this.grid[i][j].y = j;
+			}
+		}
+	}
 
 	public GridWorld(GridWorld prev){
 		this.grid = new Square[CAPACITY][CAPACITY];
@@ -44,6 +45,7 @@ public class GridWorld{
 		this.agenty = prev.agenty;
 		this.targetx = prev.targetx;
 		this.targety = prev.targety;
+		int temp;
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j] = new Square();
@@ -105,6 +107,7 @@ public class GridWorld{
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j].h_value = Math.abs(i - targetx) + Math.abs(j - targety);
+				this.grid[i][j].bh_value = Math.abs(i - agentx) + Math.abs(j - agenty);
 			}
 		}
 
@@ -154,44 +157,6 @@ public void generate() {
         }
         System.out.println("+");
     }
-
-
-
-
-	public void display(){
-		System.out.println();
-		System.out.print("  ");
-		for(int k = 0;k<CAPACITY;k++){
-				System.out.print(k + " ");
-			}
-			System.out.println();
-			System.out.print(0 + " ");
-		for(int i=0;i<CAPACITY;i++){
-			if(i>0){
-				System.out.println();
-				System.out.print(i + " ");
-
-			}
-			for(int j=0;j<CAPACITY;j++){
-				if(this.grid[i][j].isBlocked){
-					System.out.print("B ");
-				}
-				else{
-					if (i == agentx && j == agenty){
-						System.out.print("A ");
-					}
-					else if(i == targetx && j == targety){
-						System.out.print("T ");
-					}
-					else{
-						System.out.print("U ");
-					}
-				}
-			}
-		}
-		System.out.println();
-		System.out.println();
-	}
 	
 //a way to modulo this perhaps to determine the place?
 
