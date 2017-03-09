@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.*;
 
 public class BinaryHeap extends PriorityQueue {
-    private static final int DEFAULT_CAPACITY = 16;
+    private static final int DEFAULT_CAPACITY = 100;
     Square[] array;
     int size;
     
@@ -139,10 +139,10 @@ if(!this.isEmpty()){
                // System.out.println("Top of the heap now contains:");
                // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
                // System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
-                currentMembers();
+               // currentMembers();
             }
             else{
-                System.out.println("HEAP IS EMPTY");
+                //System.out.println("HEAP IS EMPTY");
             }
             
     }
@@ -176,10 +176,10 @@ if(!this.isEmpty()){
                 //System.out.println("Top of the heap now contains:");
                // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
                 //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
-                currentMembers();
+                //currentMembers();
             }
             else{
-                System.out.println("HEAP IS EMPTY");
+                //System.out.println("HEAP IS EMPTY");
             }
   
     }
@@ -213,10 +213,10 @@ if(!this.isEmpty()){
                 //System.out.println("Top of the heap now contains:");
                // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
                 //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
-                currentMembers();
+                //currentMembers();
             }
             else{
-                System.out.println("HEAP IS EMPTY");
+                //System.out.println("HEAP IS EMPTY");
             }
 
     }
@@ -240,10 +240,10 @@ if(!this.isEmpty()){
                 //System.out.println("Top of the heap now contains:");
                 //System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
                 //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
-                currentMembers();
+                //currentMembers();
             }
             else{
-                System.out.println("HEAP IS EMPTY");
+                //System.out.println("HEAP IS EMPTY");
             }
 
 

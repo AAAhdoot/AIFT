@@ -62,58 +62,48 @@ public class SmallLarge{
   	}
 
   	public static void repeatedForwardAStar(GridWorld ngw,Square start, Square goal, char ordering){
-  		int counter = 0;
-  		Square curr;
-  		ngw.grid[start.x][start.y].travel = true;
-  		ngw.grid[goal.x][goal.y].travel = true;
+      int counter = 0;
+      Square curr;
+      ngw.grid[start.x][start.y].travel = true;
+      ngw.grid[goal.x][goal.y].travel = true;
+      gw.grid[start.x][start.y].travel = true;
+      gw.grid[goal.x][goal.y].travel = true;
 
-  		while(!sqEquals(start,goal)){
-  			counter++;
-  			ngw.grid[start.x][start.y].g_value = 0;
-  			ngw.grid[start.x][start.y].search = counter;
-  			goal.g_value = Integer.MAX_VALUE;
-  			heap = new BinaryHeap();
-  			for(int i=0;i<ngw.CAPACITY;i++){
-  				for(int j=0;j<ngw.CAPACITY;j++){
-  					ngw.grid[i][j].inHeap = false;
-  					ngw.grid[i][j].isClosed = false;
-  				}
-  			}
-  			head = null;
-  			ngw.grid[start.x][start.y].inHeap = true;
-  			ngw.grid[start.x][start.y].f_value = ngw.grid[start.x][start.y].g_value + ngw.grid[start.x][start.y].h_value;
-  			heap.add(ngw.grid[start.x][start.y], ordering);		
-  			Astar(ngw,goal,counter,ordering);
-  			if(heap.isEmpty()){
-  				gw.generate();
-  				if(ordering == 'g'){
-  					gfail++;
-  				}
-  				if(ordering == 's'){
-  					sfail++;
-  				}
-  				System.out.println("I cannot reach the target.");
-  				System.out.println();
-  				return;
-  			}
-  			traverseTree(ngw,goal, start);
-  			curr = traverseBranch(ngw,start,goal);
-  			start = curr;
-  		}
-  		printPath(ngw);
-  		System.out.println("Our grid");
-  		gw.generate();
-  		System.out.println("Arrived at " + start.x + "," + start.y);
-  		if(ordering == 's'){
-  			ssucc++;
-  		}
-  		if(ordering == 'g'){
-  			gsucc++;
-  		}
-  		System.out.println("I reached the target.");
-  		System.out.println();
-  		return;
-  	}
+      while(!sqEquals(start,ngw.grid[goal.x][goal.y])){
+        counter++;
+        ngw.grid[start.x][start.y].g_value = 0;
+        ngw.grid[start.x][start.y].search = counter;
+        ngw.grid[goal.x][goal.y].g_value = Integer.MAX_VALUE;
+        heap = new BinaryHeap();
+        for(int i=0;i<ngw.CAPACITY;i++){
+          for(int j=0;j<ngw.CAPACITY;j++){
+            ngw.grid[i][j].inHeap = false;
+            ngw.grid[i][j].isClosed = false;
+          }
+        }
+        head = null;
+        ngw.grid[start.x][start.y].inHeap = true;
+        ngw.grid[start.x][start.y].f_value = ngw.grid[start.x][start.y].g_value + ngw.grid[start.x][start.y].h_value;
+        heap.add(ngw.grid[start.x][start.y], ordering);   
+        Astar(ngw,ngw.grid[goal.x][goal.y],counter,ordering);
+        if(heap.isEmpty()){
+          //gw.generate(ngw);
+          System.out.println("I cannot reach the target.");
+          System.out.println();
+          return;
+        }
+        traverseTree(ngw,ngw.grid[goal.x][goal.y], ngw.grid[start.x][start.y]);
+        curr = traverseBranch(ngw,ngw.grid[start.x][start.y],ngw.grid[goal.x][goal.y]);
+        start = curr;
+      }
+      printPath(ngw);
+      System.out.println("Our grid");
+      //gw.generate(ngw);
+      System.out.println("Arrived at " + start.x + "," + start.y);
+      System.out.println("I reached the target.");
+      System.out.println();
+      return;
+    }
 
   	public static void Astar(GridWorld ngw, Square goal, int counter, char ordering){
   		Square curr;
@@ -258,7 +248,7 @@ public class SmallLarge{
 
   		while(curr.hasbranch == true && !sqEquals(curr,ngw.grid[ngw.targetx][ngw.targety])){
   			System.out.print("(" + curr.x + "," + curr.y + ")" + "-->");
-  			curr.travel = true;
+  			gw.grid[curr.x][curr.y].travel = true;
   			curr = curr.branch;
   			count++;
   		}

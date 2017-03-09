@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 101;
+	int CAPACITY = 10;
 	Square[][] grid;
 	int agentx;
 	int agenty;
@@ -49,7 +49,7 @@ public class GridWorld{
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
 				this.grid[i][j] = new Square();
-				this.grid[i][j].h_value = prev.grid[i][j].h_value;
+				this.grid[i][j].h_value = Math.abs(i - this.targetx) + Math.abs(j - this.targety);
 				this.grid[i][j].x = i;
 				this.grid[i][j].y = j;
 			}
@@ -102,7 +102,7 @@ public class GridWorld{
 		} while ((agentx == targetx && agenty == targety) || this.grid[targetx][targety].isBlocked == true);
 		
 		//System.out.println(numblocked);
-		this.grid[targetx][targety].travel = true;
+		//this.grid[targetx][targety].travel = true;
 
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
