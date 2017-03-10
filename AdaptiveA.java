@@ -103,6 +103,68 @@ public class AdaptiveA{
       return;
     }
 
+    public static void AdaptiveAstar(GridWorld ngw,Square start, Square goal, char ordering){
+  adaptive = true;
+    int counter = 0;
+    int acounter = 0;
+    Square curr;
+    SquareNode ptr;
+      //ngw.grid[start.x][start.y].travel = true;
+      //ngw.grid[goal.x][goal.y].travel = true;
+      //gw.grid[start.x][start.y].travel = true;
+      //gw.grid[goal.x][goal.y].travel = true;
+
+      while(!sqEquals(start,ngw.grid[goal.x][goal.y])){
+        printSq("curr",start);
+        counter++;
+        ngw.grid[start.x][start.y].g_value = 0;
+        ngw.grid[start.x][start.y].search = counter;
+        ngw.grid[goal.x][goal.y].g_value = Integer.MAX_VALUE;
+        heap = new BinaryHeap();
+        for(int i=0;i<ngw.CAPACITY;i++){
+          for(int j=0;j<ngw.CAPACITY;j++){
+            ngw.grid[i][j].inHeap = false;
+            ngw.grid[i][j].isClosed = false;
+          }
+        }
+        head = null;
+        ngw.grid[start.x][start.y].inHeap = true;
+        ngw.grid[start.x][start.y].f_value = ngw.grid[start.x][start.y].g_value + ngw.grid[start.x][start.y].h_value;
+        heap.add(ngw.grid[start.x][start.y], ordering);   
+        Astar(ngw,ngw.grid[goal.x][goal.y],counter,ordering);
+        if(heap.isEmpty()){
+          gw.generate();
+          System.out.println("I cannot reach the target.");
+          System.out.println();
+          return;
+        }
+        traverseTree(ngw,ngw.grid[goal.x][goal.y], ngw.grid[start.x][start.y]);
+        curr = traverseBranch(ngw,ngw.grid[start.x][start.y],ngw.grid[goal.x][goal.y]);
+        for(ptr = head;ptr!=null;ptr=ptr.next){
+          printSq("curr in update",ngw.grid[ptr.square.x][ptr.square.y]);
+          System.out.println("Before: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
+          //System.out.println("Goal's g-value is: " + ngw.grid[goal.x][goal.y].g_value);
+          //System.out.println("Current's g-value is: " + ngw.grid[ptr.square.x][ptr.square.y].g_value);
+
+          ngw.grid[ptr.square.x][ptr.square.y].h_value = ngw.grid[goal.x][goal.y].g_value - ngw.grid[ptr.square.x][ptr.square.y].g_value;
+          System.out.println("After: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
+          System.out.println();
+        }
+        System.out.println("Number of expansions in this Astar: " + (expanded - acounter));
+        acounter = expanded;
+        ngw.generate();
+        gw.generate();
+        start = curr;
+      }
+      printPath(ngw);
+      System.out.println("Our grid");
+      gw.generate();
+      System.out.println("Arrived at " + start.x + "," + start.y);
+      System.out.println("I reached the target.");
+      System.out.println();
+      return;
+   }
+
   	public static void Astar(GridWorld ngw, Square goal, int counter, char ordering){
   		Square curr;
   		while(!heap.isEmpty() && ngw.grid[goal.x][goal.y].g_value > (curr = heap.peek()).f_value){
@@ -301,67 +363,7 @@ public static void renew(GridWorld ngw){
 
 
 
-public static void AdaptiveAstar(GridWorld ngw,Square start, Square goal, char ordering){
-  adaptive = true;
-    int counter = 0;
-    int acounter = 0;
-    Square curr;
-    SquareNode ptr;
-      //ngw.grid[start.x][start.y].travel = true;
-      //ngw.grid[goal.x][goal.y].travel = true;
-      //gw.grid[start.x][start.y].travel = true;
-      //gw.grid[goal.x][goal.y].travel = true;
 
-      while(!sqEquals(start,ngw.grid[goal.x][goal.y])){
-        printSq("curr",start);
-        counter++;
-        ngw.grid[start.x][start.y].g_value = 0;
-        ngw.grid[start.x][start.y].search = counter;
-        ngw.grid[goal.x][goal.y].g_value = Integer.MAX_VALUE;
-        heap = new BinaryHeap();
-        for(int i=0;i<ngw.CAPACITY;i++){
-          for(int j=0;j<ngw.CAPACITY;j++){
-            ngw.grid[i][j].inHeap = false;
-            ngw.grid[i][j].isClosed = false;
-          }
-        }
-        head = null;
-        ngw.grid[start.x][start.y].inHeap = true;
-        ngw.grid[start.x][start.y].f_value = ngw.grid[start.x][start.y].g_value + ngw.grid[start.x][start.y].h_value;
-        heap.add(ngw.grid[start.x][start.y], ordering);   
-        Astar(ngw,ngw.grid[goal.x][goal.y],counter,ordering);
-        if(heap.isEmpty()){
-          gw.generate();
-          System.out.println("I cannot reach the target.");
-          System.out.println();
-          return;
-        }
-        traverseTree(ngw,ngw.grid[goal.x][goal.y], ngw.grid[start.x][start.y]);
-        curr = traverseBranch(ngw,ngw.grid[start.x][start.y],ngw.grid[goal.x][goal.y]);
-        for(ptr = head;ptr!=null;ptr=ptr.next){
-          printSq("curr in update",ngw.grid[ptr.square.x][ptr.square.y]);
-          System.out.println("Before: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
-          //System.out.println("Goal's g-value is: " + ngw.grid[goal.x][goal.y].g_value);
-          //System.out.println("Current's g-value is: " + ngw.grid[ptr.square.x][ptr.square.y].g_value);
-
-          ngw.grid[ptr.square.x][ptr.square.y].h_value = ngw.grid[goal.x][goal.y].g_value - ngw.grid[ptr.square.x][ptr.square.y].g_value;
-          System.out.println("After: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
-          System.out.println();
-        }
-        System.out.println("Number of expansions in this Astar: " + (expanded - acounter));
-        acounter = expanded;
-        ngw.generate();
-        gw.generate();
-        start = curr;
-      }
-      printPath(ngw);
-      System.out.println("Our grid");
-      gw.generate();
-      System.out.println("Arrived at " + start.x + "," + start.y);
-      System.out.println("I reached the target.");
-      System.out.println();
-      return;
-   }
 
 
   }
