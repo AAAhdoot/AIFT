@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.*;
 
 public class BinaryHeap extends PriorityQueue {
-    private static final int DEFAULT_CAPACITY = 100;
+    private static final int DEFAULT_CAPACITY = 101*101;
     Square[] array;
     int size;
     
@@ -33,7 +33,7 @@ public class BinaryHeap extends PriorityQueue {
         int index = size;
         array[index] = square;
         
-        //System.out.println("Adding square with indices (" + square.x + "," + square.y + ")");
+       // System.out.println("Adding square with indices (" + square.x + "," + square.y + ")");
         if(ordering == 'g'){
          gbubbleUp();
      }
@@ -108,7 +108,7 @@ public class BinaryHeap extends PriorityQueue {
      */
     public void gbubbleDown() {
         int index = 1;
-        
+      //  System.out.println("Bubbling Down");
         // bubble down
         while (hasLeftChild(index)) {
          //   System.out.println("Bubbling Down");
@@ -139,7 +139,7 @@ if(!this.isEmpty()){
                // System.out.println("Top of the heap now contains:");
                // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
                // System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
-               // currentMembers();
+              //  currentMembers();
             }
             else{
                 //System.out.println("HEAP IS EMPTY");
@@ -176,7 +176,7 @@ if(!this.isEmpty()){
                 //System.out.println("Top of the heap now contains:");
                // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
                 //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
-                //currentMembers();
+              //  currentMembers();
             }
             else{
                 //System.out.println("HEAP IS EMPTY");
@@ -193,7 +193,7 @@ if(!this.isEmpty()){
     public void gbubbleUp() {
         int index = this.size;
         
-      //  System.out.println("PRE-BUBBLEUP LOOP");
+     //  System.out.println("Bubble Up");
 
         //has parent ==> index > 1
         // 
@@ -213,7 +213,7 @@ if(!this.isEmpty()){
                 //System.out.println("Top of the heap now contains:");
                // System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
                 //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
-                //currentMembers();
+               // currentMembers();
             }
             else{
                 //System.out.println("HEAP IS EMPTY");
@@ -240,7 +240,7 @@ if(!this.isEmpty()){
                 //System.out.println("Top of the heap now contains:");
                 //System.out.println("square at indices " + this.peek().x + "," + this.peek().y);
                 //System.out.println(" Containing f_value, g_value " + this.peek().f_value + "," + this.peek().g_value);
-                //currentMembers();
+               // currentMembers();
             }
             else{
                 //System.out.println("HEAP IS EMPTY");
@@ -255,11 +255,12 @@ if(!this.isEmpty()){
             return;
         }
         for(int i = 1; i<=this.size; i++){
-            //System.out.println("The " + i + "th" + " square has indices " + this.array[i].x + "," + this.array[i].y);
-            //System.out.println("f value: " + this.array[i].f_value);
-            //System.out.println("g value: " + this.array[i].g_value);
-            //System.out.println();
+            System.out.println("The " + i + "th" + " square has indices " + this.array[i].x + "," + this.array[i].y);
+            System.out.println("f value: " + this.array[i].f_value);
+            System.out.println("g value: " + this.array[i].g_value);
+            System.out.println();
         }
+        System.out.println("-----------------------------------------------------------------------------------");
     }
 
     public boolean hasParent(int i) {

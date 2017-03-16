@@ -1,5 +1,5 @@
 public class GridWorld{
-	int CAPACITY = 10;
+	int CAPACITY = 101;
 	Square[][] grid;
 	int agentx;
 	int agenty;
@@ -112,6 +112,31 @@ public class GridWorld{
 
 		return;
 	}
+
+// public void populate(){
+// 	for(int i=0;i<CAPACITY;i++){
+// 		for(int j=0;j<CAPACITY;j++){
+// 			this.grid[i][j].isBlocked = false;
+// 			this.grid[i][j].x = i;
+// 			this.grid[i][j].y = j;
+// 		}
+// 	}
+
+// 	this.grid[4][3].isBlocked = true;
+// 	this.grid[3][2].isBlocked = true;
+// 	this.grid[2][2].isBlocked = true;
+
+// 	agentx = 4;
+// 	agenty = 2;
+// 	targetx = 4;
+// 	targety = 4;
+
+// 	for(int i=0;i<CAPACITY;i++){
+// 		for(int j=0;j<CAPACITY;j++){
+// 			this.grid[i][j].h_value = Math.abs(i - targetx) + Math.abs(j - targety);
+// 		}
+// 	}	
+// }
 
 public void generate() {
         for (int i = 0; i < CAPACITY; i++) {

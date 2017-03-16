@@ -18,9 +18,6 @@ public class Square{
 		this.isClosed = false;
 		this.isBlocked = false;
 		this.inHeap = false;
-		this.g_value = Integer.MAX_VALUE;
-		this.h_value = 0;
-		this.f_value = 0;
 		this.tree = null;
 		this.branch = null;
 		this.search= 0;

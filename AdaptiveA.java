@@ -9,10 +9,12 @@ public class AdaptiveA{
   	static int COST = 1; //currently
   	static int MAXINDEX = gw.CAPACITY-1;
   	static Square path;
+    static int [] deltah = new int [gw.CAPACITY*gw.CAPACITY];
+    static int [] pathcost = new int [gw.CAPACITY*gw.CAPACITY];
   	
   	public static void main (String[] args){
-  		GridWorld[] ourgw = new GridWorld[1];
-  		GridWorld[] ourngw = new GridWorld[1];
+  		GridWorld[] ourgw = new GridWorld[50];
+  		GridWorld[] ourngw = new GridWorld[50];
       adaptive = false;
   		for(int i = 0; i<ourgw.length; i++){
   			ourgw[i] = new GridWorld();
@@ -62,10 +64,14 @@ public class AdaptiveA{
     public static void repeatedForwardAStar(GridWorld ngw,Square start, Square goal, char ordering){
       int counter = 0;
       Square curr;
+      int acounter = 0;
       //ngw.grid[start.x][start.y].travel = true;
       //ngw.grid[goal.x][goal.y].travel = true;
       //gw.grid[start.x][start.y].travel = true;
       //gw.grid[goal.x][goal.y].travel = true;
+
+    //       ngw.grid[3][2].isBlocked = true;
+    // ngw.grid[4][3].isBlocked = true;
 
       while(!sqEquals(start,ngw.grid[goal.x][goal.y])){
         counter++;
@@ -92,11 +98,15 @@ public class AdaptiveA{
         }
         traverseTree(ngw,ngw.grid[goal.x][goal.y], ngw.grid[start.x][start.y]);
         curr = traverseBranch(ngw,ngw.grid[start.x][start.y],ngw.grid[goal.x][goal.y]);
+
+        //System.out.println("Number of expansions in this Astar: " + (rfexpand - acounter));
+        acounter = rfexpand;
+
         start = curr;
       }
       printPath(ngw);
       System.out.println("Our grid");
-      gw.generate();
+      //gw.generate();
       System.out.println("Arrived at " + start.x + "," + start.y);
       System.out.println("I reached the target.");
       System.out.println();
@@ -109,13 +119,16 @@ public class AdaptiveA{
     int acounter = 0;
     Square curr;
     SquareNode ptr;
+    // ngw.grid[3][2].isBlocked = true;
+    // ngw.grid[4][3].isBlocked = true;
+    //ngw.generate();
       //ngw.grid[start.x][start.y].travel = true;
       //ngw.grid[goal.x][goal.y].travel = true;
       //gw.grid[start.x][start.y].travel = true;
       //gw.grid[goal.x][goal.y].travel = true;
 
       while(!sqEquals(start,ngw.grid[goal.x][goal.y])){
-        printSq("curr",start);
+        //printSq("curr",start);
         counter++;
         ngw.grid[start.x][start.y].g_value = 0;
         ngw.grid[start.x][start.y].search = counter;
@@ -133,7 +146,7 @@ public class AdaptiveA{
         heap.add(ngw.grid[start.x][start.y], ordering);   
         Astar(ngw,ngw.grid[goal.x][goal.y],counter,ordering);
         if(heap.isEmpty()){
-          gw.generate();
+          //gw.generate();
           System.out.println("I cannot reach the target.");
           System.out.println();
           return;
@@ -141,24 +154,24 @@ public class AdaptiveA{
         traverseTree(ngw,ngw.grid[goal.x][goal.y], ngw.grid[start.x][start.y]);
         curr = traverseBranch(ngw,ngw.grid[start.x][start.y],ngw.grid[goal.x][goal.y]);
         for(ptr = head;ptr!=null;ptr=ptr.next){
-          printSq("curr in update",ngw.grid[ptr.square.x][ptr.square.y]);
-          System.out.println("Before: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
-          //System.out.println("Goal's g-value is: " + ngw.grid[goal.x][goal.y].g_value);
-          //System.out.println("Current's g-value is: " + ngw.grid[ptr.square.x][ptr.square.y].g_value);
-
+          // printSq("curr in update",ngw.grid[ptr.square.x][ptr.square.y]);
+          // System.out.println("Before: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
+          // System.out.println("Goal's g-value is: " + ngw.grid[goal.x][goal.y].g_value);
+          // System.out.println("Goal's h-value is: " + ngw.grid[goal.x][goal.y].h_value);
+          // System.out.println("Current's g-value is: " + ngw.grid[ptr.square.x][ptr.square.y].g_value);
+          // System.out.println("Current's h-value is: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
           ngw.grid[ptr.square.x][ptr.square.y].h_value = ngw.grid[goal.x][goal.y].g_value - ngw.grid[ptr.square.x][ptr.square.y].g_value;
-          System.out.println("After: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
-          System.out.println();
+          // System.out.println("After: " + ngw.grid[ptr.square.x][ptr.square.y].h_value);
         }
-        System.out.println("Number of expansions in this Astar: " + (expanded - acounter));
+        //System.out.println("Number of expansions in this Astar: " + (expanded - acounter));
         acounter = expanded;
-        ngw.generate();
-        gw.generate();
+        //ngw.generate();
+        //gw.generate();
         start = curr;
       }
       printPath(ngw);
       System.out.println("Our grid");
-      gw.generate();
+     // gw.generate();
       System.out.println("Arrived at " + start.x + "," + start.y);
       System.out.println("I reached the target.");
       System.out.println();
@@ -361,9 +374,177 @@ public static void renew(GridWorld ngw){
    // }
 }
 
+// public static void NotAdaptiveAstar(GridWorld ngw,Square start, Square goal, char ordering){
+//   adaptive = true;
+//   Square curr;
+//   int counter = 1;
+//   int acounter =0;
+//   deltah[1] = 0;
+//   while(!sqEquals(start,ngw.grid[goal.x][goal.y])){
+//     InitializeState(ngw.grid[start.x][start.y],counter,ngw);
+//     InitializeState(ngw.grid[goal.x][goal.y],counter,ngw);
+//     ngw.grid[start.x][start.y].g_value = 0;
+//     heap = new BinaryHeap();
+//     ngw.grid[start.x][start.y].f_value = ngw.grid[start.x][start.y].g_value + ngw.grid[start.x][start.y].h_value;
+//     heap.add(ngw.grid[start.x][start.y], ordering); 
+//     ComputePath( ngw, ngw.grid[start.x][start.y],  ngw.grid[goal.x][goal.y],  ordering,  counter) ;
+//     if(heap.isEmpty()){
+//       pathcost[counter] = Integer.MAX_VALUE;
+//                 System.out.println("I cannot reach the target.");
+//           System.out.println();
+//           return;
+//     }
+//     else{
+//       pathcost[counter] = ngw.grid[goal.x][goal.y].g_value;
+//     }
+//      traverseTree(ngw,ngw.grid[goal.x][goal.y], ngw.grid[start.x][start.y]);
+//         curr = traverseBranch(ngw,ngw.grid[start.x][start.y],ngw.grid[goal.x][goal.y]);
+//         System.out.println("Number of expansions in this Astar: " + (expanded - acounter));
+//         acounter = expanded;
+//         start = curr;
+//         deltah[counter+1] = deltah[counter];
+//         counter++;
+//   }
 
+//       printPath(ngw);
+//       System.out.println("Our grid");
+//       //gw.generate();
+//       System.out.println("Arrived at " + start.x + "," + start.y);
+//       System.out.println("I reached the target.");
+//       System.out.println();
+//       return;
 
+// }
 
+// public static void InitializeState(Square s, int counter, GridWorld ngw){
+//   if (s.search!=counter && s.search!=0){
+//     if((s.g_value + s.h_value)< pathcost[s.search]){
+//       ngw.grid[s.x][s.y].h_value = pathcost[s.search] - s.g_value;
+//     }
+//     ngw.grid[s.x][s.y].h_value -= (deltah[counter] - deltah[s.search]);
+//     ngw.grid[s.x][s.y].h_value = Math.max(ngw.grid[s.x][s.y].h_value,(Math.abs(s.x - ngw.targetx) + Math.abs(s.y - ngw.targety)));
+//     ngw.grid[s.x][s.y].g_value = Integer.MAX_VALUE;
+//   }
+//   else if(s.search == 0){
+//     ngw.grid[s.x][s.y].g_value = Integer.MAX_VALUE;
+//     ngw.grid[s.x][s.y].h_value = (Math.abs(s.x - ngw.targetx) + Math.abs(s.y - ngw.targety));
+//   }
+//   ngw.grid[s.x][s.y].search = counter;
+// }
 
+// public static void ComputePath(GridWorld ngw,Square start, Square goal, char ordering, int counter){
+//         Square curr;
+//       while(!heap.isEmpty() && ngw.grid[goal.x][goal.y].g_value > (curr = heap.peek()).f_value){
+//         heap.remove(ordering); 
+//         ngw.grid[curr.x][curr.y].inHeap = false;
+//         head = addNode(ngw.grid[curr.x][curr.y], head);
+//         ngw.grid[curr.x][curr.y].isClosed = true;
+//         adaptiveaddFour(ngw,ngw.grid[curr.x][curr.y],counter,ordering);
+//       }
+//       if(!heap.isEmpty()){
+//         heap.remove(ordering);
+//       }
+//       return;
+// }
+
+//     public static void adaptiveaddFour(GridWorld ngw, Square curr,int counter, char ordering){
+       
+//        if(adaptive == false){
+//         rfexpand++;
+//        }
+//        if(adaptive == true){
+//         expanded++;
+//        }
+       
+//       int x = curr.x;
+//       int y = curr.y;
+//       int pg = 0;
+//       pg = curr.g_value + COST;
+
+//       if(curr.x != 0){
+//         if(!ngw.grid[x-1][y].isClosed && !ngw.grid[x-1][y].isBlocked){
+//           InitializeState(ngw.grid[x-1][y], counter, ngw);
+//           if(ngw.grid[x-1][y].search < counter){
+//             ngw.grid[x-1][y].g_value = Integer.MAX_VALUE;
+//             ngw.grid[x-1][y].search = counter;
+//           }
+//           if(ngw.grid[x-1][y].g_value > pg){
+//             ngw.grid[x-1][y].g_value = pg;
+//             ngw.grid[x-1][y].tree = ngw.grid[x][y];
+//             ngw.grid[x-1][y].hastree = true;
+//             if(ngw.grid[x-1][y].inHeap){
+//               heap.findRemove(ngw.grid[x-1][y],ordering);
+//             }
+//             ngw.grid[x-1][y].f_value = ngw.grid[x-1][y].g_value + ngw.grid[x-1][y].h_value;
+//             heap.add(ngw.grid[x-1][y],ordering);
+//             ngw.grid[x-1][y].inHeap = true;
+//           }
+//         }
+
+//       }
+//       if(curr.x != MAXINDEX){
+//         if(!ngw.grid[x+1][y].isClosed && !ngw.grid[x+1][y].isBlocked){
+//           InitializeState(ngw.grid[x+1][y], counter, ngw);
+//           if(ngw.grid[x+1][y].search < counter){
+//             ngw.grid[x+1][y].g_value = Integer.MAX_VALUE;
+//             ngw.grid[x+1][y].search = counter;
+//           }
+//           if(ngw.grid[x+1][y].g_value > pg){
+//             ngw.grid[x+1][y].g_value = pg;
+//             ngw.grid[x+1][y].tree = ngw.grid[x][y];
+//             ngw.grid[x+1][y].hastree = true;
+//             if(ngw.grid[x+1][y].inHeap){
+//               heap.findRemove(ngw.grid[x+1][y],ordering);
+//             }
+//             ngw.grid[x+1][y].f_value = ngw.grid[x+1][y].g_value + ngw.grid[x+1][y].h_value;
+//             heap.add(ngw.grid[x+1][y],ordering);
+//             ngw.grid[x+1][y].inHeap = true;
+//           }
+//         }
+
+//       }
+//       if(curr.y != 0){
+//         if(!ngw.grid[x][y-1].isClosed && !ngw.grid[x][y-1].isBlocked){
+//           InitializeState(ngw.grid[x][y-1], counter, ngw);
+//           if(ngw.grid[x][y-1].search < counter){
+//             ngw.grid[x][y-1].g_value = Integer.MAX_VALUE;
+//             ngw.grid[x][y-1].search = counter;
+//           }
+//           if(ngw.grid[x][y-1].g_value > pg){
+//             ngw.grid[x][y-1].g_value = pg;
+//             ngw.grid[x][y-1].tree = ngw.grid[x][y];
+//             ngw.grid[x][y-1].hastree = true;
+//             if(ngw.grid[x][y-1].inHeap){
+//               heap.findRemove(ngw.grid[x][y-1],ordering);
+//             }
+//             ngw.grid[x][y-1].f_value = ngw.grid[x][y-1].g_value + ngw.grid[x][y-1].h_value;
+//             heap.add(ngw.grid[x][y-1],ordering);
+//             ngw.grid[x][y-1].inHeap = true;
+//           }
+//         }
+
+//       }
+//       if(curr.y != MAXINDEX){
+//         if(!ngw.grid[x][y+1].isClosed && !ngw.grid[x][y+1].isBlocked){
+//           InitializeState(ngw.grid[x][y+1], counter, ngw);
+//           if(ngw.grid[x][y+1].search < counter){
+//             ngw.grid[x][y+1].g_value = Integer.MAX_VALUE;
+//             ngw.grid[x][y+1].search = counter;
+//           }
+//           if(ngw.grid[x][y+1].g_value > pg){
+//             ngw.grid[x][y+1].g_value = pg;
+//             ngw.grid[x][y+1].tree = ngw.grid[x][y];
+//             ngw.grid[x][y+1].hastree = true;
+//             if(ngw.grid[x][y+1].inHeap){
+//               heap.findRemove(ngw.grid[x][y+1],ordering);
+//             }
+//             ngw.grid[x][y+1].f_value = ngw.grid[x][y+1].g_value + ngw.grid[x][y+1].h_value;
+//             heap.add(ngw.grid[x][y+1],ordering);
+//             ngw.grid[x][y+1].inHeap = true;
+//           }
+//         }
+
+//       }
+//     }
 
   }
