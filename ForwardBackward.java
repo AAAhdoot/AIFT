@@ -29,15 +29,6 @@ public class ForwardBackward{
       System.out.println();
       System.out.println();
       System.out.println();
-      //change h values of the elements
-  		// for(int i = 0; i<ourngw.length; i++){
-  		// 	ourngw[i] = new GridWorld(ourgw[i]);
-    //     for(int j = 0; j<gw.CAPACITY; j++){
-    //       for(int k = 0; k<gw.CAPACITY; k++){
-    //         ourgw[i].grid[j][k].h_value = Math.abs(j - ourgw[i].agentx) + Math.abs(k - ourgw[i].agenty);
-    //       }
-    //     }
-  		// }
 
       for(int i = 0; i<ourngw.length; i++){
         ourngw[i] = new GridWorld(ourgw[i]);

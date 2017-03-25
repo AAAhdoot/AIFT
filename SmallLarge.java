@@ -36,11 +36,6 @@ public class SmallLarge{
   			head = null;
   		}
 
-  		System.out.println("Failures: G S");
-  		System.out.println(gfail + " " + sfail);
-  		System.out.println("Successes: G S");
-  		System.out.println(gsucc + " " + ssucc);
-
   		System.out.println("Number of expansions when lower g favored: " + smallexpand);
   		System.out.println();
   		System.out.println("Number of expansions when higher g favored: " + bigexpand);

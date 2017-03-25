@@ -13,10 +13,7 @@ public class GridWorld{
 				this.grid[i][j] = new Square();
 			}
 		}
-		//long startTime = System.currentTimeMillis();
 		populate();
-		//long endTime = System.currentTimeMillis();
-		//System.out.println("That took " + (endTime - startTime) + " milliseconds");
 	}
 	public GridWorld(int agentx, int agenty, int targetx, int targety){
 		this.grid = new Square[CAPACITY][CAPACITY];
@@ -85,7 +82,6 @@ public class GridWorld{
 					continue;
 				}
 				chance = 0;
-				//System.out.println("Square at indices (" + i +"," + j + ") " + "is " +  this.grid[i][j].isBlocked);
 			}
 
 		}
@@ -101,8 +97,6 @@ public class GridWorld{
 			targety = (int) (Math.random()*CAPACITY);
 		} while ((agentx == targetx && agenty == targety) || this.grid[targetx][targety].isBlocked == true);
 		
-		//System.out.println(numblocked);
-		//this.grid[targetx][targety].travel = true;
 
 		for(int i=0;i<CAPACITY;i++){
 			for(int j=0;j<CAPACITY;j++){
@@ -113,42 +107,16 @@ public class GridWorld{
 		return;
 	}
 
-// public void populate(){
-// 	for(int i=0;i<CAPACITY;i++){
-// 		for(int j=0;j<CAPACITY;j++){
-// 			this.grid[i][j].isBlocked = false;
-// 			this.grid[i][j].x = i;
-// 			this.grid[i][j].y = j;
-// 		}
-// 	}
-
-// 	this.grid[4][3].isBlocked = true;
-// 	this.grid[3][2].isBlocked = true;
-// 	this.grid[2][2].isBlocked = true;
-
-// 	agentx = 4;
-// 	agenty = 2;
-// 	targetx = 4;
-// 	targety = 4;
-
-// 	for(int i=0;i<CAPACITY;i++){
-// 		for(int j=0;j<CAPACITY;j++){
-// 			this.grid[i][j].h_value = Math.abs(i - targetx) + Math.abs(j - targety);
-// 		}
-// 	}	
-// }
 
 public void generate() {
         for (int i = 0; i < CAPACITY; i++) {
             // draw the north edge
             for (int j = 0; j < CAPACITY; j++) {
-                //System.out.print((maze[j][i] & 1) == 0 ? "+---" : "+   ");
                 System.out.print("+-");
             }
             System.out.println("+");
             // draw the west edge
             for (int j = 0; j < CAPACITY; j++) {
-                //System.out.print((maze[j][i] & 8) == 0 ? "|   " : "    ");
                 
                 if(j == agenty && i ==agentx ){
                     System.out.print("|A");
@@ -156,9 +124,7 @@ public void generate() {
                 else if(j==targety && i == targetx){
                     System.out.print("|T");
                 }
-                // else if(j==i){
-                //     System.out.print("|*");
-                // }
+
                 else{
 
                 	if(this.grid[i][j].isBlocked==true){
